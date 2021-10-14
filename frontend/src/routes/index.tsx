@@ -4,8 +4,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
 import { Home } from "../components/home";
 import { NewProduct } from "../components/new-product";
+
+
 const Tab = createBottomTabNavigator();
-const Stack = createBottomTabNavigator();
 
 const Routes: React.FC = () => {
   return (

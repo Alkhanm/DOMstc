@@ -26,6 +26,18 @@ export default StyleSheet.create({
         flex: 1,
         marginBottom: 10
     },
+    barcode: {
+        width: "95%",
+        paddingHorizontal: 5,
+        height: 70,
+        flexDirection: "row",
+        borderBottomWidth: 0.6,
+    },
+    barcodeInput: {
+        margin: 10,
+        flexGrow: 1,
+        fontSize: 16,
+    },
     buttons: {
         marginTop: 5,
         flexDirection: "row",
