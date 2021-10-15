@@ -1,7 +1,7 @@
-import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import React, { useEffect, useState } from 'react';
-import { Modal, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import colorCss from "../../../styles/color.css";
 import style from "./style";
 
@@ -10,22 +10,16 @@ interface AlkBarcodeScannerProps {
 }
 
 export const AlkBarcodeScanner: React.FC<AlkBarcodeScannerProps> = ({ setData }) => {
-    const [scanned, setScanned] = useState(false);
-    const [modalVisibility, setModalVisibility] = useState(false)
+    const [modalVisibility, setModalVisibility] = useState(true)
 
     useEffect(() => {
         (async () => await BarCodeScanner.requestPermissionsAsync())();
     }, []);
 
     const handleBarCodeScanned = ({ data, type }) => {
-        console.log(data)
         setData(data);
-        setScanned(true);
-    }
-
-    function action() {
-        setScanned(!scanned);
-        setModalVisibility(false);
+        //setModalVisibility(false)
+        console.log(data)
     }
 
     return (
@@ -34,19 +28,21 @@ export const AlkBarcodeScanner: React.FC<AlkBarcodeScannerProps> = ({ setData })
                 animationType="slide"
                 visible={modalVisibility}
             >
-                <View style={style.container}>
+                <View style={style.modalView}>
                     <BarCodeScanner
                         collapsable onBarCodeScanned={handleBarCodeScanned}
                         style={StyleSheet.absoluteFillObject} />
                     <View style={style.barCodeBox}>
-                        <TouchableOpacity onPress={action}>
-                            <FontAwesome5 name="window-close" size={65} color={"white"} />
+                        <Text style={style.barCodeText}>Ler código de barra</Text>
+                        <MaterialCommunityIcons name="scan-helper" size={300} color={"white"} />
+                        <TouchableOpacity onPress={() => setModalVisibility(false)} >
+                            <MaterialCommunityIcons style={style.closeScan} name="barcode-off" size={65} color={"white"} />
                         </TouchableOpacity>
                     </View>
                 </View>
             </Modal>
-            <TouchableOpacity onPress={() => setScanned(!scanned)}>
-                <MaterialCommunityIcons name="barcode-scan" size={35} color={colorCss.grey.c}/>
+            <TouchableOpacity onPress={() => setModalVisibility(true)}>
+                <MaterialCommunityIcons name="barcode-scan" size={35} color={colorCss.grey.c} />
             </TouchableOpacity>
         </View>
     )

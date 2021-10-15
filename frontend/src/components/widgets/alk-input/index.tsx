@@ -5,7 +5,7 @@ import { blue, grey } from "../../../styles/color.css";
 interface MvInputProps extends TextInputProps {
     value: string;
     placeholder: string;
-    icon: string;
+    icon?: string;
     iconSize?: number;
     style?: ViewStyle | ViewStyle[];
 }
@@ -45,7 +45,9 @@ export const AlkInput: React.FC<MvInputProps> = ({
                     {...rest}
                 />
             </View>
-            <View style={styles.cardIcon}>{children}</View>
+            <View style={styles.children}>
+                {children}
+            </View>
         </View>
     );
 };
@@ -55,15 +57,14 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         marginBottom: 15,
         flexDirection: "row",
-        height: 70,
+        height: 50,
         padding: 5,
         width: "95%",
         borderBottomWidth: 1,
         borderColor: grey.lighten2,
     },
     icon: {
-        marginRight: 5,
-        marginLeft: 5,
+        marginHorizontal: 5
     },
     input: {
         fontSize: 16,
@@ -77,6 +78,10 @@ const styles = StyleSheet.create({
     },
     cardIcon: {
         justifyContent: "flex-end",
+    },
+    children: {
+        justifyContent: "flex-end",
+        alignItems: "flex-end"
     },
     containerFocus: {
         backgroundColor: "#fff",

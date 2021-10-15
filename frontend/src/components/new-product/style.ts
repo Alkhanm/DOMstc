@@ -23,10 +23,11 @@ export default StyleSheet.create({
         justifyContent: "flex-start"
     },
     field: {
-        flex: 1,
-        marginBottom: 10
+        marginBottom: "10%"
     },
     barcode: {
+        justifyContent: "center",
+        alignItems: "center",
         width: "95%",
         paddingHorizontal: 5,
         height: 70,
