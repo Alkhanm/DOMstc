@@ -5,6 +5,7 @@
       <form @submit.prevent="saveProduct">
         <div class="row">
           <input
+            id="field-name"
             v-model="product.name"
             type="text"
             placeholder="Nome/descrição"
@@ -13,6 +14,7 @@
         </div>
         <div class="row">
           <input
+            id="field-purchase-price"
             v-model="product.purchasePrice"
             type="text"
             placeholder="Preço de compra"
@@ -21,6 +23,7 @@
         </div>
         <div class="row">
           <input
+            id="field-sale-price"
             v-model="product.salePrice"
             type="text"
             placeholder="Preço de venda"
@@ -29,6 +32,7 @@
         </div>
         <div class="row">
           <input
+            id="field-brand"
             v-model="product.brand"
             type="text"
             placeholder="Marca"
@@ -37,14 +41,15 @@
         </div>
         <div class="row">
           <input
+            id="field-acquisition-date"
             v-model="product.acquisitionDate"
-            type="datetime-local"
+            type="date"
             placeholder="Data da aquisição"
             required
           />
         </div>
         <div class="row button">
-          <button type="submit" class="btn-save">Salvar</button>
+          <button id="btn-save" type="submit">Salvar</button>
         </div>
       </form>
     </div>
@@ -139,7 +144,7 @@ form .row input::placeholder {
   justify-content: center;
 }
 
-.btn-save {
+#btn-save {
   color: #fff;
   font-size: 20px;
   font-weight: 500;

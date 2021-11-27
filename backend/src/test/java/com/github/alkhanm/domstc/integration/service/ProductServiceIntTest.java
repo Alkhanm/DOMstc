@@ -37,7 +37,7 @@ public class ProductServiceIntTest {
 
     @Test
     @DisplayName("Retorna uma lista com todos os produtos")
-    void listAll_ReturnsAllProducts_When_Successful(){
+    void  listAll_ReturnsAllProducts_When_Successful(){
         List<Product> productList = service.findAll();
 
         // Assegura que a lista não está nula ou vazia

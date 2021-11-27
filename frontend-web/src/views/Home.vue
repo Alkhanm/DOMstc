@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import API from "@/domain/api";
-import { reactive, ref, toRefs } from "@vue/reactivity";
+import { reactive, ref, toRefs } from "vue";
 import ProductList from "./components/ProductList.vue";
 import { onMounted } from "@vue/runtime-core";
 import iProduct from "../domain/iProduct";
