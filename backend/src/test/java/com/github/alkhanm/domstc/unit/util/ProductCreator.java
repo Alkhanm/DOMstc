@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Random;
 
 public class ProductCreator {
-
     public static Product createProduct(boolean withId){
         long id = new Random().nextInt(99);
        double price = new Random().nextDouble(100);
