@@ -1,6 +1,9 @@
 <template>
   <div class="container grid-lg">
     <h2>Lista de Produtos</h2>
+    <div class="container-delete-all">
+      <button id="bt-delete-all">APAGAR</button>
+    </div>
     <table class="styled-table">
       <thead>
         <tr>
@@ -9,6 +12,7 @@
           <th>Preço para venda</th>
           <th>Marca</th>
           <th>Data de aquisição</th>
+          <th>Ações</th>
         </tr>
       </thead>
       <tbody class="active-row">
@@ -18,6 +22,10 @@
           <td>R$ {{ prod.salePrice }}</td>
           <td>{{ prod.brand }}</td>
           <td>{{ prod.acquisitionDate }}</td>
+          <td class="td-actions">
+            <button class="bt">EDITAR</button>
+            <button @click="deleteProduct(prod.id)" class="bt">DELETAR</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -27,6 +35,7 @@
 <script lang="ts">
 import iProduct from "@/domain/iProduct";
 import { PropType } from "@vue/runtime-core";
+import API from "@/domain/api";
 
 export default {
   name: "ProductList",
@@ -36,9 +45,14 @@ export default {
       required: true,
     },
   },
-  components: {},
   setup() {
-    return {};
+    async function deleteProduct(id: number) {
+      await API.deleteProduct(id);
+    }
+
+    return {
+      deleteProduct,
+    };
   },
 };
 </script>
@@ -83,21 +97,34 @@ export default {
 }
 .td-actions {
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
   color: rgb(99, 96, 96);
+  margin: none;
+  padding: none;
 }
 .td-actions :hover {
   color: rgb(99, 96, 96);
 }
 .bt {
+  display: flex;
+  justify-content: center;
+  width: 80px;
+  padding: none;
   margin: 5px;
-  padding: 5px;
-  width: 40px;
-  border-radius: 10px;
-  border: none;
-  background-color: transparent;
 }
 .icon {
   font-size: 18px;
+}
+.container-delete-all {
+  display: flex;
+  justify-content: right;
+}
+#bt-delete-all {
+  display: flex;
+  justify-content: center;
+  width: 80px;
+  padding: none;
+  margin: 5px;
 }
 </style>

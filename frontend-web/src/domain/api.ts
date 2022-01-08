@@ -15,7 +15,12 @@ const save = async (product: iProduct): Promise<iProduct> => {
     return response.data;
 }
 
+async function deleteProduct(id: number){
+    await api.delete(`/products/${id}`)
+}
+
 export default {
+    deleteProduct,
     getProducts,
-    save
+    save,
 }

@@ -19,6 +19,7 @@ public class Instantiation implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        productRepository.deleteAll();
         productRepository.saveAll(List.of(
                 new Product("Product1", 120.90,199.90, "Avon", LocalDate.now().toString())
         ));

@@ -37,7 +37,7 @@ public class ProductServiceIntTest {
 
     @Test
     @DisplayName("Retorna uma lista com todos os produtos")
-    void  listAll_ReturnsAllProducts_When_Successful(){
+    void  listAllTest(){
         List<Product> productList = service.findAll();
 
         // Assegura que a lista não está nula ou vazia
@@ -53,8 +53,9 @@ public class ProductServiceIntTest {
     @Test
     @DisplayName("Salva um produto")
     void saveTest(){
-        //Pega o quantidade de produtos que há na lista
+        // Pega o quantidade de produtos que há na lista
         Integer productQuantity = service.findAll().size();
+
         // Cria um produto, guarda na variável e depois o inseri para ser salvo
         Product product = ProductCreator.createProduct(false);
         service.save(product);
@@ -62,5 +63,28 @@ public class ProductServiceIntTest {
         // Verifica se a lista aumentou de tamanho devido á nova inserção
         Assertions.assertThat(productQuantity)
                 .isLessThan(service.findAll().size());
+
+        // Verifica se o produto criado acima está na lista de produtos salvos no banco de dados
+        Assertions.assertThat(service.findAll())
+                .contains(product);
+    }
+
+
+    //Testa se um produto está sendo excluído corretamente
+    @Test
+    @DisplayName("Deleta um produto")
+    void deleteTest(){
+        // Cria um produto
+        Product prod1 = ProductCreator.createProduct(false);
+        // Salva esse produto no banco de dados e guardo o ‘id’ desse produto salvo em uma variável
+        Long id = repository.save(prod1).getId();
+        //Verifica se o produto criado foi realmente salvo no banco de dados
+        Assertions.assertThat(repository.existsById(id))
+                .isTrue();
+        //Deleta o produto
+        service.delete(id);
+        //Verifica se o produto criado foi realmente deletado do banco de dados
+        Assertions.assertThat(repository.existsById(id))
+                .isFalse();
     }
 }

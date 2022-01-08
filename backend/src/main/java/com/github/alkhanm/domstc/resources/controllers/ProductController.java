@@ -16,6 +16,7 @@ public class ProductController {
         this.service = service;
     }
 
+
     @GetMapping
     public @ResponseBody
     List<Product> getAll(){
@@ -26,5 +27,11 @@ public class ProductController {
     public @ResponseBody
     Product save(@RequestBody Product product){
         return service.save(product);
+    }
+
+    @DeleteMapping("/{id}")
+    public @ResponseBody
+    void delete(@PathVariable Long id){
+        service.delete(id);
     }
 }
