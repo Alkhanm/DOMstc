@@ -1,15 +1,17 @@
-import { StyleSheet } from 'react-native';
-import { RootTabScreenProps } from '../types';
-import EditInfo from './components/EditInfo';
-import { Text, View } from './widgets/Themed';
+import { StatusBar } from 'expo-status-bar';
+import { Platform, StyleSheet } from 'react-native';
+import EditInfo from '../components/EditInfo';
+import { Text, View } from './Themed';
 
 
-export default function TabHome({ navigation }: RootTabScreenProps<'TabHome'>) {
+export default function Modal() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Home</Text>
+      <Text style={styles.title}>Modal</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditInfo path="/screens/TabOneScreen.tsx" />
+      <EditInfo path="/screens/ModalScreen.tsx" />
+
+      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
     </View>
   );
 }

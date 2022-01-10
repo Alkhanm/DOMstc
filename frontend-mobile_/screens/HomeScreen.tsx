@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { RootTabScreenProps } from '../types';
 import EditInfo from './components/EditInfo';
-import { Text, View } from './widgets/Themed';
+import { Text, View } from './components/Themed';
 
 
 export default function TabHome({ navigation }: RootTabScreenProps<'TabHome'>) {

@@ -11,10 +11,10 @@ import * as React from 'react';
 import { ColorSchemeName, Pressable } from 'react-native';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import ModalScreen from '../screens/components/Modal';
 import NotFoundScreen from '../screens/components/NotFound';
 import Home from '../screens/HomeScreen';
 import ProductsScreen from '../screens/ProductsScreen';
+import ModalScreen from '../screens/widgets/Modal';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -67,15 +67,15 @@ function BottomTabNavigator() {
         component={Home}
         options={({ navigation }: RootTabScreenProps<'TabHome'>) => ({
           title: 'Home',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
         })}
       />
       <BottomTab.Screen
         name="TabProducts"
         component={ProductsScreen}
         options={({ navigation }: RootTabScreenProps<'TabProducts'>) => ({
-          title: 'Products',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color}></TabBarIcon>,
+          title: 'Produtos',
+          tabBarIcon: ({ color }) => <TabBarIcon name="cart-plus" color={color}></TabBarIcon>,
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate('Modal')}
@@ -95,9 +95,6 @@ function BottomTabNavigator() {
   );
 }
 
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
   color: string;
