@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, TouchableOpacityProps, ViewStyle } from "react-native";
-import Colors from "../../constants/Colors";
+import Colors from "../../constants/Colors.css";
 
 interface MvButtonProps extends TouchableOpacityProps {
   isTouchable?: boolean;

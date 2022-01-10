@@ -5,16 +5,16 @@ export const ProductsDumb: IProduct[] = [
         id: 7,
         code: 2351865256565,
         quantity: 4,
-        brand: "300KM",
+        brand: "MUSK",
         category: "COLÔNIA",
         company: "AVON",
-        description: "300KM SURFER 100ml",
+        description: "Musk Titanium",
         purchaseDate: "20/10/2021",
         purchasePrice: 10.00,
         salePrice: 22.00,
-        variation: "Surfer",
+        variation: "Titanium",
         volume: 100,
-        imageURL: "/home/alkham/Downloads/Captura de tela de 2021-12-10 20-40-04.png"
+        imageURL: "https://firebasestorage.googleapis.com/v0/b/domstc-814e0.appspot.com/o/IMG_20220107_124639.png?alt=media&token=8eed7bd1-902d-408f-95c2-b585e13ef61e"
     },
     {
         id: 11,
@@ -29,7 +29,7 @@ export const ProductsDumb: IProduct[] = [
         salePrice: 18.99,
         variation: "Ultra Liso",
         volume: 300,
-        imageURL: "/home/alkham/Downloads/Captura de tela de 2021-12-10 20-40-04.png"
+        imageURL: "https://firebasestorage.googleapis.com/v0/b/domstc-814e0.appspot.com/o/Shampoo_Ultra_Liso_Advance_Tec_605.webp?alt=media&token=dcb0f7f6-bcad-442a-9e36-d012ae295ae1"
     },
     {
         id: 13,
@@ -45,6 +45,6 @@ export const ProductsDumb: IProduct[] = [
         variation: "Alecrim e Sálvia",
         weight: 90,
         unit: 5,
-        imageURL: "/home/alkham/Downloads/72147_1_2.jpg"
+        imageURL: "https://firebasestorage.googleapis.com/v0/b/domstc-814e0.appspot.com/o/72147_1_2.jpg?alt=media&token=d859cb63-539a-4ffb-89f9-efe53920f709"
     }
 ]
