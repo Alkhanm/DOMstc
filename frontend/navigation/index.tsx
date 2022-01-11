@@ -12,7 +12,7 @@ import { ColorSchemeName, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../constants/Colors.css';
 import useColorScheme from '../hooks/useColorScheme';
 import NotFoundScreen from '../screens/components/NotFound';
-import ProductDetail from "../screens/components/ProductDetail";
+import { ProductDetail } from "../screens/components/ProductDetail";
 import { ProductEdit } from "../screens/components/ProductEdit";
 import ProductNew from '../screens/components/ProductNew';
 import Home from '../screens/HomeScreen';

@@ -35,9 +35,9 @@ export default function Product({ product }: { product: IProduct }) {
                 </View>
             </View>
             <View style={styles.actions}>
-                <AlkButton propStyle={styles.action} onPress={() => navigate('ProductDetail')}
+                <AlkButton propStyle={styles.action} onPress={() => navigate('ProductDetail', { code: product.code })}
                     children={<Text>Detalhes</Text>} />
-                <AlkButton propStyle={styles.action} onPress={() => navigate("ProductEdit")}
+                <AlkButton propStyle={styles.action} onPress={() => navigate("ProductEdit", { code: product.code })}
                     children={<Text>Editar</Text>} />
             </View>
         </View>

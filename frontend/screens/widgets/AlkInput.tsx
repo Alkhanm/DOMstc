@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, TextInputProps, View, ViewStyle } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Colors from "../../constants/Colors.css";
+import Layout from "../../constants/Layout.css";
 
-interface MvInputProps extends TextInputProps {
+interface AlkInputProps extends TextInputProps {
   value: string;
   placeholder: string;
   icon: string;
@@ -11,7 +12,9 @@ interface MvInputProps extends TextInputProps {
   style?: ViewStyle | ViewStyle[];
 }
 
-export const MvInput: React.FC<MvInputProps> = ({
+const isDarkTheme = Layout.isDarkTheme
+
+export const AlkInput: React.FC<AlkInputProps> = ({
   value,
   placeholder,
   icon,
@@ -20,9 +23,11 @@ export const MvInput: React.FC<MvInputProps> = ({
   children,
   ...rest
 }) => {
+
   const [isTyping, setIsTyping] = useState<boolean>(false);
 
   const iconColor = (): string => {
+    if (isDarkTheme) return isTyping ? Colors.grey.lighten : Colors.grey.lighten;
     return isTyping ? Colors.blue.c : Colors.grey.darken;
   };
 
@@ -34,7 +39,7 @@ export const MvInput: React.FC<MvInputProps> = ({
       <View style={styles.cardInput}>
         <View>
           {(isTyping || Boolean(value.length)) && (
-            <Text style={styles.inputPlaceholder}>{placeholder.toUpperCase()}</Text>
+            <Text style={[styles.placeholder, isTyping && styles.placeholderSelected]}>{placeholder.toUpperCase()}</Text>
           )}
         </View>
         <TextInput
@@ -56,19 +61,29 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginBottom: 15,
     flexDirection: "row",
-    height: 70,
+    height: 60,
     padding: 5,
     width: "95%",
+    borderRadius: 10,
     borderBottomWidth: 1,
-    borderColor: Colors.grey.lighten2,
+    borderColor: isDarkTheme ? "#eee" : Colors.grey.lighten2,
   },
   icon: {
     marginRight: 5,
     marginLeft: 5,
   },
+  placeholder: {
+    opacity: 0.5,
+    fontSize: 12,
+    fontWeight: "bold",
+    color: isDarkTheme ? Colors.grey.lighten5 : Colors.blue.darken2,
+  },
+  placeholderSelected: {
+    fontSize: 14,
+  },
   input: {
     fontSize: 16,
-    color: "black",
+    color: isDarkTheme ? "white" : "black",
     width: "80%",
   },
   cardInput: {
@@ -80,16 +95,11 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   containerFocus: {
-    backgroundColor: "#fff",
     elevation: 1,
     shadowRadius: 10,
-    shadowColor: Colors.grey.lighten5,
-    borderColor: Colors.blue.lighten2,
-  },
-  inputPlaceholder: {
-    opacity: 0.5,
-    fontSize: 12,
-    fontWeight: "bold",
-    color: Colors.blue.darken2,
+    shadowColor: Colors.grey.lighten,
+    backgroundColor: isDarkTheme ? Colors.grey.darken4 : "#fff",
+    borderBottomWidth: 2.5,
+    borderColor: isDarkTheme ? Colors.grey.darken : Colors.blue.lighten2,
   },
 });

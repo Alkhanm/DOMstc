@@ -23,8 +23,8 @@ export type RootTabParamList = {
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   ProductNew: undefined;
-  ProductDetail: undefined;
-  ProductEdit: undefined;
+  ProductDetail: { code: number };
+  ProductEdit: { code: number };
   NotFound: undefined;
 };
 

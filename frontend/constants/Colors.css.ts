@@ -29,6 +29,19 @@ export default {
     accent1: "#82B1FF",
     accent2: "#448AFF",
   },
+  blueGrey: {
+    c: "#607D8B",
+    lighten1:"#78909C",
+    lighten2:"#90A4AE",
+    lighten3:"#B0BEC5",
+    lighten4:"#CFD8DC",
+    lighten5:"#ECEFF1",
+    darken1: "#546E7A",
+    darken2: "#455A64",
+    darken3: "#37474F",
+    darken4: "#263238",
+
+  },
   green : {
     c: "#4CAF50",
     lighten: "#81C784",
@@ -38,6 +51,7 @@ export default {
     c: "#9E9E9E",
     darken: "#757575",
     darken3: "#424242",
+    darken4: "#212121",
     lighten: "#BDBDBD",
     lighten2: "#E0E0E0",
     lighten3: "#EEEEEE",

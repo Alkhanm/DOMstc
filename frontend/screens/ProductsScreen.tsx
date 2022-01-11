@@ -4,7 +4,6 @@ import Product from "./components/Product";
 import { Text, View } from './widgets/Themed';
 
 export const ProductsScreen: React.FC = () => {
-
   const { products } = useProductContext()
 
   return (
