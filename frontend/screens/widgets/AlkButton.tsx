@@ -11,7 +11,7 @@ interface MvButtonProps extends TouchableOpacityProps {
 export const AlkButton = ({ children, isTouchable = true, propStyle, ...rest }: MvButtonProps) => {
   return (
     <TouchableOpacity
-      style={[isTouchable ? styles.mvButton : styles.mvButtonDisabled, propStyle]}
+      style={[isTouchable ? styles.button : styles.buttonDisabled, propStyle]}
       {...rest}
     >
       {children}
@@ -20,16 +20,16 @@ export const AlkButton = ({ children, isTouchable = true, propStyle, ...rest }: 
 };
 
 const styles = StyleSheet.create({
-  mvButton: {
+  button: {
     minWidth: 100,
-    backgroundColor: Appearance.getColorScheme() === "dark" ? "rgba(255,255,255,0.1)" : Colors.grey.lighten3,
+    backgroundColor: Appearance.getColorScheme() === "dark" ? Colors.grey.darken4 : Colors.grey.c,
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
     padding: 5,
     borderRadius: 10
   },
-  mvButtonDisabled: {
+  buttonDisabled: {
     backgroundColor: Colors.grey.lighten3,
     justifyContent: "center",
     alignItems: "center",

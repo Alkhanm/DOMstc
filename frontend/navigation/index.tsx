@@ -12,7 +12,6 @@ import { ColorSchemeName, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../constants/Colors.css';
 import { useLoadingContext } from "../context/LoadingContext";
 import useColorScheme from '../hooks/useColorScheme';
-import NotFoundScreen from '../screens/components/NotFound';
 import { ProductDetail } from "../screens/components/ProductDetail";
 import { ProductEdit } from "../screens/components/ProductEdit";
 import ProductNew from '../screens/components/ProductNew';
@@ -42,7 +41,6 @@ function RootNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="ProductNew" component={ProductNew} />
         <Stack.Screen name="ProductDetail" component={ProductDetail} />

@@ -1,24 +1,33 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import React from 'react';
-import { StyleSheet, TouchableOpacity, TouchableOpacityProps } from "react-native";
-import ColorsCss from "../../constants/Colors.css";
+import React, { useEffect } from 'react';
+import { StyleSheet, TouchableOpacity } from "react-native";
 import LayoutCss from "../../constants/Layout.css";
 import { Text } from "./Themed";
 
-interface AlkRadioButtonProps extends TouchableOpacityProps {
+
+type fn = (value: boolean) => void;
+
+interface AlkRadioButtonProps {
     label: string;
     value: boolean;
-    onAction: (value: boolean) => void;
+    callback: fn[];
+    onAction: fn;
 }
 
-export const AlkRadioButton: React.FC<AlkRadioButtonProps> = ({ label, value, onAction }) => {
+export const AlkRadioButton: React.FC<AlkRadioButtonProps> = ({ label, value, callback, onAction }) => {
+
+    useEffect(() => {
+        if (value) callback.filter(f => f !== onAction).forEach(f => f(false))
+    }, [value])
+
     return (
         <TouchableOpacity onPress={() => onAction(!value)} style={styles.container}>
-            <Text style={styles.label}>{label}</Text>
             {value ?
-                <MaterialCommunityIcons name="radiobox-blank" style={styles.icon} />
-                :
-                <MaterialCommunityIcons name="radiobox-marked" style={styles.icon} />}
+                    <MaterialCommunityIcons name="radiobox-marked" style={styles.icon} />
+                    :
+                    <MaterialCommunityIcons name="radiobox-blank" style={styles.icon} />
+            }
+            <Text style={styles.label}>{label}</Text>
         </TouchableOpacity>
     );
 }
@@ -26,16 +35,19 @@ export const AlkRadioButton: React.FC<AlkRadioButtonProps> = ({ label, value, on
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        marginVertical: 5,
+        marginHorizontal: 15,
         flexDirection: "row",
-        justifyContent: "center",
         alignItems: "center",
-        backgroundColor: ColorsCss.grey.darken3,
-        margin: 1,
-        padding: 2
+        borderBottomWidth: 2,
+        borderColor: "#ffffff50"
     },
     label: {
-        fontSize: 12,
-        margin: 2
+        fontSize: 14,
+        margin: 2,
+        textTransform: "uppercase",
+        fontWeight: "bold",
+        opacity: 0.8
     },
     icon: {
         fontSize: 14,
