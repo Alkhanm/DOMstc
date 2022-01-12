@@ -5,7 +5,7 @@ import { useProductContext } from "../../context/ProductContext";
 import { IProduct } from "../../domain/interfaces/IProduct";
 import { AlkButton } from "../widgets/AlkButton";
 import { AlkInput } from "../widgets/AlkInput";
-import { Text, View } from './Themed';
+import { Text, View } from '../widgets/Themed';
 
 
 export const ProductEdit = () => {

@@ -1,8 +1,9 @@
 import React from "react";
-import { StyleSheet, Text, TextStyle, TouchableHighlight, View, ViewStyle } from "react-native";
+import { StyleSheet, TextStyle, TouchableHighlight, ViewStyle } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { appCss } from '../../constants/App.css';
 import Colors from "../../constants/Colors.css";
+import { Text, View } from "./Themed";
 
 export const AlkTextAction = ({
   text,

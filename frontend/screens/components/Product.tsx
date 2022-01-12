@@ -48,10 +48,9 @@ export default function Product({ product }: { product: IProduct }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        minHeight: 240,
-        marginHorizontal: 5,
-        marginVertical: 10,
-        padding: 10,
+        minHeight: 200,
+        margin: 5,
+        paddingHorizontal: 10,
         justifyContent: 'center',
         borderWidth: 0.6,
         borderColor: Appearance.getColorScheme() === "dark" ? "#eee" : "rgba(255,255,255,0.1)"
@@ -69,7 +68,7 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     descriptionText: {
-        fontSize: 14,
+        fontSize: 13,
         textTransform: "uppercase",
         fontWeight: 'bold',
     },
@@ -82,8 +81,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
     },
     action: {
-        width: "40%",
-        height: "70%",
+        width: "45%",
+        height: 30,
     },
     actions: {
         flex: 1,

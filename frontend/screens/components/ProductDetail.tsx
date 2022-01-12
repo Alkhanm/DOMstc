@@ -1,7 +1,7 @@
 
 
 import { StyleSheet } from 'react-native';
-import { Text, View } from './Themed';
+import { Text, View } from '../widgets/Themed';
 
 
 export const ProductDetail: React.FC = ({ children }) => {

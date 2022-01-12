@@ -1,20 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Modal,
-  ModalProps, StyleSheet,
-  Text, View
+  Modal, StyleSheet, ViewStyle
 } from "react-native";
-import Colors from "../../constants/Colors.css";
+import { default as Colors, default as ColorsCss } from "../../constants/Colors.css";
 import LayoutCss from "../../constants/Layout.css";
 import { AlkButton } from "../widgets/AlkButton";
+import { ViewProps } from "../widgets/Themed";
+import { Text, View } from "./Themed";
 
-interface AlkModalProps extends ModalProps {
-  VisibleElement?: React.FC;
-  visible: boolean;
-  children: React.ReactNode;
+interface styleProps extends ViewStyle {
+  childrenStyle?: ViewStyle;
 }
 
-export const AlkModal: React.FC<AlkModalProps> = ({ VisibleElement, visible, children }) => {
+interface AlkModalProps {
+  buttonCloseText?: string;
+  children: React.ReactNode;
+  visibleProp?: boolean;
+  VisibleElement?: React.FC<ViewProps>;
+  viewStyle?: styleProps;
+}
+
+export const AlkModal: React.FC<AlkModalProps> = ({ children, VisibleElement, buttonCloseText, viewStyle, visibleProp = null }) => {
+  const [visible, setVisible] = useState(false);
+
+  const handleClickToOPen = () => {
+    setVisible(true);
+  }
+
+  useEffect(() => {
+    if (visibleProp != null) setVisible(visibleProp)
+  }, [visibleProp])
+
 
   return (
     <>
@@ -24,14 +40,16 @@ export const AlkModal: React.FC<AlkModalProps> = ({ VisibleElement, visible, chi
         visible={visible}
         collapsable={true}
       >
-        <View style={[styles.view, styles.viewBottom]}>
-          <View style={styles.children}>{children}</View>
-          <AlkButton propStyle={styles.buttonClose} onPress={() => {}}>
-            <Text style={styles.buttonCloseText}>PRONTO</Text>
+        <View style={styles.view} {...viewStyle}>
+          <View style={styles.children} {...viewStyle?.childrenStyle}>
+            {children}
+          </View>
+          <AlkButton propStyle={styles.buttonClose} onPress={() => setVisible(!visible)}>
+            <Text style={styles.buttonCloseText}>{buttonCloseText || "pronto"}</Text>
           </AlkButton>
         </View>
       </Modal>
-      <View style={styles.buttonOpen} onTouchStart={() => {}}>
+      <View style={styles.buttonOpen} onTouchStart={handleClickToOPen}>
         {VisibleElement && <VisibleElement />}
       </View>
     </>
@@ -43,21 +61,23 @@ const styles = StyleSheet.create({
   view: {
     flex: 1,
     width: "100%",
-  },
-  viewBottom: {
     alignSelf: "flex-end",
-    backgroundColor: isDarkTheme ? "black" : Colors.grey.lighten4,
+    backgroundColor: isDarkTheme ? "#000000" : Colors.grey.lighten4,
     borderRadius: 10,
     padding: 5,
   },
   children: {
     flexGrow: 1,
   },
-
   buttonOpen: {
     alignItems: "center",
     flexDirection: "row",
     width: "100%",
+  },
+  modalLoading: {
+    color: ColorsCss.blue.c,
+    backgroundColor: ColorsCss.blue.c,
+    borderBottomWidth: 5,
   },
   buttonClose: {
     width: "80%",
@@ -68,6 +88,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   buttonCloseText: {
+    textTransform: "uppercase",
     fontWeight: "bold",
     color: Colors.grey.lighten,
     fontSize: 16,

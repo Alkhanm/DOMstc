@@ -1,5 +1,5 @@
-type tCategory = "SABONETE EM BARRA" | "SABONETE LIQUIDO" | "PERFUME" | "COLÔNIA" | "SAMPHOO" | "CONDICIONADOR" | "OUTRO";
-type tCompany = "NATURA" | "AVON" | "HINODE" | "BOTICARIO";
+export type tCategory = "SABONETE EM BARRA" | "SABONETE LIQUIDO" | "PERFUME" | "COLÔNIA" | "SAMPHOO" | "CONDICIONADOR" | "OUTRO";
+export type tCompany = "NATURA" | "AVON" | "HINODE" | "BOTICARIO";
 
 export interface IProduct {
     id: number;

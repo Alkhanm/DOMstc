@@ -1,5 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaView } from "react-native-safe-area-context";
+import { LoadingContextProvider } from "./context/LoadingContext";
 import { ProductContextProvider } from "./context/ProductContext";
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
@@ -7,18 +7,19 @@ import Navigation from './navigation';
 
 
 export default function App() {
-  const isLoadingComplete = useCachedResources();
+  const isLoadingCacheComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
-  if (!isLoadingComplete) {
+  if (!isLoadingCacheComplete) {
     return null;
   } else {
     return (
       <ProductContextProvider>
-        <SafeAreaProvider>
-          <Navigation colorScheme={colorScheme} />
-          <StatusBar />
-        </SafeAreaProvider>
+        <SafeAreaView style={{flex: 1}}>
+          <LoadingContextProvider>
+            <Navigation colorScheme={colorScheme} />
+          </LoadingContextProvider>
+        </SafeAreaView>
       </ProductContextProvider>
     );
   }

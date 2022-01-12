@@ -1,13 +1,15 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React, { useState } from "react";
-import { StyleSheet, Text, TextInput, TextInputProps, View, ViewStyle } from "react-native";
+import { StyleSheet, TextInput, TextInputProps, ViewStyle } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Colors from "../../constants/Colors.css";
 import Layout from "../../constants/Layout.css";
+import { Text, View } from "./Themed";
 
 interface AlkInputProps extends TextInputProps {
   value: string;
   placeholder: string;
-  icon: string;
+  icon:  React.ComponentProps<typeof MaterialCommunityIcons>["name"];
   iconSize?: number;
   style?: ViewStyle | ViewStyle[];
 }
@@ -38,7 +40,7 @@ export const AlkInput: React.FC<AlkInputProps> = ({
       </View>
       <View style={styles.cardInput}>
         <View>
-          {(isTyping || Boolean(value.length)) && (
+          {(isTyping || Boolean(value)) && (
             <Text style={[styles.placeholder, isTyping && styles.placeholderSelected]}>{placeholder.toUpperCase()}</Text>
           )}
         </View>
@@ -47,6 +49,7 @@ export const AlkInput: React.FC<AlkInputProps> = ({
           onFocus={() => setIsTyping(true)}
           onBlur={() => setIsTyping(false)}
           style={styles.input}
+          placeholderTextColor={"#E0E0E060"}
           placeholder={isTyping ? "" : placeholder}
           {...rest}
         />
@@ -59,9 +62,9 @@ export const AlkInput: React.FC<AlkInputProps> = ({
 const styles = StyleSheet.create({
   container: {
     alignSelf: "center",
-    marginBottom: 15,
+    marginBottom: 10,
     flexDirection: "row",
-    height: 60,
+    height: 70,
     padding: 5,
     width: "95%",
     borderRadius: 10,
@@ -73,7 +76,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   placeholder: {
-    opacity: 0.5,
+    opacity: 0.6,
     fontSize: 12,
     fontWeight: "bold",
     color: isDarkTheme ? Colors.grey.lighten5 : Colors.blue.darken2,
@@ -82,14 +85,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   input: {
-    fontSize: 16,
+    fontSize: 15,
     color: isDarkTheme ? "white" : "black",
     width: "80%",
   },
   cardInput: {
     flex: 1,
     justifyContent: "space-between",
-    marginTop: 5,
   },
   cardIcon: {
     justifyContent: "flex-end",
