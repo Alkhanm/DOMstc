@@ -15,6 +15,7 @@ import useColorScheme from '../hooks/useColorScheme';
 import { ProductDetail } from "../screens/components/ProductDetail";
 import { ProductEdit } from "../screens/components/ProductEdit";
 import ProductNew from '../screens/components/ProductNew';
+import { Sale } from "../screens/components/Sale";
 import Home from '../screens/HomeScreen';
 import { ProductsScreen } from '../screens/ProductsScreen';
 import { AlkLoadingBar } from "../screens/widgets/AlkLoadingBar";
@@ -42,18 +43,15 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="ProductNew" component={ProductNew} />
-        <Stack.Screen name="ProductDetail" component={ProductDetail} />
-        <Stack.Screen name="ProductEdit" component={ProductEdit} />
+        <Stack.Screen name="ProductNew" options={{ title: "Novo Produto" }} component={ProductNew} />
+        <Stack.Screen name="ProductDetail" options={{ title: "Detalhes" }} component={ProductDetail} />
+        <Stack.Screen name="ProductEdit" options={{ title: "Editar Produto" }} component={ProductEdit} />
+        <Stack.Screen name="Sale" options={{ title: "Registrar Vendas" }} component={Sale} />
       </Stack.Group>
     </Stack.Navigator>
   );
 }
 
-/**
- * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
- * https://reactnavigation.org/docs/bottom-tab-navigator
- */
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {

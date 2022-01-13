@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import ColorsCss from "./Colors.css";
+import LayoutCss from "./Layout.css";
 
 export const appCss = StyleSheet.create({
     container: {
@@ -17,7 +18,18 @@ export const appCss = StyleSheet.create({
     },
     title: {
         fontSize: 20,
+        fontWeight: "bold",
         alignSelf: "center",
+        textTransform: "uppercase"
+    },
+    actionText: {
+        margin: 5,
+        flexDirection: "row",
+        fontSize: 12,
+        textTransform: "uppercase",
+        color: LayoutCss.isDarkTheme ? "white" : "black",
+        fontWeight: "bold",
+        opacity: 0.9,
     },
     subtitle: {
         paddingLeft: 5,

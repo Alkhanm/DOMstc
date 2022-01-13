@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
-    padding: 5,
     borderRadius: 10
   },
   buttonDisabled: {

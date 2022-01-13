@@ -25,6 +25,7 @@ export type RootStackParamList = {
   ProductNew: undefined;
   ProductDetail: { code: number };
   ProductEdit: { code: number };
+  Sale: undefined;
   NotFound: undefined;
 };
 

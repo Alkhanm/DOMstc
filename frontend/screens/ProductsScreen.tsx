@@ -45,8 +45,8 @@ export const ProductsScreen: React.FC = () => {
       <AlkModalShort visibleProp={orderModalVisible} children={
         <View style={styles.modalViewOrder}>
           <View style={appCss.textIcon}>
-            <MaterialCommunityIcons name="text-short" size={25} color={"white"}/>
-            <Text style={appCss.infoText3}>Ordenar</Text>
+            <MaterialCommunityIcons name="text-short" size={40} color={LayoutCss.isDarkTheme ? "white" : "blacks"} />
+            <Text style={appCss.title}>Ordenar</Text>
           </View>
           <AlkRadioButtonGroup items={[
             { label: "Data de compra", setValue: setFilterPurchaseDate, value: filterPurchaseDate },

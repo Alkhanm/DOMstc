@@ -80,6 +80,7 @@ export default function ProductNew() {
     </TouchableOpacity>
   )
 
+
   return (
     <View style={styles.container}>
       <AlkModal
