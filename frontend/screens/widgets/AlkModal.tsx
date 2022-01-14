@@ -12,7 +12,7 @@ interface styleProps extends ViewStyle {
   childrenStyle?: ViewStyle;
 }
 
-interface AlkModalProps {
+interface AlkModalProps extends ViewProps {
   buttonCloseText?: string;
   children: React.ReactNode;
   visibleProp?: boolean;
@@ -20,7 +20,7 @@ interface AlkModalProps {
   viewStyle?: styleProps;
 }
 
-export const AlkModal: React.FC<AlkModalProps> = ({ children, VisibleElement, buttonCloseText, viewStyle, visibleProp = null }) => {
+export const AlkModal: React.FC<AlkModalProps> = ({ children, VisibleElement, buttonCloseText, viewStyle, visibleProp = null, ...rest }) => {
   const [visible, setVisible] = useState(false);
 
   const handleClickToOPen = () => {
@@ -39,6 +39,7 @@ export const AlkModal: React.FC<AlkModalProps> = ({ children, VisibleElement, bu
         transparent={true}
         visible={visible}
         collapsable={true}
+        onTouchStart={handleClickToOPen}
       >
         <View style={styles.view} {...viewStyle}>
           <View style={styles.children} {...viewStyle?.childrenStyle}>
@@ -49,9 +50,11 @@ export const AlkModal: React.FC<AlkModalProps> = ({ children, VisibleElement, bu
           </AlkButton>
         </View>
       </Modal>
-      <View style={styles.buttonOpen} onTouchStart={handleClickToOPen}>
-        {VisibleElement && <VisibleElement />}
-      </View>
+      {VisibleElement &&
+        <View onTouchStart={handleClickToOPen} style={rest.style}>
+          <VisibleElement />
+        </View>
+      }
     </>
   );
 };
@@ -68,11 +71,6 @@ const styles = StyleSheet.create({
   },
   children: {
     flexGrow: 1,
-  },
-  buttonOpen: {
-    alignItems: "center",
-    flexDirection: "row",
-    width: "100%",
   },
   modalLoading: {
     color: ColorsCss.blue.c,

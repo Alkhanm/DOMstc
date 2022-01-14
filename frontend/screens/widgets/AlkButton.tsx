@@ -3,17 +3,13 @@ import { Appearance, StyleSheet, TouchableOpacity, TouchableOpacityProps, ViewSt
 import Colors from "../../constants/Colors.css";
 
 interface MvButtonProps extends TouchableOpacityProps {
-  isTouchable?: boolean;
   children: React.ReactNode;
   propStyle?: ViewStyle | ViewStyle[];
 }
 
-export const AlkButton = ({ children, isTouchable = true, propStyle, ...rest }: MvButtonProps) => {
+export const AlkButton = ({ children, propStyle, ...rest }: MvButtonProps) => {
   return (
-    <TouchableOpacity
-      style={[isTouchable ? styles.button : styles.buttonDisabled, propStyle]}
-      {...rest}
-    >
+    <TouchableOpacity style={[styles.button, propStyle]} {...rest}>
       {children}
     </TouchableOpacity>
   );
@@ -22,6 +18,7 @@ export const AlkButton = ({ children, isTouchable = true, propStyle, ...rest }: 
 const styles = StyleSheet.create({
   button: {
     minWidth: 100,
+    minHeight: 50,
     backgroundColor: Appearance.getColorScheme() === "dark" ? Colors.grey.darken4 : Colors.grey.c,
     justifyContent: "center",
     alignItems: "center",

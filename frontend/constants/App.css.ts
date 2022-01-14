@@ -8,10 +8,13 @@ export const appCss = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center'
     },
+    verticalSeparator: {
+        borderWidth: 1,
+        borderLeftColor: ColorsCss.grey.darken,
+    },
     card: {
         flex: 1,
-        width: "95%",
-        padding: 10,
+        width: "100%",
         margin: 5,
         borderWidth: 1,
         borderColor: "#ffffff50",
@@ -32,9 +35,11 @@ export const appCss = StyleSheet.create({
         opacity: 0.9,
     },
     subtitle: {
-        paddingLeft: 5,
-        fontSize: 18,
-        opacity: 0.7
+        padding: 1,
+        fontSize: 14,
+        alignSelf: "center",
+        fontWeight: "bold",
+        textTransform: "uppercase",
     },
     infoText: {
         fontSize: 17,

@@ -1,104 +1,126 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { BarCodeEvent, BarCodeScanner } from "expo-barcode-scanner";
 import React, { useState } from 'react';
-import { Dimensions, StyleSheet, TouchableOpacity } from "react-native";
+import { FlatList, KeyboardAvoidingView, Platform, StyleSheet } from "react-native";
+import { appCss } from "../../constants/App.css";
 import ColorsCss from "../../constants/Colors.css";
-import { AlkInput } from "../widgets/AlkInput";
-import { AlkModal } from "../widgets/AlkModal";
+import LayoutCss from "../../constants/Layout.css";
+import { ProductsDumb } from "../../domain/dumb";
+import { IProduct } from "../../domain/interfaces/IProduct";
+import { AlkBarcodeReader } from "../widgets/AlkBarcodeReader";
+import { AlkButton } from "../widgets/AlkButton";
 import { Text, View } from "../widgets/Themed";
+import { ProductCard } from "./ProductCard";
 
 
 export const Sale: React.FC = () => {
     const [search, setSearch] = useState<string>("");
 
-    const [barcodeScanVisibility, setBarcodeScanVisibility] = useState(false)
+    const [productsAvailable, setProductAvailable] = useState<IProduct[]>(ProductsDumb);
+    const [productToBeSold, setProductToBeSold] = useState<IProduct[]>([]);
+    const [totalPrice, setTotalPrice] = useState(0)
 
-    function handleBarCodeScanned({ data }: BarCodeEvent) {
-        setSearch(data);
-        setBarcodeScanVisibility(!barcodeScanVisibility)
-      };
+    function getTotalPrice() {
+        return productToBeSold
+            .map(p => p.salePrice)
+            .reduce((p1, p2) => p1 + p2, 0)
+    }
 
-    const barcodeScan = (
-        <TouchableOpacity>
-            <MaterialCommunityIcons name="barcode-scan" size={35} color={ColorsCss.grey.lighten} />
-        </TouchableOpacity>
-    )
+    function addProductToSold(product: IProduct) {
+        const alreadySelected = productToBeSold.some(p => p.code === product.code);
+        if (!alreadySelected) productToBeSold.push(product);
+        else {
+            const selectedRemoved = productToBeSold.filter(p => p.code !== product.code);
+            setProductToBeSold(selectedRemoved);
+        }
+        setTotalPrice(getTotalPrice())
+    }
 
-
-    const BarcodeScannerComp = (
-        <>
-            <BarCodeScanner onBarCodeScanned={handleBarCodeScanned} style={StyleSheet.absoluteFillObject} />
-            <MaterialCommunityIcons name="scan-helper" style={styles.qrcodeCamIcon} />
-        </>
-    )
-    const BarcodeCardComp = () => (
-        <TouchableOpacity style={[styles.card, styles.cardScan]}>
-            <MaterialCommunityIcons name="barcode-scan" size={60} color={"white"} />
-            <View>
-                <Text style={styles.qrcodeTitle}>Ler código</Text>
-                <Text style={styles.qrcodeText}>Clique aqui para preencher os campos automanticamente</Text>
-            </View>
-        </TouchableOpacity>
-    )
-
+    function handlerSale() {
+        console.log(productToBeSold)
+    }
 
     return (
-        <View style={styles.container}>
-            <AlkInput
-                icon="database-search"
-                iconSize={35}
-                value={search}
-                onChangeText={setSearch}
-                style={styles.search}
-                placeholder="Buscar produto"
-                children={barcodeScan}
-            />
-
-            < AlkModal
-                visibleProp={barcodeScanVisibility}
-                buttonCloseText="Fechar"
-                VisibleElement={BarcodeCardComp}
-                children={BarcodeScannerComp}
-            />
-        </View>
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
+            <View style={styles.searchSeaction}>
+                <AlkBarcodeReader setValue={setSearch} />
+                <View style={appCss.verticalSeparator} />
+                <AlkButton
+                    style={styles.searchBtn}
+                    children={<MaterialCommunityIcons name="database-search" style={styles.searchIcon} />}
+                />
+            </View>
+            <View style={[appCss.card, styles.recentSection]}>
+                <Text> Items a serem vendidos </Text>
+                <Text>{search}</Text>
+            </View>
+            <View style={[appCss.card, styles.saleSection]}>
+                <FlatList
+                    columnWrapperStyle={{ justifyContent: 'space-between' }}
+                    numColumns={2}
+                    data={productsAvailable}
+                    renderItem={({ item }) => <ProductCard product={item} action={addProductToSold} />}
+                />
+                <Text style={[appCss.infoText4, { alignSelf: "center" }]}>
+                    {`Mostrando ${ProductsDumb.length} de ${ProductsDumb.length}`}
+                </Text>
+            </View>
+            <View style={styles.salesBoxCard}>
+                <View style={styles.salesBoxCardInfos}>
+                    <Text>R$ {totalPrice}</Text>
+                </View>
+                <AlkButton
+                    onPress={handlerSale}
+                    children={<Text>Confirmar</Text>}
+                />
+            </View>
+        </KeyboardAvoidingView>
     );
 }
 
-const { height } = Dimensions.get("screen");
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 5
+    },
+    searchSeaction: {
+        flex: 1,
+        width: "100%",
+        padding: 5,
+        borderWidth: 1,
+        borderColor: "#ffffff50",
+        flexDirection: "row",
+    },
+    searchBtn: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    recentSection: {
+        flex: 2,
+    },
+    saleSection: {
+        flex: 7,
+    },
+    searchIcon: {
+        fontSize: 40,
+        color: LayoutCss.isDarkTheme ? "white" : "black",
+    },
+    salesBoxCard: {
+        bottom: 20,
+        position: "absolute",
+        width: "90%",
+        height: "10%",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        backgroundColor: ColorsCss.grey.darken3,
+        borderRadius: 20,
         margin: 10,
         padding: 10
     },
-    search: {
-    },
-
-    qrcodeTitle: {
-        marginHorizontal: 10,
-        fontSize: 18,
-    },
-    qrcodeText: {
-        color: ColorsCss.grey.lighten2,
-        marginHorizontal: 8,
-        fontSize: 12,
-    },
-    qrcodeCamIcon: {
-        top: height / 3,
-        fontSize: 255,
-        color: ColorsCss.grey.darken4,
-        alignSelf: "center"
-    },
-    card: {
-        flex: 1,
-        margin: 5,
-        padding: 10,
-        borderWidth: 1,
-        borderColor: ColorsCss.grey.darken
-    },
-    cardScan: {
-        flex: 1,
-        flexDirection: "row"
-    },
+    salesBoxCardInfos: {
+        backgroundColor: ColorsCss.grey.darken3,
+    }
 })

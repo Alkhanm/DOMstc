@@ -47,7 +47,17 @@ export default function TabHome({ navigation }: RootTabScreenProps<'TabHome'>) {
           children={
             <>
               <MaterialCommunityIcons name="sale" size={25} color={"white"} />
-              <Text style={appCss.actionText}>Registrar Venda</Text>
+              <Text style={appCss.actionText}>Vendas</Text>
+            </>
+          }
+        />
+         <AlkButton
+          onPress={() => {}}
+          propStyle={styles.saleButton}
+          children={
+            <>
+              <MaterialCommunityIcons name="alert-circle-check-outline" size={25} color={"white"} />
+              <Text style={appCss.actionText}>Anuncios</Text>
             </>
           }
         />
@@ -59,8 +69,9 @@ export default function TabHome({ navigation }: RootTabScreenProps<'TabHome'>) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10
   },
   topSection: {
     flex: 1.5,
@@ -112,14 +123,15 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   bottomSection: {
-    flex: 1
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-around"
   },
   saleButton: {
     flexDirection: "row",
-    justifyContent: "space-around",
     alignItems: "center",
     padding: 5,
-    width: "35%",
+    width: "40%",
     height: "90%"
   },
 });

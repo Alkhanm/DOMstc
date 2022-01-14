@@ -6,9 +6,9 @@ import ColorsCss from "../../constants/Colors.css";
 import LayoutCss from "../../constants/Layout.css";
 import { ProductCreator } from "../../domain/functions/ProductFunctions";
 import { IProduct, tCompany } from "../../domain/interfaces/IProduct";
+import { AlkBarcodeReader } from "../widgets/AlkBarcodeReader";
 import { AlkButton } from "../widgets/AlkButton";
 import { AlkInput } from "../widgets/AlkInput";
-import { AlkModal } from "../widgets/AlkModal";
 import { Text, View } from "../widgets/Themed";
 export default function ProductNew() {
   //TODO: regex para formatar os campos númericos (retirar virgulas, espaços em brancos, etc)
@@ -61,37 +61,11 @@ export default function ProductNew() {
     setBarcodeScanVisibility(!barcodeScanVisibility)
   };
 
-
-
-
-  const BarcodeScannerComp = (
-    <>
-      <BarCodeScanner onBarCodeScanned={handleBarCodeScanned} style={StyleSheet.absoluteFillObject} />
-      <MaterialCommunityIcons name="scan-helper" style={styles.qrcodeCamIcon} />
-    </>
-  )
-  const BarcodeCardComp = () => (
-    <TouchableOpacity style={[styles.card, styles.cardScan]}>
-      <MaterialCommunityIcons name="barcode-scan" style={styles.icon} />
-      <View>
-        <Text style={styles.qrcodeTitle}>Ler código</Text>
-        <Text style={styles.qrcodeText}>Clique aqui para preencher os campos automanticamente</Text>
-      </View>
-    </TouchableOpacity>
-  )
-
-
   return (
     <View style={styles.container}>
-      <AlkModal
-        visibleProp={barcodeScanVisibility}
-        buttonCloseText="Fechar"
-        VisibleElement={BarcodeCardComp}
-        children={BarcodeScannerComp}
-      />
-
+      <AlkBarcodeReader setValue={setBarcode} style={styles.barcode}/>
       <View style={[styles.card, styles.cardFields]}>
-        <ScrollView style={styles.scrollInfos} contentContainerStyle={styles.scrollContentInfos}>
+        <ScrollView contentContainerStyle={styles.scrollContentInfos}>
           {product.imageURL && <Image source={{ uri: product.imageURL }} style={styles.img} />}
           <TouchableOpacity style={styles.imgAdd}>
             <Text style={styles.imgAddText}>Adicionar imagem</Text>
@@ -136,10 +110,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: ColorsCss.grey.darken
   },
-  cardScan: {
-    flex: 1,
-    flexDirection: "row"
-  },
   cardFields: {
     flex: 8,
   },
@@ -147,6 +117,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-around"
+  },
+  barcode: {
+    borderWidth: 1,
+    borderColor: ColorsCss.grey.darken,
+    margin: 5,
+    padding: 5
   },
   icon: {
     color: isDarkTheme ? "white" : "black",
@@ -165,22 +141,6 @@ const styles = StyleSheet.create({
     margin: 5,
     fontWeight: "bold"
   },
-  qrcodeTitle: {
-    marginHorizontal: 10,
-    fontSize: 18,
-  },
-  qrcodeText: {
-    color: ColorsCss.grey.lighten2,
-    marginHorizontal: 8,
-    fontSize: 12,
-  },
-  qrcodeCamIcon: {
-    top: height / 3,
-    fontSize: 255,
-    color: ColorsCss.grey.darken4,
-    alignSelf: "center"
-  },
-  scrollInfos: {},
   scrollContentInfos: {
     alignItems: "center"
   },

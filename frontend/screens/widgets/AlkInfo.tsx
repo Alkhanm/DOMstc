@@ -1,20 +1,21 @@
 import Icons from "@expo/vector-icons/MaterialCommunityIcons";
 import React from 'react';
 import { StyleSheet } from "react-native";
-import { Text, View } from "../widgets/Themed";
+import { Text, View, ViewProps } from "../widgets/Themed";
 
-type AlkInfoProps = {
-    label?: string;
+interface AlkInfoProps extends ViewProps {
     value: string | number;
-    icon: React.ComponentProps<typeof Icons>['name'];
+    label?: string;
+    icon?: React.ComponentProps<typeof Icons>['name'];
 }
 
-export const AlkInfo: React.FC<AlkInfoProps> = ({ label, value, icon }) => {
+export const AlkInfo: React.FC<AlkInfoProps> = ({ label, value, icon, ...rest }) => {
+
     return (
-        <View style={styles.container}>
-            <Icons name={icon} size={25} color={"white"} />
-            {label && <Text style={styles.label}>{label}</Text>}
-            <Text style={styles.value}>{value}</Text>
+        <View style={[styles.container]}>
+            {icon && <Icons name={icon} size={25} color={"white"} />}
+            {label && <Text style={[styles.label]} >{label}</Text>}
+            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.value}>{value}</Text>
         </View>
     );
 }
@@ -22,15 +23,17 @@ export const AlkInfo: React.FC<AlkInfoProps> = ({ label, value, icon }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        width: "100%",
         flexDirection: "row",
-        alignItems: "center",
     },
     label: {
         fontSize: 12,
-        padding: 5,
+        paddingHorizontal: 5,
         opacity: 0.7
     },
     value: {
-
+        flex: 1,
+        flexDirection: "row",
+        fontSize: 12,
     }
 })
