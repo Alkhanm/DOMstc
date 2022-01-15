@@ -1,30 +1,33 @@
 import Icons from "@expo/vector-icons/MaterialCommunityIcons";
 import React from 'react';
-import { StyleSheet } from "react-native";
+import { StyleSheet, TextStyle } from "react-native";
 import { Text, View, ViewProps } from "../widgets/Themed";
 
 interface AlkInfoProps extends ViewProps {
     value: string | number;
     label?: string;
     icon?: React.ComponentProps<typeof Icons>['name'];
+    labelStyle?: TextStyle;
+    textStyle?: TextStyle;
 }
 
-export const AlkInfo: React.FC<AlkInfoProps> = ({ label, value, icon, ...rest }) => {
+export const AlkInfo: React.FC<AlkInfoProps> = ({ label, value, icon, labelStyle, textStyle, ...rest }) => {
 
     return (
-        <View style={[styles.container]}>
+        <View style={[styles.container, rest.style]}>
             {icon && <Icons name={icon} size={25} color={"white"} />}
-            {label && <Text style={[styles.label]} >{label}</Text>}
-            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.value}>{value}</Text>
+            {label && <Text style={[styles.label, labelStyle]} >{label}</Text>}
+            <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.value, textStyle]}>{value}</Text>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         width: "100%",
         flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
     },
     label: {
         fontSize: 12,

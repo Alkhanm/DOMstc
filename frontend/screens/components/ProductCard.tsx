@@ -57,8 +57,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, action, ...re
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        margin: 5,
-        paddingHorizontal: 1,
+        margin: 2,
+        padding: 2,
         borderWidth: 1,
         alignItems: "flex-start",
         borderColor: Appearance.getColorScheme() === "dark" ? "#eee" : "rgba(255,255,255,0.1)",

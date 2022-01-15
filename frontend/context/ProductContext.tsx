@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { ProductsDumb } from "../domain/dumb";
 import { IProduct } from "../domain/interfaces/IProduct";
 
-type contextType = {
-  products: IProduct[],
+interface contextType {
+  products: IProduct[];
   addProducts: (products: IProduct[]) => void;
 }
 

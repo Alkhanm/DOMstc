@@ -10,7 +10,11 @@ export const appCss = StyleSheet.create({
     },
     verticalSeparator: {
         borderWidth: 1,
-        borderLeftColor: ColorsCss.grey.darken,
+        borderLeftColor: "white",
+    },
+    icon: {
+        fontSize: 25,
+        color: LayoutCss.isDarkTheme ? "white" : ColorsCss.grey.c,
     },
     card: {
         flex: 1,
@@ -42,9 +46,11 @@ export const appCss = StyleSheet.create({
         textTransform: "uppercase",
     },
     infoText: {
-        fontSize: 17,
+        flex: 1,
+        fontSize: 14,
         elevation: 6,
         opacity: 0.7,
+        textAlign: "right",
     },
     infoText2: {
         fontSize: 14,
