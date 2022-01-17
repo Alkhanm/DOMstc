@@ -3,32 +3,35 @@ import React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { FlatList } from "react-native-gesture-handler";
 import ColorsCss from "../../constants/Colors.css";
-import { useProductCartContext } from "../../context/ProductCartContext copy";
+import { useCartContext } from "../../context/CartContext";
 import { AlkInfo } from "../widgets/AlkInfo";
 import { Text } from "../widgets/Themed";
 
-
 export const ShoppingCart: React.FC = () => {
-    const ProductCartContext = useProductCartContext();
+    const CartContext = useCartContext();
 
     return (
         <FlatList
-            data={ProductCartContext.items}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item: { product, quantity }, index }) => (
-                <View style={styles.container} key={index}>
-                    <Image style={{ width: "10%" }} source={{ uri: product.imageURL, width: 40, height: 40 }} />
+            data={CartContext.items}
+            keyExtractor={({ product }) => product.code.toString()}
+            renderItem={({ item: { product, quantity } }) => (
+                <View style={styles.container}>
+                    <Image style={{ width: "10%" }} source={{ uri: product.imageURL, width: 50, height: 50 }} />
                     <View key={product.id} style={styles.infos}>
-                        <AlkInfo value={product.description} style={styles.info} textStyle={{ fontSize: 14 }} />
+                        <AlkInfo value={product.description} style={styles.info} textStyle={{ fontSize: 16 }} />
                         <AlkInfo value={`R$ ${product.salePrice}`} style={styles.info} textStyle={{ fontSize: 14 }} />
                     </View>
                     <View style={styles.qntActions}>
-                        <TouchableOpacity onPress={() => ProductCartContext.add(product)} style={styles.qntAction}>
-                            <MaterialCommunityIcons name="plus" size={25} color={ColorsCss.grey.darken4} />
+                        <TouchableOpacity
+                            onPress={_ => CartContext.add(product)}
+                            style={[styles.qntAction, { marginRight: 25 }]}>
+                            <MaterialCommunityIcons name="plus" size={20} color={ColorsCss.grey.darken4} />
                         </TouchableOpacity>
                         <Text style={{ width: 20, textAlign: "center" }}>{quantity}</Text>
-                        <TouchableOpacity onPress={() => ProductCartContext.remove(product)} style={styles.qntAction}>
-                            <MaterialCommunityIcons name="minus" size={25} color={ColorsCss.grey.darken4} />
+                        <TouchableOpacity
+                            onPress={() => CartContext.reduce(product)}
+                            style={[styles.qntAction, { marginLeft: 25 }]}>
+                            <MaterialCommunityIcons name="minus" size={20} color={ColorsCss.grey.darken4} />
                         </TouchableOpacity>
                     </View>
                 </View>

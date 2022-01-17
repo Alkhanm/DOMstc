@@ -1,10 +1,10 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React, { useMemo, useState } from 'react';
-import { FlatList, KeyboardAvoidingView, Platform, StyleSheet, TouchableOpacity } from "react-native";
+import { FlatList, StyleSheet, TouchableOpacity } from "react-native";
 import { appCss } from "../../constants/App.css";
 import ColorsCss from "../../constants/Colors.css";
 import LayoutCss from "../../constants/Layout.css";
-import { useProductCartContext } from "../../context/ProductCartContext copy";
+import { useCartContext } from "../../context/CartContext";
 import { useProductContext } from "../../context/ProductContext";
 import { ProductsDumb } from "../../domain/dumb";
 import { AlkBarcodeReader } from "../widgets/AlkBarcodeReader";
@@ -12,31 +12,49 @@ import { AlkButton } from "../widgets/AlkButton";
 import { AlkInfo } from "../widgets/AlkInfo";
 import { AlkSwipperCard } from "../widgets/AlkSwipperCard";
 import { Text, View } from "../widgets/Themed";
-import { ProductCard } from "./ProductCard";
+import { ProductSaleCard } from "./ProductSaleCard";
 import { ShoppingCart } from "./ShoppingCart";
 
 
 export const Sale: React.FC = () => {
+    const ProductContext = useProductContext();
+    const CartContext = useCartContext();
 
-    const [search, setSearch] = useState<string>("");
+    const [search, setSearch] = useState<string>();
 
-    const { products } = useProductContext();
-    const ProductCart = useProductCartContext()
+    const quantity = useMemo(() => {
+        return CartContext.items
+            .map(({ quantity }) => quantity)
+            .reduce((q1, q2) => q1 + q2, 0)
+            .toString()
+    }, [CartContext.items])
 
     const totalPrice = useMemo(() => {
-        return ProductCart.items
-            .map(({ product }) => product.salePrice)
+        return CartContext.items
+            .map(({ product, quantity }) => product.salePrice * quantity)
             .reduce((p1, p2) => p1 + p2, 0)
-    }, [ProductCart.items])
+            .toFixed(2)
+            .replace(".", ",")
+    }, [CartContext.items])
+
+
+    function handlerCodebarScanner() {
+        const recentProduct = ProductContext.products
+            .find(({ code }) => String(code) === search);
+        if (recentProduct) {
+            CartContext.add(recentProduct)
+        }
+        // Alert.alert("Novo produto", `Produto de código ${search} adicionado! `)
+    }
 
     function handlerSale() {
-        // console.log(ProductCart.items)
+        console.log(CartContext.items)
     }
 
     return (
-        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.searchSeaction}>
-                <AlkBarcodeReader setValue={setSearch} />
+                <AlkBarcodeReader setValue={setSearch} onBarCodeScanned={handlerCodebarScanner} />
                 <View style={appCss.verticalSeparator} />
                 <AlkButton
                     style={styles.searchBtn}
@@ -44,24 +62,27 @@ export const Sale: React.FC = () => {
                 />
             </View>
             <View style={[appCss.card, styles.recentSection]}>
-                <Text> Items a serem vendidos </Text>
-                <Text>{search}</Text>
+
             </View>
+
             <View style={[appCss.card, styles.saleSection]}>
                 <FlatList
+                    ListHeaderComponent={
+                        <Text style={appCss.infoText4}>
+                            {`Mostrando ${ProductsDumb.length} de ${ProductContext.products.length}`}
+                        </Text>}
+                    ListFooterComponent={<View style={{ height: 150 }} />}
                     columnWrapperStyle={{ justifyContent: 'space-between' }}
                     numColumns={2}
-                    data={products}
-                    renderItem={({ item }) => <ProductCard key={item.id} product={item} action={ProductCart.add} />}
+                    data={ProductContext.products}
+                    renderItem={({ item }) => <ProductSaleCard product={item} />}
                 />
 
-                <Text style={[appCss.infoText4, { alignSelf: "center" }]}>
-                    {`Mostrando ${ProductsDumb.length} de ${ProductsDumb.length}`}
-                </Text>
             </View>
-            {Boolean(ProductCart.items) &&
+
+            {Boolean(CartContext.items.length) &&
                 <AlkSwipperCard
-                    defaultHeight={140}
+                    defaultHeight={125}
                     HeaderComp={() => (
                         <>
                             <AlkInfo
@@ -72,7 +93,7 @@ export const Sale: React.FC = () => {
                                 labelStyle={styles.salesBoxCardInfoLabel} />
                             <AlkInfo
                                 label="Quantidade"
-                                value={ProductCart.items.length}
+                                value={`${CartContext.items.length} (${quantity})`}
                                 style={styles.salesBoxCardInfo}
                                 textStyle={appCss.infoText}
                                 labelStyle={styles.salesBoxCardInfoLabel} />
@@ -87,14 +108,14 @@ export const Sale: React.FC = () => {
                             style={styles.salesButton}
                             onPress={handlerSale}
                         >
-                            <Text style={styles.salesButtonText}>Registrar</Text>
+                            <Text style={styles.salesButtonText}>Registrar Venda</Text>
                         </TouchableOpacity>
                     )}
                 />
 
 
             }
-        </KeyboardAvoidingView >
+        </View >
     );
 }
 
@@ -105,21 +126,29 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: 5
     },
+    switchSection: {
+        width: "100%",
+        borderWidth: 1,
+        borderColor: "#ffffff50",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-around",
+    },
     searchSeaction: {
-        flex: 1,
         width: "100%",
         padding: 5,
         borderWidth: 1,
         borderColor: "#ffffff50",
-        flexDirection: "row",
+        flexDirection: "row"
     },
     searchBtn: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: "black"
     },
     recentSection: {
-        flex: 2,
+        flex: 3,
     },
     saleSection: {
         flex: 7,

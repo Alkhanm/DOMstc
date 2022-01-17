@@ -43,7 +43,7 @@ export default function TabHome({ navigation }: RootTabScreenProps<'TabHome'>) {
       <View style={[appCss.card, styles.bottomSection]}>
         <AlkButton
           onPress={() => navigation.navigate("Sale")}
-          propStyle={styles.saleButton}
+          style={styles.saleButton}
           children={
             <>
               <MaterialCommunityIcons name="sale" size={25} color={"white"} />
@@ -53,7 +53,7 @@ export default function TabHome({ navigation }: RootTabScreenProps<'TabHome'>) {
         />
          <AlkButton
           onPress={() => {}}
-          propStyle={styles.saleButton}
+          style={styles.saleButton}
           children={
             <>
               <MaterialCommunityIcons name="alert-circle-check-outline" size={25} color={"white"} />

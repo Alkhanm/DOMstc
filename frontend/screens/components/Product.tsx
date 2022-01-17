@@ -7,7 +7,9 @@ import { AlkInfo } from "../widgets/AlkInfo";
 import { Text, View } from "../widgets/Themed";
 
 
-export default function Product({ product }: { product: IProduct }) {
+
+
+export function Product({ product, actions = true }: { product: IProduct, actions?: boolean }) {
     const { navigate } = useNavigation()
 
     return (
@@ -34,12 +36,14 @@ export default function Product({ product }: { product: IProduct }) {
                     </View>
                 </View>
             </View>
-            <View style={styles.actions}>
-                <AlkButton propStyle={styles.action} onPress={() => navigate('ProductDetail', { code: product.code })}
-                    children={<Text>Detalhes</Text>} />
-                <AlkButton propStyle={styles.action} onPress={() => navigate("ProductEdit", { code: product.code })}
-                    children={<Text>Editar</Text>} />
-            </View>
+            {actions &&
+                <View style={styles.actions}>
+                    <AlkButton style={styles.action} onPress={() => navigate('ProductDetail', { code: product.code })}
+                        children={<Text>Detalhes</Text>} />
+                    <AlkButton style={styles.action} onPress={() => navigate("ProductEdit", { code: product.code })}
+                        children={<Text>Editar</Text>} />
+                </View>
+            }
         </View>
     )
 }
@@ -48,17 +52,19 @@ export default function Product({ product }: { product: IProduct }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        minHeight: 200,
         margin: 5,
         paddingHorizontal: 10,
+        paddingVertical: 5,
         justifyContent: 'center',
         borderWidth: 0.6,
-        borderColor: Appearance.getColorScheme() === "dark" ? "#eee" : "rgba(255,255,255,0.1)"
+        borderColor: Appearance.getColorScheme() === "dark" ? "#eee" : "rgba(255,255,255,0.1)",
+        // backgroundColor: ColorsCss.blue.c
     },
     content: {
         flex: 1,
         alignItems: "center",
-        flexDirection: "row"
+        flexDirection: "row",
+        paddingHorizontal: 5,
     },
     img: {
         width: 100,
@@ -73,19 +79,16 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     infos: {
-        flex: 1,
         justifyContent: "center"
     },
     info: {
-        flex: 1,
         marginHorizontal: 15,
     },
     action: {
-        width: "45%",
         height: 30,
+        width: "45%",
     },
     actions: {
-        flex: 1,
         marginHorizontal: 10,
         flexDirection: "row",
         justifyContent: "space-between",

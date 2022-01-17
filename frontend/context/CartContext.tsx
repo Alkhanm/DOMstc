@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
+import { IItem } from "../domain/interfaces/IItem";
 import { IProduct } from "../domain/interfaces/IProduct";
 
-interface Item {
-  quantity: number;
-  product: IProduct;
-}
 
 interface contextType {
-  items: Item[];
+  items: IItem[];
   add: (product: IProduct, qnt?: number) => void;
-  remove: (product: IProduct, qnt?: number) => void;
+  reduce: (product: IProduct, qnt?: number) => void;
+  remove: (product: IProduct) => void;
 }
 
-const ProductCartContext = React.createContext({} as contextType);
+const CartContext = React.createContext({} as contextType);
 
-export const ProductCartContextProvider: React.FC = ({ children }) => {
-  const [items, setItems] = useState<Item[]>([])
+export const CartContextProvider: React.FC = ({ children }) => {
+  const [items, setItems] = useState<IItem[]>([])
 
 
   function add(product: IProduct, qnt: number = 1) {
@@ -24,10 +22,10 @@ export const ProductCartContextProvider: React.FC = ({ children }) => {
     const indexOfItemFound = items.indexOf(itemFound);
     const quantity = itemFound.quantity + qnt;
     items[indexOfItemFound] = { ...itemFound, quantity };
-    setItems([...items])
+    setItems([...items]);
   }
 
-  function remove(product: IProduct, qnt: number = 1) {
+  function reduce(product: IProduct, qnt: number = 1) {
     const itemFound = items.find(p => p.product.code === product.code);
     if (!itemFound) return;
     const quantity = itemFound.quantity - qnt;
@@ -38,13 +36,18 @@ export const ProductCartContextProvider: React.FC = ({ children }) => {
     setItems([...items])
   }
 
+  function remove(product: IProduct) {
+    const newItems = items.filter((item) => item.product.code !== product.code)
+    setItems([...newItems])
+  }
+
   return (
-    <ProductCartContext.Provider value={{ items, add, remove }} >
+    <CartContext.Provider value={{ items, add, reduce, remove }} >
       {children}
-    </ProductCartContext.Provider>
+    </CartContext.Provider>
   );
 }
 
-export function useProductCartContext() {
-  return React.useContext(ProductCartContext)
+export function useCartContext() {
+  return React.useContext(CartContext)
 };

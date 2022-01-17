@@ -10,7 +10,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ColorSchemeName, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../constants/Colors.css';
-import { useLoadingContext } from "../context/LoadingContext";
 import useColorScheme from '../hooks/useColorScheme';
 import { ProductDetail } from "../screens/components/ProductDetail";
 import { ProductEdit } from "../screens/components/ProductEdit";
@@ -18,20 +17,17 @@ import ProductNew from '../screens/components/ProductNew';
 import { Sale } from "../screens/components/Sale";
 import Home from '../screens/HomeScreen';
 import { ProductsScreen } from '../screens/ProductsScreen';
-import { AlkLoadingBar } from "../screens/widgets/AlkLoadingBar";
 import { Text } from "../screens/widgets/Themed";
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
-  const { loading } = useLoadingContext()
 
   return (
     <NavigationContainer
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
     >
       <RootNavigator />
-      {loading && <AlkLoadingBar />}
     </NavigationContainer>
   );
 }

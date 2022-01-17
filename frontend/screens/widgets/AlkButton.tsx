@@ -1,15 +1,14 @@
 import React from "react";
-import { Appearance, StyleSheet, TouchableOpacity, TouchableOpacityProps, ViewStyle } from "react-native";
+import { Appearance, StyleSheet, TouchableOpacity, TouchableOpacityProps } from "react-native";
 import Colors from "../../constants/Colors.css";
 
 interface MvButtonProps extends TouchableOpacityProps {
   children: React.ReactNode;
-  propStyle?: ViewStyle | ViewStyle[];
 }
 
-export const AlkButton = ({ children, propStyle, ...rest }: MvButtonProps) => {
+export const AlkButton = ({ children, ...rest }: MvButtonProps) => {
   return (
-    <TouchableOpacity style={[styles.button, propStyle]} {...rest}>
+    <TouchableOpacity  {...rest} style={[styles.button, rest.style]} >
       {children}
     </TouchableOpacity>
   );
@@ -17,8 +16,8 @@ export const AlkButton = ({ children, propStyle, ...rest }: MvButtonProps) => {
 
 const styles = StyleSheet.create({
   button: {
-    minWidth: 100,
-    minHeight: 50,
+    width: 100,
+    height: 50,
     backgroundColor: Appearance.getColorScheme() === "dark" ? Colors.grey.darken4 : Colors.grey.c,
     justifyContent: "center",
     alignItems: "center",

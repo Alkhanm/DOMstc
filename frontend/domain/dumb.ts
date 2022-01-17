@@ -32,22 +32,6 @@ export const ProductsDumb: IProduct[] = [
         imageURL: "https://firebasestorage.googleapis.com/v0/b/domstc-814e0.appspot.com/o/Shampoo_Ultra_Liso_Advance_Tec_605.webp?alt=media&token=dcb0f7f6-bcad-442a-9e36-d012ae295ae1"
     },
     {
-        id: 18,
-        code: 6987453215647,
-        quantity: 15,
-        brand: "Tododia Tododia Tododia Tododia Tododia",
-        category: "SABONETE EM BARRA SABONETE EM BARRA SABONETE EM BARRA",
-        company: "NATURA NATURA NATURA",
-        description: "Sabonete em barra alecrim e sálvia Sabonete em barra alecrim e sálvia",
-        purchaseDate: "07/06/2021",
-        purchasePrice: 8.90,
-        salePrice: 12.95,
-        variation: "Alecrim e Sálvia Alecrim e Sálvia Alecrim e Sálvia Alecrim e Sálvia",
-        weight: 90,
-        unit: 5,
-        imageURL: "https://firebasestorage.googleapis.com/v0/b/domstc-814e0.appspot.com/o/72147_1_2.jpg?alt=media&token=d859cb63-539a-4ffb-89f9-efe53920f709"
-    },
-    {
         id: 13,
         code: 633475453215697,
         quantity: 15,
@@ -62,6 +46,22 @@ export const ProductsDumb: IProduct[] = [
         weight: 90,
         unit: 5,
         imageURL: "https://firebasestorage.googleapis.com/v0/b/domstc-814e0.appspot.com/o/72147_1_2.jpg?alt=media&token=d859cb63-539a-4ffb-89f9-efe53920f709"
+    },
+    {
+        id: 113,
+        code: 7908240899244,
+        quantity: 5,
+        brand: "Tododia",
+        category: "CREME PARA O CORPO",
+        company: "NATURA",
+        description: "Creme para o corpo com nutrição probiótica",
+        purchaseDate: "11/08/2021",
+        purchasePrice: 6.90,
+        salePrice: 11.90,
+        variation: "Flor de lís",
+        volume: 80,
+        unit: 5,
+        imageURL: "https://firebasestorage.googleapis.com/v0/b/domstc-814e0.appspot.com/o/WhatsApp%20Image%202022-01-16%20at%2021.23.45.jpeg?alt=media&token=aa5d4b15-e269-48a6-9802-4144f3f31f01"
     },
     
 ]

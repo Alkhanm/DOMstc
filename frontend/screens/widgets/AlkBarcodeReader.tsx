@@ -1,30 +1,38 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { BarCodeEvent, BarCodeScanner } from "expo-barcode-scanner";
-import React, { useState } from 'react';
-import { Dimensions, StyleSheet, TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
 import ColorsCss from "../../constants/Colors.css";
 import LayoutCss from "../../constants/Layout.css";
 import { AlkModal } from "./AlkModal";
 import { Text, View } from "./Themed";
 
 
-interface AlkBarcodeReaderProps extends TouchableOpacityProps {
+interface AlkBarcodeReaderProps {
     setValue: (value: string) => void;
+    onBarCodeScanned?: Function;
 }
 
 
-export const AlkBarcodeReader: React.FC<AlkBarcodeReaderProps> = ({ setValue, ...rest }) => {
+export const AlkBarcodeReader: React.FC<AlkBarcodeReaderProps> = ({ setValue, onBarCodeScanned }) => {
     const [barcodeScanVisibility, setBarcodeScanVisibility] = useState(false);
+    const [code, setCode] = useState("");
 
-    function handleBarCodeScanned({ data }: BarCodeEvent) {
+    function handlerBarCodeScanned({ data }: BarCodeEvent) {
+        setCode(data)
+        setBarcodeScanVisibility(!barcodeScanVisibility);
         setValue(data);
-        setBarcodeScanVisibility(!barcodeScanVisibility)
     };
+
+    useEffect(() => {
+        if (!barcodeScanVisibility && onBarCodeScanned)
+            onBarCodeScanned();
+    }, [code, barcodeScanVisibility])
 
     return (
         <AlkModal
             VisibleElement={() => (
-                <TouchableOpacity style={rest.style}>
+                <TouchableOpacity>
                     <View style={styles.scan}>
                         <MaterialCommunityIcons name="barcode-scan" style={styles.barcodeIcon} />
                         <Text style={styles.barcodeTitle}>Ler código</Text>
@@ -34,7 +42,7 @@ export const AlkBarcodeReader: React.FC<AlkBarcodeReaderProps> = ({ setValue, ..
             )}
             children={
                 <>
-                    <BarCodeScanner onBarCodeScanned={handleBarCodeScanned} style={StyleSheet.absoluteFillObject} />
+                    <BarCodeScanner onBarCodeScanned={handlerBarCodeScanned} style={StyleSheet.absoluteFillObject} />
                     <MaterialCommunityIcons name="scan-helper" style={styles.barcodeCamIcon} />
                 </>
             }
@@ -69,8 +77,9 @@ const styles = StyleSheet.create({
     },
     barcodeText: {
         color: ColorsCss.grey.lighten2,
-        marginHorizontal: 8,
+        marginHorizontal: 5,
         fontSize: 12,
+        textAlign: "center"
     },
 
 })

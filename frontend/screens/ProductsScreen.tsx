@@ -5,7 +5,7 @@ import { appCss } from "../constants/App.css";
 import ColorsCss from "../constants/Colors.css";
 import LayoutCss from "../constants/Layout.css";
 import { useProductContext } from "../context/ProductContext";
-import Product from "./components/Product";
+import { Product } from "./components/Product";
 import { AlkCheckBox } from "./widgets/AlkCheckBox";
 import { AlkModalShort } from "./widgets/AlkModalShort";
 import { AlkRadioButtonGroup } from "./widgets/AlkRadioButtonGroup";
