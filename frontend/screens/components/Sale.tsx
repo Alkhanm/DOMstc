@@ -1,17 +1,18 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React, { useMemo, useState } from 'react';
-import { FlatList, StyleSheet, TouchableOpacity } from "react-native";
+import { Alert, FlatList, StyleSheet, TouchableOpacity } from "react-native";
 import { appCss } from "../../constants/App.css";
 import ColorsCss from "../../constants/Colors.css";
 import LayoutCss from "../../constants/Layout.css";
 import { useCartContext } from "../../context/CartContext";
 import { useProductContext } from "../../context/ProductContext";
-import { ProductsDumb } from "../../domain/dumb";
+import { IProduct, tProductProperty } from "../../domain/interfaces/IProduct";
 import { AlkBarcodeReader } from "../widgets/AlkBarcodeReader";
 import { AlkButton } from "../widgets/AlkButton";
 import { AlkInfo } from "../widgets/AlkInfo";
 import { AlkSwipperCard } from "../widgets/AlkSwipperCard";
 import { Text, View } from "../widgets/Themed";
+import { ProductOrderFilter } from "./ProductOrderFilter";
 import { ProductSaleCard } from "./ProductSaleCard";
 import { ShoppingCart } from "./ShoppingCart";
 
@@ -20,31 +21,32 @@ export const Sale: React.FC = () => {
     const ProductContext = useProductContext();
     const CartContext = useCartContext();
 
+    const [order, setOrder] = useState<tProductProperty>("purchaseDate")
+
+    const [orderedProducts, setOrderedProducts] = useState<IProduct[]>(ProductContext.products)
     const [search, setSearch] = useState<string>();
 
-    const quantity = useMemo(() => {
-        return CartContext.items
+    const quantity = useMemo(() =>
+        CartContext.items
             .map(({ quantity }) => quantity)
             .reduce((q1, q2) => q1 + q2, 0)
-            .toString()
-    }, [CartContext.items])
+        , [CartContext.items])
 
-    const totalPrice = useMemo(() => {
-        return CartContext.items
+    const totalPrice = useMemo(() =>
+        CartContext.items
             .map(({ product, quantity }) => product.salePrice * quantity)
             .reduce((p1, p2) => p1 + p2, 0)
             .toFixed(2)
             .replace(".", ",")
-    }, [CartContext.items])
+        , [CartContext.items])
 
 
     function handlerCodebarScanner() {
-        const recentProduct = ProductContext.products
+        const searchedProduct = ProductContext.products
             .find(({ code }) => String(code) === search);
-        if (recentProduct) {
-            CartContext.add(recentProduct)
-        }
-        // Alert.alert("Novo produto", `Produto de código ${search} adicionado! `)
+        if (!searchedProduct) return;
+        CartContext.add(searchedProduct)
+        Alert.alert("Produto adicionado", `${searchedProduct.description} - foi adicionado ao carrinho`)
     }
 
     function handlerSale() {
@@ -61,62 +63,56 @@ export const Sale: React.FC = () => {
                     children={<MaterialCommunityIcons name="database-search" style={styles.searchIcon} />}
                 />
             </View>
-            <View style={[appCss.card, styles.recentSection]}>
-
-            </View>
-
             <View style={[appCss.card, styles.saleSection]}>
                 <FlatList
                     ListHeaderComponent={
-                        <Text style={appCss.infoText4}>
-                            {`Mostrando ${ProductsDumb.length} de ${ProductContext.products.length}`}
-                        </Text>}
-                    ListFooterComponent={<View style={{ height: 150 }} />}
+                        <ProductOrderFilter
+                            products={ProductContext.products}
+                            orderedProducts={orderedProducts}
+                            setOrderedProducts={setOrderedProducts}
+                        />
+                    }
+                    ListFooterComponent={
+                        <View style={{ height: 150 }} />
+                    }
                     columnWrapperStyle={{ justifyContent: 'space-between' }}
                     numColumns={2}
-                    data={ProductContext.products}
+                    data={orderedProducts}
                     renderItem={({ item }) => <ProductSaleCard product={item} />}
                 />
 
             </View>
-
             {Boolean(CartContext.items.length) &&
                 <AlkSwipperCard
                     defaultHeight={125}
-                    HeaderComp={() => (
-                        <>
-                            <AlkInfo
-                                label="Valor"
-                                value={`R$ ${totalPrice}`}
-                                style={styles.salesBoxCardInfo}
-                                textStyle={appCss.infoText}
-                                labelStyle={styles.salesBoxCardInfoLabel} />
-                            <AlkInfo
-                                label="Quantidade"
-                                value={`${CartContext.items.length} (${quantity})`}
-                                style={styles.salesBoxCardInfo}
-                                textStyle={appCss.infoText}
-                                labelStyle={styles.salesBoxCardInfoLabel} />
-                        </>
-                    )}
-                    MiddleComp={() => (
-                        <ShoppingCart />
-                    )}
-                    BottomComp={() => (
+                    HeaderComp={_ => (<>
+                        <AlkInfo
+                            label="Valor"
+                            value={`R$ ${totalPrice}`}
+                            style={styles.salesBoxCardInfo}
+                            textStyle={appCss.infoText}
+                            labelStyle={styles.salesBoxCardInfoLabel} />
+                        <AlkInfo
+                            label="Quantidade"
+                            value={`${CartContext.items.length} (${quantity})`}
+                            style={styles.salesBoxCardInfo}
+                            textStyle={appCss.infoText}
+                            labelStyle={styles.salesBoxCardInfoLabel} />
+                    </>)}
+                    MiddleComp={_ => <ShoppingCart />}
+                    BottomComp={_ =>
                         <TouchableOpacity
+                            onPress={handlerSale}
                             activeOpacity={0.85}
                             style={styles.salesButton}
-                            onPress={handlerSale}
                         >
                             <Text style={styles.salesButtonText}>Registrar Venda</Text>
                         </TouchableOpacity>
-                    )}
+                    }
                 />
-
-
             }
         </View >
-    );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -146,9 +142,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "black"
-    },
-    recentSection: {
-        flex: 3,
     },
     saleSection: {
         flex: 7,

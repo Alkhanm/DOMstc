@@ -29,13 +29,12 @@ export const ProductSaleCard: React.FC<ProductSaleCardProps> = ({ product }) => 
         <TouchableOpacity
             onPress={handlerAdd}
             onLongPress={handlerRemove}
-            key={product.id}
             style={styles.container}
             activeOpacity={0.4}
         >
             <View style={[styles.descriptionBox, Boolean(quantity) && { backgroundColor: ColorsCss.grey.darken }]}>
                 {quantity && <Text style={styles.qntText}>{quantity}</Text>}
-                <Text style={styles.descriptionText} numberOfLines={2} ellipsizeMode="tail">
+                <Text style={styles.descriptionText} numberOfLines={2} textBreakStrategy="highQuality"  ellipsizeMode="tail">
                     {product.description}
                 </Text>
             </View>

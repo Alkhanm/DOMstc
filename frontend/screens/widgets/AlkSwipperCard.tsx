@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import ReactNative, { Dimensions, GestureResponderEvent, LayoutAnimation, StyleSheet, UIManager } from "react-native";
+import ReactNative, { Dimensions, GestureResponderEvent, LayoutAnimation, StyleSheet, UIManager, View } from "react-native";
 import ColorsCss from "../../constants/Colors.css";
-import { View, ViewProps } from "./Themed";
+import { ViewProps } from "./Themed";
 
 
 interface AlkSwipperCardProps {

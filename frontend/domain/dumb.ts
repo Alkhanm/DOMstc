@@ -1,4 +1,4 @@
-import { IProduct } from "./interfaces/IProduct";
+import { eCategory, eCompany, IProduct } from "./interfaces/IProduct";
 
 export const ProductsDumb: IProduct[] = [
     {
@@ -6,14 +6,16 @@ export const ProductsDumb: IProduct[] = [
         code: 2351865256565,
         quantity: 4,
         brand: "MUSK",
-        category: "COLÔNIA",
-        company: "AVON",
+        category: eCategory.COLONIA,
+        company: eCompany.AVON,
         description: "Musk Titanium",
         purchaseDate: "20/10/2021",
         purchasePrice: 10.00,
         salePrice: 22.00,
         variation: "Titanium",
         volume: 100,
+        weight: 0,
+        unit: 1,
         imageURL: "https://firebasestorage.googleapis.com/v0/b/domstc-814e0.appspot.com/o/IMG_20220107_124639.png?alt=media&token=8eed7bd1-902d-408f-95c2-b585e13ef61e"
     },
     {
@@ -21,14 +23,16 @@ export const ProductsDumb: IProduct[] = [
         code: 6897453215698,
         quantity: 5,
         brand: "Advance Techniques",
-        category: "SAMPHOO",
-        company: "AVON",
+        category: eCategory.SAMPHOO,
+        company: eCompany.AVON,
         description: "Shampoo Ultra liso Advance Techniques 300ml",
         purchaseDate: "23/12/2021",
         purchasePrice: 6.50,
         salePrice: 18.90,
         variation: "Ultra Liso",
         volume: 300,
+        weight: 0,
+        unit: 1,
         imageURL: "https://firebasestorage.googleapis.com/v0/b/domstc-814e0.appspot.com/o/Shampoo_Ultra_Liso_Advance_Tec_605.webp?alt=media&token=dcb0f7f6-bcad-442a-9e36-d012ae295ae1"
     },
     {
@@ -36,13 +40,14 @@ export const ProductsDumb: IProduct[] = [
         code: 633475453215697,
         quantity: 15,
         brand: "Tododia",
-        category: "SABONETE EM BARRA",
-        company: "NATURA",
+        category: eCategory.SABONETE_EM_BARRA,
+        company: eCompany.NATURA,
         description: "Sabonete em barra alecrim e sálvia",
         purchaseDate: "07/06/2021",
         purchasePrice: 8.90,
         salePrice: 12.90,
         variation: "Alecrim e Sálvia",
+        volume: 0,
         weight: 90,
         unit: 5,
         imageURL: "https://firebasestorage.googleapis.com/v0/b/domstc-814e0.appspot.com/o/72147_1_2.jpg?alt=media&token=d859cb63-539a-4ffb-89f9-efe53920f709"
@@ -52,16 +57,17 @@ export const ProductsDumb: IProduct[] = [
         code: 7908240899244,
         quantity: 5,
         brand: "Tododia",
-        category: "CREME PARA O CORPO",
-        company: "NATURA",
+        category: eCategory.CREME_PARA_O_CORPO,
+        company: eCompany.NATURA,
         description: "Creme para o corpo com nutrição probiótica",
         purchaseDate: "11/08/2021",
         purchasePrice: 6.90,
         salePrice: 11.90,
         variation: "Flor de lís",
         volume: 80,
+        weight: 0,
         unit: 5,
         imageURL: "https://firebasestorage.googleapis.com/v0/b/domstc-814e0.appspot.com/o/WhatsApp%20Image%202022-01-16%20at%2021.23.45.jpeg?alt=media&token=aa5d4b15-e269-48a6-9802-4144f3f31f01"
     },
-    
+
 ]

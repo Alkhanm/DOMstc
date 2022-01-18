@@ -4,7 +4,12 @@ function textSizeLimiter(value: string | number, limiter: number) {
     return text;
 }
 
-
-export const UTILS = {
-    textSizeLimiter
+ function getProperty<T, K extends keyof T>(o: T, propertyName: K): T[K] {
+    return o[propertyName]
 }
+
+
+export {
+    textSizeLimiter,
+    getProperty
+};

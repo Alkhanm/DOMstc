@@ -1,56 +1,105 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity } from "react-native";
-import LayoutCss from "../../constants/Layout.css";
+import { FlatList } from "react-native-gesture-handler";
+import ColorsCss from "../../constants/Colors.css";
 import { Text } from "./Themed";
 
-
-type fn = (value: boolean) => void;
+export interface AlkRadioButtonItem {
+    text: string;
+    value: any;
+}
 
 interface AlkRadioButtonProps {
-    label: string;
-    value: boolean;
-    callback: fn[];
-    onAction: fn;
+    items: AlkRadioButtonItem[];
+    defaultSelect?: any;
+    onSelectChange: (value: any) => void;
 }
 
-export const AlkRadioButton: React.FC<AlkRadioButtonProps> = ({ label, value, callback, onAction }) => {
+export const AlkRadioButton: React.FC<AlkRadioButtonProps> =
+    ({ items, onSelectChange, defaultSelect = items[0].value }) => {
+        const [selectedValue, setSelectedValue] = useState<any>()
 
-    useEffect(() => {
-        if (value) callback.filter(f => f !== onAction).forEach(f => f(false))
-    }, [value])
+        function handlerSelect(item: AlkRadioButtonItem) {
+            onSelectChange(item.value);
+            setSelectedValue(item);
+        }
 
-    return (
-        <TouchableOpacity onPress={() => onAction(!value)} style={styles.container}>
-            {value ?
-                    <MaterialCommunityIcons name="radiobox-marked" style={styles.icon} />
-                    :
-                    <MaterialCommunityIcons name="radiobox-blank" style={styles.icon} />
+        useEffect(() => {
+            setSelectedValue(items.find(i => i.value == defaultSelect))
+        }, [])
+
+        return (
+            <FlatList
+                keyExtractor={(e) => e.text}
+                overScrollMode="always"
+                style={{
+                    maxHeight: 200,
+                    width: "80%",
+                }}
+                data={items}
+                renderItem={({ item }) => (
+                    <TouchableOpacity onPress={_ => handlerSelect(item)} style={styles.radioItem}>
+                        {selectedValue === item ?
+                            <>
+                                <MaterialCommunityIcons name="radiobox-marked" style={styles.iconSelected} />
+                                <Text numberOfLines={1} ellipsizeMode="tail" style={styles.labelSelected}>{item.text}</Text>
+                            </>
+                            :
+                            <>
+                                <MaterialCommunityIcons name="radiobox-blank" style={styles.icon} />
+                                <Text numberOfLines={1} ellipsizeMode="tail" style={styles.label}>{item.text}</Text>
+                            </>
+                        }
+                    </TouchableOpacity>
+                )}
+
+            />
+        );
+    }
+/* <View style={vertical ? styles.vertical : {}}>
+    {items.map(e =>
+        <TouchableOpacity key={e} onPress={_ => handlerSelect(e)} style={styles.radioItem}>
+            {selectedValue === e ?
+                <MaterialCommunityIcons name="radiobox-marked" style={styles.icon} />
+                :
+                <MaterialCommunityIcons name="radiobox-blank" style={styles.icon} />
             }
-            <Text style={styles.label}>{label}</Text>
+            <Text style={styles.label}>{e}</Text>
         </TouchableOpacity>
-    );
-}
-
+    )}
+</View>*/
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        marginVertical: 5,
-        marginHorizontal: 15,
+    vertical: {
+        padding: 5,
+        width: "100%",
+        flexDirection: "row",
+        justifyContent: "space-evenly"
+    },
+    radioItem: {
+        marginTop: 5,
         flexDirection: "row",
         alignItems: "center",
-        borderBottomWidth: 2,
-        borderColor: "#ffffff50"
     },
     label: {
-        fontSize: 14,
+        fontSize: 13,
         margin: 2,
         textTransform: "uppercase",
         fontWeight: "bold",
-        opacity: 0.8
+        color: ColorsCss.grey.lighten,
     },
     icon: {
-        fontSize: 14,
-        color: LayoutCss.isDarkTheme ? "white" : "black"
+        fontSize: 16,
+        color: ColorsCss.grey.lighten,
+    },
+    labelSelected: {
+        fontSize: 13,
+        margin: 2,
+        textTransform: "uppercase",
+        fontWeight: "bold",
+    },
+    iconSelected: {
+        fontSize: 16,
+        color: "white"
     }
 })

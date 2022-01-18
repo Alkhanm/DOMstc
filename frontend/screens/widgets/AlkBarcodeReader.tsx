@@ -25,12 +25,13 @@ export const AlkBarcodeReader: React.FC<AlkBarcodeReaderProps> = ({ setValue, on
     };
 
     useEffect(() => {
-        if (!barcodeScanVisibility && onBarCodeScanned)
-            onBarCodeScanned();
+        if (!barcodeScanVisibility && onBarCodeScanned) onBarCodeScanned();
     }, [code, barcodeScanVisibility])
 
     return (
         <AlkModal
+            width={100}
+            height={100}
             VisibleElement={() => (
                 <TouchableOpacity>
                     <View style={styles.scan}>
@@ -46,8 +47,6 @@ export const AlkBarcodeReader: React.FC<AlkBarcodeReaderProps> = ({ setValue, on
                     <MaterialCommunityIcons name="scan-helper" style={styles.barcodeCamIcon} />
                 </>
             }
-            visibleProp={barcodeScanVisibility}
-            buttonCloseText="Fechar"
         />
     );
 }

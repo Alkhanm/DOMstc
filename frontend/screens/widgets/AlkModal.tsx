@@ -1,100 +1,91 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-  Modal, StyleSheet, ViewStyle
+    Dimensions, Modal,
+    ModalProps, Pressable, StyleSheet, View, ViewProps
 } from "react-native";
-import { default as Colors, default as ColorsCss } from "../../constants/Colors.css";
-import LayoutCss from "../../constants/Layout.css";
-import { AlkButton } from "../widgets/AlkButton";
-import { ViewProps } from "../widgets/Themed";
-import { Text, View } from "./Themed";
+import { appCss } from "../../constants/App.css";
+import ColorsCss from "../../constants/Colors.css";
+import { NumericRange } from "../../domain/interfaces/Utils";
+import * as Themed from "./Themed";
 
-interface styleProps extends ViewStyle {
-  childrenStyle?: ViewStyle;
+interface AlkModalShortProps extends ModalProps {
+    children: React.ReactNode;
+    VisibleElement?: React.FC<ViewProps>;
+    width?: NumericRange<101>;
+    height?: NumericRange<101>;
 }
 
-interface AlkModalProps extends ViewProps {
-  buttonCloseText?: string;
-  children: React.ReactNode;
-  visibleProp?: boolean;
-  VisibleElement?: React.FC<ViewProps>;
-  viewStyle?: styleProps;
-}
+export const AlkModal: React.FC<AlkModalShortProps> = ({ children, VisibleElement, width, height, ...rest }) => {
+    const [visible, setVisible] = useState(false);
 
-export const AlkModal: React.FC<AlkModalProps> = ({ children, VisibleElement, buttonCloseText, viewStyle, visibleProp = null, ...rest }) => {
-  const [visible, setVisible] = useState(false);
-
-  const handleClickToOPen = () => {
-    setVisible(true);
-  }
-
-  useEffect(() => {
-    if (visibleProp != null) setVisible(visibleProp)
-  }, [visibleProp])
-
-
-  return (
-    <>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={visible}
-        collapsable={true}
-        onTouchStart={handleClickToOPen}
-      >
-        <View style={styles.view} {...viewStyle}>
-          <View style={styles.children} {...viewStyle?.childrenStyle}>
-            {children}
-          </View>
-          <AlkButton propStyle={styles.buttonClose} onPress={() => setVisible(!visible)}>
-            <Text style={styles.buttonCloseText}>{buttonCloseText || "pronto"}</Text>
-          </AlkButton>
-        </View>
-      </Modal>
-      {VisibleElement &&
-        <View onTouchStart={handleClickToOPen} style={rest.style}>
-          <VisibleElement />
-        </View>
-      }
-    </>
-  );
+    return (
+        <>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={visible}
+                collapsable={true}
+                statusBarTranslucent
+            >
+                <View onTouchStart={_ => setVisible(false)} style={styles.view} >
+                    <Themed.View
+                        onTouchStart={e => e.stopPropagation()}
+                        style={[
+                            styles.children,
+                            Boolean(width) && Boolean(height) &&
+                            {
+                                width: `${width}%`,
+                                height: `${height}%`
+                            }]}
+                    >
+                        {children}
+                        <Pressable style={styles.buttonClose} onPress={() => setVisible(!visible)}>
+                            <Themed.Text style={appCss.subtitle} selectionColor={"black"} selectable >Pronto</Themed.Text>
+                        </Pressable>
+                    </Themed.View>
+                </View>
+            </Modal>
+            {VisibleElement &&
+                <View style={styles.visibleElement} onTouchStart={() => setVisible(true)}>
+                    <VisibleElement />
+                </View>
+            }
+        </>
+    );
 };
-const isDarkTheme = LayoutCss.isDarkTheme
-
+const { height, width } = Dimensions.get("window")
 const styles = StyleSheet.create({
-  view: {
-    flex: 1,
-    width: "100%",
-    alignSelf: "flex-end",
-    backgroundColor: isDarkTheme ? "#000000" : Colors.grey.lighten4,
-    borderRadius: 10,
-    padding: 5,
-  },
-  children: {
-    flexGrow: 1,
-  },
-  modalLoading: {
-    color: ColorsCss.blue.c,
-    backgroundColor: ColorsCss.blue.c,
-    borderBottomWidth: 5,
-  },
-  buttonClose: {
-    width: "80%",
-    height: "6%",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 5,
-    borderRadius: 10,
-  },
-  buttonCloseText: {
-    textTransform: "uppercase",
-    fontWeight: "bold",
-    color: Colors.grey.lighten,
-    fontSize: 16,
-  },
-  modalText: {
-    color: "black",
-    fontSize: 17,
-    opacity: 0.6,
-    textAlign: "center",
-  },
+    view: {
+        flex: 1,
+        width: "100%",
+        height: height,
+        position: "absolute",
+        bottom: 0,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#00000085",
+        alignSelf: "flex-end",
+        borderRadius: 10,
+        padding: 5,
+    },
+    children: {
+        width: 300,
+        justifyContent: "space-between",
+        paddingTop: 10,
+        alignItems: "center",
+    },
+    buttonClose: {
+        width: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "10%",
+        minHeight: 50,
+        borderTopWidth: 2,
+        borderColor: ColorsCss.grey.darken4,
+        backgroundColor: "#000000"
+    },
+    visibleElement: {
+        justifyContent: "center",
+        alignItems: "center"
+    }
 });

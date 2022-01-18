@@ -11,7 +11,6 @@ import { Text, View } from "../widgets/Themed";
 
 export function Product({ product, actions = true }: { product: IProduct, actions?: boolean }) {
     const { navigate } = useNavigation()
-
     return (
         <View style={styles.container}>
             <View style={[styles.info, styles.descriptionView]}>
@@ -61,7 +60,6 @@ const styles = StyleSheet.create({
         // backgroundColor: ColorsCss.blue.c
     },
     content: {
-        flex: 1,
         alignItems: "center",
         flexDirection: "row",
         paddingHorizontal: 5,

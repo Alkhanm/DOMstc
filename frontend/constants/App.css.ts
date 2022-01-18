@@ -44,6 +44,7 @@ export const appCss = StyleSheet.create({
         alignSelf: "center",
         fontWeight: "bold",
         textTransform: "uppercase",
+        color: ColorsCss.grey.lighten
     },
     infoText: {
         flex: 1,

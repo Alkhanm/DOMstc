@@ -63,7 +63,8 @@ export default function ProductNew() {
 
   return (
     <View style={styles.container}>
-      <AlkBarcodeReader setValue={setBarcode} style={styles.barcode}/>
+      {/* style={styles.barcode} */}
+      <AlkBarcodeReader setValue={setBarcode} />
       <View style={[styles.card, styles.cardFields]}>
         <ScrollView contentContainerStyle={styles.scrollContentInfos}>
           {product.imageURL && <Image source={{ uri: product.imageURL }} style={styles.img} />}
@@ -85,9 +86,9 @@ export default function ProductNew() {
         </ScrollView>
       </View>
       <View style={[styles.card, styles.cardActions]}>
-        <AlkButton propStyle={styles.action} onPress={handlerSave}
+        <AlkButton style={styles.action} onPress={handlerSave}
           children={<Text>Salvar</Text>} />
-        <AlkButton propStyle={styles.action} onPress={() => { }}
+        <AlkButton style={styles.action} onPress={() => { }}
           children={<Text>Cancelar</Text>} />
       </View>
 
