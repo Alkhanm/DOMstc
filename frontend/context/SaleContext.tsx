@@ -10,10 +10,10 @@ const SaleContext = React.createContext({} as contextType);
 
 export const SaleContextProvider: React.FC = ({ children }) => {
 
-  const [sales, setSales] = useState({} as ISale[])
+  const [sales, setSales] = useState<ISale[]>([])
 
-  const addSales = (sales: ISale[]) => {
-    setSales(sales)
+  const addSales = (newSales: ISale[]) => {
+    setSales([...sales, ...newSales])
   }
 
 

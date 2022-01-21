@@ -28,11 +28,10 @@ public class ProductCreator {
         return Product
                 .builder()
                 .id(withId ? id : null)
-                .name("Produto test")
                 .brand("Testante")
                 .purchasePrice(price)
                 .salePrice(price * new Random().nextDouble(3))
-                .acquisitionDate(LocalDate.now().toString())
+                .purchaseDate(LocalDate.now())
                 .build();
     }
 

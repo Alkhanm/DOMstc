@@ -1,17 +1,15 @@
-import { useNavigation } from "@react-navigation/native";
 import { Image, ScrollView, StyleSheet } from 'react-native';
 import ColorsCss from "../../constants/Colors.css";
 import { useProductContext } from "../../context/ProductContext";
 import { IProduct } from "../../domain/interfaces/IProduct";
+import { ProductEditScreenProp } from "../../navigation/types";
 import { AlkButton } from "../widgets/AlkButton";
 import { AlkInput } from "../widgets/AlkInput";
 import { Text, View } from '../widgets/Themed';
 
+export const ProductEdit: React.FC<ProductEditScreenProp> = ({ route }) => {
+  const code = route.params.code
 
-export const ProductEdit = () => {
-  const { getState } = useNavigation();
-  const { index, routes } = getState()
-  const code = routes[index].params?.code
   const { products } = useProductContext()
   const product: IProduct = products.find(p => p.code === code) || {} as IProduct
 
@@ -19,7 +17,7 @@ export const ProductEdit = () => {
     <View style={styles.container}>
       <Text style={styles.title}>{product.description}</Text>
       <View style={styles.content}>
-        <Image source={{ uri: product?.imageURL }} style={styles.img} />
+        <Image source={{ uri: product?.imageUrl }} style={styles.img} />
         <ScrollView style={styles.scrollInfos}>
           <AlkInput placeholder="Código" value={String(product.code)} icon="barcode" />
           <AlkInput value="Fabricante" placeholder={String(product.company)} icon="barcode" />
@@ -33,12 +31,12 @@ export const ProductEdit = () => {
           <AlkInput placeholder="Preço de compra" value={`R$${product.purchasePrice}`} icon="wallet-outline" />
           <AlkInput placeholder="Preço de venda" value={`R$${product.salePrice}`} icon="wallet-plus" />
         </ScrollView>
-        <View style={styles.actions}>
-          <AlkButton propStyle={styles.action} onPress={() => { }}
-            children={<Text>Salvar</Text>} />
-          <AlkButton propStyle={styles.action} onPress={() => { }}
-            children={<Text>Cancelar</Text>} />
-        </View>
+      </View>
+      <View style={styles.actions}>
+        <AlkButton style={styles.action} onPress={() => { }}
+          children={<Text>Salvar</Text>} />
+        <AlkButton style={styles.action} onPress={() => { }}
+          children={<Text>Cancelar</Text>} />
       </View>
     </View>
   );
@@ -48,7 +46,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 15
   },
   title: {
     fontSize: 20,
@@ -56,8 +53,8 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   },
   content: {
-    flex: 1,
-    alignItems: "center",
+    flex: 8,
+    margin: 15
   },
   scrollInfos: {
     height: "70%",
@@ -72,17 +69,15 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100
   },
+  actions: {
+    flex: 1.1,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
   action: {
     width: "45%",
-    height: "100%",
+    minHeight: 40,
   },
-  actions: {
-    flex: 1,
-    width: "100%",
-    marginHorizontal: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingTop: 5,
-  }
 });
 

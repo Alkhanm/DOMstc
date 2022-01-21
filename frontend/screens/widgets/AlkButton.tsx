@@ -4,9 +4,10 @@ import Colors from "../../constants/Colors.css";
 
 interface MvButtonProps extends TouchableOpacityProps {
   children: React.ReactNode;
+  disabled?: boolean;
 }
 
-export const AlkButton = ({ children, ...rest }: MvButtonProps) => {
+export const AlkButton = ({ disabled, children, ...rest }: MvButtonProps) => {
   return (
     <TouchableOpacity  {...rest} style={[styles.button, rest.style]} >
       {children}

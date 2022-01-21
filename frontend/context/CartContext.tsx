@@ -8,6 +8,7 @@ interface contextType {
   add: (product: IProduct, qnt?: number) => void;
   reduce: (product: IProduct, qnt?: number) => void;
   remove: (product: IProduct) => void;
+  removeAll: () => void;
 }
 
 const CartContext = React.createContext({} as contextType);
@@ -41,8 +42,12 @@ export const CartContextProvider: React.FC = ({ children }) => {
     setItems([...newItems])
   }
 
+  function removeAll(){
+    setItems([])
+  }
+
   return (
-    <CartContext.Provider value={{ items, add, reduce, remove }} >
+    <CartContext.Provider value={{ items, add, reduce, remove, removeAll }} >
       {children}
     </CartContext.Provider>
   );

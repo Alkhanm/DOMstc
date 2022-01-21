@@ -10,11 +10,12 @@ import { Text, View } from "./Themed";
 
 interface AlkBarcodeReaderProps {
     setValue: (value: string) => void;
+    VisibleElement?: React.FC;
     onBarCodeScanned?: Function;
 }
 
 
-export const AlkBarcodeReader: React.FC<AlkBarcodeReaderProps> = ({ setValue, onBarCodeScanned }) => {
+export const AlkBarcodeReader: React.FC<AlkBarcodeReaderProps> = ({ setValue, onBarCodeScanned, children }) => {
     const [barcodeScanVisibility, setBarcodeScanVisibility] = useState(false);
     const [code, setCode] = useState("");
 
@@ -28,19 +29,23 @@ export const AlkBarcodeReader: React.FC<AlkBarcodeReaderProps> = ({ setValue, on
         if (!barcodeScanVisibility && onBarCodeScanned) onBarCodeScanned();
     }, [code, barcodeScanVisibility])
 
+    const ButtonOpenScanComp = () => (<>{children ?
+        children
+        :
+        <TouchableOpacity>
+            <View style={styles.scan}>
+                <MaterialCommunityIcons name="barcode-scan" style={styles.barcodeIcon} />
+                <Text style={styles.barcodeTitle}>Ler código</Text>
+            </View>
+            <Text style={styles.barcodeText}>Clique aqui para preencher os campos automanticamente</Text>
+        </TouchableOpacity>
+    }</>)
+
     return (
         <AlkModal
             width={100}
             height={100}
-            VisibleElement={() => (
-                <TouchableOpacity>
-                    <View style={styles.scan}>
-                        <MaterialCommunityIcons name="barcode-scan" style={styles.barcodeIcon} />
-                        <Text style={styles.barcodeTitle}>Ler código</Text>
-                    </View>
-                    <Text style={styles.barcodeText}>Clique aqui para preencher os campos automanticamente</Text>
-                </TouchableOpacity>
-            )}
+            VisibleElement={ButtonOpenScanComp}
             children={
                 <>
                     <BarCodeScanner onBarCodeScanned={handlerBarCodeScanned} style={StyleSheet.absoluteFillObject} />

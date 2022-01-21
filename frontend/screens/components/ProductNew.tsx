@@ -1,32 +1,28 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { BarCodeEvent, BarCodeScanner } from 'expo-barcode-scanner';
+import { useNavigation } from "@react-navigation/native";
+import { BarCodeScanner } from 'expo-barcode-scanner';
 import React, { useEffect, useState } from 'react';
-import { Dimensions, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import ColorsCss from "../../constants/Colors.css";
 import LayoutCss from "../../constants/Layout.css";
-import { ProductCreator } from "../../domain/functions/ProductFunctions";
-import { IProduct, tCompany } from "../../domain/interfaces/IProduct";
+import { eCategory, eCompany, IProduct } from "../../domain/interfaces/IProduct";
 import { AlkBarcodeReader } from "../widgets/AlkBarcodeReader";
 import { AlkButton } from "../widgets/AlkButton";
 import { AlkInput } from "../widgets/AlkInput";
 import { Text, View } from "../widgets/Themed";
+
+//TODO: regex para formatar os campos númericos (retirar virgulas, espaços em brancos, etc)
 export default function ProductNew() {
-  //TODO: regex para formatar os campos númericos (retirar virgulas, espaços em brancos, etc)
-
-  const [barcodeScanVisibility, setBarcodeScanVisibility] = useState(false)
-
+  const Navigation = useNavigation()
   const [product, setProduct] = useState<IProduct>({} as IProduct)
-
-  const [company, setCompany] = useState<tCompany | string>("")
-  const [brand, setBrand] = useState<string>("")
   const [description, setDescription] = useState<string>("");
-  const [purchaseDate, setPurchaseDate] = useState<string>("")
+  const [category, setCategory] = useState<eCategory>("" as eCategory)
+  const [brand, setBrand] = useState<string>("")
+  const [company, setCompany] = useState<eCompany>("" as eCompany)
   const [purchasePrice, setPurchasePrice] = useState<string>("")
   const [salePrice, setSalePrice] = useState<string>("")
   const [barcode, setBarcode] = useState<string>("")
   const [quantity, setQuantity] = useState<string>("")
-  const [volume, setVolume] = useState<string>("")
-  const [weight, setWeight] = useState<string>("")
   const [unit, setUnit] = useState<string>("")
 
 
@@ -38,17 +34,20 @@ export default function ProductNew() {
   }, []);
 
   const fillFields = (): IProduct => {
-    return ProductCreator(
-      description,
-      purchaseDate,
+    return {
+      id: 0,
       brand,
-      Number(purchasePrice),
-      Number(salePrice),
-      Number(barcode),
-      Number(weight),
-      Number(volume),
-      Number(quantity),
-      Number(unit))
+      category,
+      company,
+      imageUrl: "",
+      variation: "",
+      description,
+      code: Number(barcode),
+      quantity: Number(quantity),
+      salePrice: Number(salePrice),
+      purchasePrice: Number(purchasePrice),
+      purchaseDate: new Date().toDateString(),
+    }
   }
 
 
@@ -56,48 +55,93 @@ export default function ProductNew() {
     console.log(fillFields())
   }
 
-  function handleBarCodeScanned({ data }: BarCodeEvent) {
-    setBarcode(data);
-    setBarcodeScanVisibility(!barcodeScanVisibility)
-  };
-
   return (
     <View style={styles.container}>
-      {/* style={styles.barcode} */}
-      <AlkBarcodeReader setValue={setBarcode} />
-      <View style={[styles.card, styles.cardFields]}>
+      <View style={styles.content}>
         <ScrollView contentContainerStyle={styles.scrollContentInfos}>
-          {product.imageURL && <Image source={{ uri: product.imageURL }} style={styles.img} />}
+          {product.imageUrl && <Image source={{ uri: product.imageUrl }} style={styles.img} />}
+          <Text style={styles.imgAddText}>Adicionar imagem</Text>
           <TouchableOpacity style={styles.imgAdd}>
-            <Text style={styles.imgAddText}>Adicionar imagem</Text>
             <MaterialCommunityIcons name="image-multiple-outline" style={styles.icon} />
           </TouchableOpacity>
-          <AlkInput placeholder="Descrição" value={description} onChangeText={setDescription} icon="text" />
-          <AlkInput placeholder="Código" value={barcode} keyboardType="numeric" onChangeText={setBarcode} icon="barcode" />
-          <AlkInput placeholder="Fabricante" value={company} onChangeText={setCompany} icon="factory" />
-          <AlkInput placeholder="Marca" value={brand} onChangeText={setBrand} icon="bag-carry-on" />
-          <AlkInput placeholder="Quantidade" value={quantity} keyboardType="numeric" onChangeText={setQuantity} icon="warehouse" />
-          <AlkInput placeholder="Unidade por produto" value={unit} keyboardType="numeric" onChangeText={setUnit} icon="warehouse" />
-          <AlkInput placeholder="Volume (ml)" value={volume} keyboardType="numeric" onChangeText={setVolume} icon="water" />
-          <AlkInput placeholder="Peso (gm)" value={weight} keyboardType="numeric" onChangeText={setWeight} icon="weight" />
-          <AlkInput placeholder="Comprado em" value={purchaseDate} onChangeText={setPurchaseDate} icon="calendar" />
-          <AlkInput placeholder="Preço de compra (R$)" value={purchasePrice} keyboardType="numeric" onChangeText={setPurchasePrice} icon="wallet-outline" />
-          <AlkInput placeholder="Preço de venda (R$)" value={salePrice} keyboardType="numeric" onChangeText={setSalePrice} icon="wallet-plus" />
+          <AlkInput
+            placeholder="Código"
+            value={barcode}
+            onChangeText={setBarcode}
+            keyboardType="number-pad"
+            icon="barcode" >
+            <AlkBarcodeReader setValue={setBarcode}>
+              <TouchableOpacity>
+                <MaterialCommunityIcons name="barcode-scan" size={25} color={ColorsCss.grey.c} />
+              </TouchableOpacity>
+            </AlkBarcodeReader>
+          </AlkInput>
+          <AlkInput
+            placeholder="Descrição"
+            value={description}
+            onChangeText={setDescription}
+            icon="text" />
+          <AlkInput
+            placeholder="Categoria"
+            value={category}
+            isInputText={false}
+            // onChangeText={setCategory}
+            icon="bag-carry-on" />
+          <AlkInput
+            placeholder="Marca"
+            value={brand}
+            onChangeText={setBrand}
+            icon="bag-carry-on" />
+          <AlkInput
+            placeholder="Fabricante"
+            value={company}
+            onChangeText={(e) => console.log(e)}
+            icon="factory" />
+          <AlkInput
+            placeholder="Quantidade"
+            value={quantity}
+            onChangeText={setQuantity}
+            keyboardType="numeric"
+            icon="warehouse" />
+          <View style={{ flexDirection: "row" }}>
+            <AlkInput
+              style={{ width: "50%" }}
+              placeholder="Preço de compra"
+              value={purchasePrice}
+              onChangeText={setPurchasePrice}
+              keyboardType="numeric"
+              icon="wallet-outline" />
+            <AlkInput
+              style={{ width: "50%" }}
+              placeholder="Preço de venda"
+              value={salePrice}
+              onChangeText={setSalePrice}
+              keyboardType="numeric"
+              icon="wallet-plus" />
+          </View>
+          <View style={{ flex: 1, marginBottom: 25 }}>
+            <AlkInput
+              placeholder="Unidade por produto (opcional)"
+              value={unit}
+              keyboardType="numeric"
+              onChangeText={setUnit}
+              icon="warehouse" />
+          </View>
         </ScrollView>
       </View>
-      <View style={[styles.card, styles.cardActions]}>
-        <AlkButton style={styles.action} onPress={handlerSave}
-          children={<Text>Salvar</Text>} />
-        <AlkButton style={styles.action} onPress={() => { }}
-          children={<Text>Cancelar</Text>} />
+      <View style={styles.actions}>
+        <AlkButton style={styles.action} onPress={handlerSave}>
+          <Text>Salvar</Text>
+        </AlkButton>
+        <AlkButton style={styles.action} onPress={Navigation.goBack}>
+          <Text>Cancelar</Text>
+        </AlkButton>
       </View>
-
     </View>
   );
 
 }
 const isDarkTheme = LayoutCss.isDarkTheme
-const { height } = Dimensions.get("screen");
 
 const styles = StyleSheet.create({
   container: {
@@ -111,13 +155,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: ColorsCss.grey.darken
   },
-  cardFields: {
+  content: {
     flex: 8,
   },
-  cardActions: {
+  actions: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-around"
+  },
+  action: {
+    width: "45%",
+    height: "75%",
+    minHeight: 40
   },
   barcode: {
     borderWidth: 1,
@@ -138,15 +187,13 @@ const styles = StyleSheet.create({
   },
   imgAddText: {
     color: ColorsCss.grey.c,
-    fontSize: 16,
+    fontSize: 14,
+    textTransform: "uppercase",
     margin: 5,
     fontWeight: "bold"
   },
   scrollContentInfos: {
-    alignItems: "center"
+    alignItems: "center",
   },
-  action: {
-    width: "45%",
-    height: "75%",
-  },
+
 });

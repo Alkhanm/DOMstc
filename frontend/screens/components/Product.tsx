@@ -18,7 +18,7 @@ export function Product({ product, actions = true }: { product: IProduct, action
             </View>
             <View style={styles.content}>
                 <View>
-                    <Image source={{ uri: product.imageURL }} style={styles.img} />
+                    <Image source={{ uri: product.imageUrl }} style={styles.img} />
                 </View>
                 <View style={styles.infos}>
                     <View style={[styles.info]}>
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
     },
     action: {
-        height: 30,
+        height: 35,
         width: "45%",
     },
     actions: {

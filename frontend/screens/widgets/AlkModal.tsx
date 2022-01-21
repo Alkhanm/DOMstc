@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Dimensions, Modal,
     ModalProps, Pressable, StyleSheet, View, ViewProps
@@ -11,12 +11,17 @@ import * as Themed from "./Themed";
 interface AlkModalShortProps extends ModalProps {
     children: React.ReactNode;
     VisibleElement?: React.FC<ViewProps>;
+    isVisible?: boolean;
     width?: NumericRange<101>;
     height?: NumericRange<101>;
 }
 
-export const AlkModal: React.FC<AlkModalShortProps> = ({ children, VisibleElement, width, height, ...rest }) => {
-    const [visible, setVisible] = useState(false);
+export const AlkModal: React.FC<AlkModalShortProps> = ({ children, VisibleElement, width, height, isVisible = false }) => {
+    const [visible, setVisible] = useState(isVisible);
+
+    useEffect(() => {
+        setVisible(isVisible)
+    }, [isVisible])
 
     return (
         <>

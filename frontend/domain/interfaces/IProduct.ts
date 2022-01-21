@@ -28,8 +28,8 @@ export interface IProduct {
     purchaseDate: string;
     purchasePrice: number;
     salePrice: number;
-    imageURL: string;
-    volume: number | 0;
-    weight: number | 0;
-    unit: number | 1;
+    imageUrl: string;
+    volume?: number | 0;
+    weight?: number | 0;
+    unit?: number | 1;
 }

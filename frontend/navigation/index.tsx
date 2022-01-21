@@ -11,6 +11,7 @@ import * as React from 'react';
 import { ColorSchemeName, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../constants/Colors.css';
 import useColorScheme from '../hooks/useColorScheme';
+import { RootStackParamList, RootTabParamList, RootTabScreenProps } from "../navigation/types";
 import { ProductDetail } from "../screens/components/ProductDetail";
 import { ProductEdit } from "../screens/components/ProductEdit";
 import ProductNew from '../screens/components/ProductNew';
@@ -18,15 +19,12 @@ import { Sale } from "../screens/components/Sale";
 import Home from '../screens/HomeScreen';
 import { ProductsScreen } from '../screens/ProductsScreen';
 import { Text } from "../screens/widgets/Themed";
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
 
   return (
-    <NavigationContainer
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-    >
+    <NavigationContainer theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <RootNavigator />
     </NavigationContainer>
   );

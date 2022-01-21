@@ -6,6 +6,7 @@ import { ViewProps } from "./Themed";
 
 interface AlkSwipperCardProps {
     defaultHeight: number;
+    expanded?: boolean;
     children?: React.ReactNode;
     HeaderComp?: React.FC<ViewProps>;
     MiddleComp?: React.FC<ViewProps>;
@@ -14,10 +15,18 @@ interface AlkSwipperCardProps {
 
 UIManager.setLayoutAnimationEnabledExperimental(true);
 
-export const AlkSwipperCard: React.FC<AlkSwipperCardProps> = ({ defaultHeight, HeaderComp, MiddleComp, BottomComp, children }) => {
+export const AlkSwipperCard: React.FC<AlkSwipperCardProps> = ({
+    defaultHeight,
+    HeaderComp,
+    MiddleComp,
+    BottomComp,
+    children,
+    expanded,
+}) => {
     const heightScrenn = Dimensions.get("window").height;
-    const [height, setHeight] = useState(defaultHeight);
+    const expandedHeight = heightScrenn * 0.92;
 
+    const [height, setHeight] = useState(expanded ? expandedHeight : defaultHeight);
     const [showMiddleComp, setShowMidlerComp] = useState<boolean>()
 
     const handlerTouchMove = (e: GestureResponderEvent) => {
@@ -27,8 +36,7 @@ export const AlkSwipperCard: React.FC<AlkSwipperCardProps> = ({ defaultHeight, H
     };
 
     const handlerTouchOut = () => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
-        if (height > (heightScrenn / 2.5)) setHeight(heightScrenn * 0.92);
+        if (height > (heightScrenn / 2.5)) setHeight(expandedHeight);
         else setHeight(defaultHeight)
     }
 
@@ -36,6 +44,12 @@ export const AlkSwipperCard: React.FC<AlkSwipperCardProps> = ({ defaultHeight, H
         if (height > defaultHeight) setShowMidlerComp(true)
         else setShowMidlerComp(false)
     }, [height])
+
+    useEffect(() => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+        if (expanded) setHeight(expandedHeight);
+        else setHeight(defaultHeight)
+    }, [expanded])
 
     return (
         <View

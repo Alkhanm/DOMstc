@@ -39,7 +39,7 @@ export const ProductSaleCard: React.FC<ProductSaleCardProps> = ({ product }) => 
                 </Text>
             </View>
             <View style={styles.content}>
-                <Image source={{ uri: product.imageURL }} style={styles.img} />
+                <Image source={{ uri: product.imageUrl }} style={styles.img} />
                 <View style={styles.infos}>
                     <AlkInfo
                         label="Preço"

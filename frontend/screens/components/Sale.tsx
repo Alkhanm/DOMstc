@@ -6,7 +6,10 @@ import ColorsCss from "../../constants/Colors.css";
 import LayoutCss from "../../constants/Layout.css";
 import { useCartContext } from "../../context/CartContext";
 import { useProductContext } from "../../context/ProductContext";
+import { useSaleContext } from "../../context/SaleContext";
+import { createSale } from "../../domain/functions/SaleFunctions";
 import { IProduct, tProductProperty } from "../../domain/interfaces/IProduct";
+import { ISale } from "../../domain/interfaces/ISale";
 import { AlkBarcodeReader } from "../widgets/AlkBarcodeReader";
 import { AlkButton } from "../widgets/AlkButton";
 import { AlkInfo } from "../widgets/AlkInfo";
@@ -20,11 +23,13 @@ import { ShoppingCart } from "./ShoppingCart";
 export const Sale: React.FC = () => {
     const ProductContext = useProductContext();
     const CartContext = useCartContext();
+    const SaleContext = useSaleContext()
 
     const [order, setOrder] = useState<tProductProperty>("purchaseDate")
 
     const [orderedProducts, setOrderedProducts] = useState<IProduct[]>(ProductContext.products)
     const [search, setSearch] = useState<string>();
+    const [expandedCart, setExpandedCart] = useState(false)
 
     const quantity = useMemo(() =>
         CartContext.items
@@ -50,7 +55,16 @@ export const Sale: React.FC = () => {
     }
 
     function handlerSale() {
-        console.log(CartContext.items)
+        if (expandedCart) {
+            const sales: ISale[] = CartContext.items
+                .map(({ product, quantity }) => createSale(product, quantity));
+            SaleContext.addSales(sales)
+            CartContext.removeAll()
+            Alert.alert("Vendas registradas", `${quantity} novas vendas registradas`);
+            setExpandedCart(false)
+        } else {
+            setExpandedCart(true)
+        }
     }
 
     return (
@@ -83,33 +97,39 @@ export const Sale: React.FC = () => {
 
             </View>
             {Boolean(CartContext.items.length) &&
-                <AlkSwipperCard
-                    defaultHeight={125}
-                    HeaderComp={_ => (<>
-                        <AlkInfo
-                            label="Valor"
-                            value={`R$ ${totalPrice}`}
-                            style={styles.salesBoxCardInfo}
-                            textStyle={appCss.infoText}
-                            labelStyle={styles.salesBoxCardInfoLabel} />
-                        <AlkInfo
-                            label="Quantidade"
-                            value={`${CartContext.items.length} (${quantity})`}
-                            style={styles.salesBoxCardInfo}
-                            textStyle={appCss.infoText}
-                            labelStyle={styles.salesBoxCardInfoLabel} />
-                    </>)}
-                    MiddleComp={_ => <ShoppingCart />}
-                    BottomComp={_ =>
-                        <TouchableOpacity
-                            onPress={handlerSale}
-                            activeOpacity={0.85}
-                            style={styles.salesButton}
-                        >
-                            <Text style={styles.salesButtonText}>Registrar Venda</Text>
-                        </TouchableOpacity>
-                    }
-                />
+                <>
+                    <AlkSwipperCard
+                        expanded={expandedCart}
+                        defaultHeight={125}
+                        HeaderComp={_ => (<>
+                            <AlkInfo
+                                label="Valor"
+                                value={`R$ ${totalPrice}`}
+                                style={styles.salesBoxCardInfo}
+                                textStyle={appCss.infoText}
+                                labelStyle={styles.salesBoxCardInfoLabel} />
+                            <AlkInfo
+                                label="Quantidade"
+                                value={`${CartContext.items.length} (${quantity})`}
+                                style={styles.salesBoxCardInfo}
+                                textStyle={appCss.infoText}
+                                labelStyle={styles.salesBoxCardInfoLabel} />
+                        </>)}
+                        MiddleComp={_ => <ShoppingCart />}
+                        BottomComp={_ =>
+                            <TouchableOpacity
+                                onPress={handlerSale}
+                                activeOpacity={0.85}
+                                style={styles.salesButton}
+                            >
+                                <Text style=
+                                    {styles.salesButtonText}>{expandedCart ? "confirmar" : "registrar Venda"}
+                                </Text>
+                            </TouchableOpacity>
+                        }
+                    />
+
+                </>
             }
         </View >
     )

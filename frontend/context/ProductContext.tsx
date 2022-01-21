@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ProductsDumb } from "../domain/dumb";
+import React, { useEffect, useState } from 'react';
+import { ProductHttp } from "../domain/api/ProductsHtpp";
 import { IProduct } from "../domain/interfaces/IProduct";
 
 interface contextType {
@@ -17,9 +17,10 @@ export const ProductContextProvider: React.FC = ({ children }) => {
     setProducts(products)
   }
 
-  useState(() => {
-    addProducts(ProductsDumb)
-  })
+  useEffect(() => {
+    ProductHttp.fetch()
+      .then(addProducts)
+  }, [])
 
   return (
     <ProductContext.Provider value={{ products, addProducts }} >

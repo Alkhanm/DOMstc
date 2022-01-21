@@ -1,14 +1,46 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useMemo } from "react";
 import { StyleSheet } from 'react-native';
 import { appCss } from "../constants/App.css";
 import ColorsCss from "../constants/Colors.css";
-import { RootTabScreenProps } from '../types';
+import { useSaleContext } from "../context/SaleContext";
+import { isToday } from "../domain/functions/DateFunctions";
+import { RootTabScreenProps } from '../navigation/types';
 import { AlkButton } from "./widgets/AlkButton";
 import { AlkCircularProgress } from "./widgets/AlkProgressCircle";
 import { Text, View } from './widgets/Themed';
 
 
 export default function TabHome({ navigation }: RootTabScreenProps<'TabHome'>) {
+  const SaleContext = useSaleContext();
+
+  const currentSales = useMemo(() => {
+    return SaleContext.sales
+      .filter(({ date }) => isToday(date))
+  }, [SaleContext.sales])
+
+  const balance = useMemo(() => {
+    return currentSales
+      .map(s => s.product.salePrice * s.quantity)
+      .reduce((s1, s2) => s1 + s2, 0)
+  }, [currentSales])
+
+  const salesQnt = useMemo(() => {
+    return currentSales
+      .map(({ quantity }) => quantity)
+      .reduce((s1, s2) => s1 + s2, 0)
+  }, [currentSales])
+
+  const cost = useMemo(() => {
+    return currentSales
+      .map(s => s.product.purchasePrice * s.quantity)
+      .reduce((s1, s2) => s1 + s2, 0)
+  }, [currentSales]);
+
+  const profit = useMemo(() => balance - cost, [currentSales])
+
+  const profitPorcent = useMemo(() => (profit / balance * 100 || 0), [currentSales])
+
   return (
     <View style={styles.container}>
       <View style={[appCss.card, styles.topSection]}>
@@ -19,48 +51,36 @@ export default function TabHome({ navigation }: RootTabScreenProps<'TabHome'>) {
         <View style={styles.topSectionSub}>
           <View style={styles.topSectionSubInfo}>
             <Text style={appCss.infoText2}>Vendas</Text>
-            <Text>0</Text>
+            <Text>{salesQnt}</Text>
           </View>
           <View style={styles.topSectionSubInfo}>
             <Text style={appCss.infoText2}>Saldo</Text>
-            <Text>R$ 00,00</Text>
+            <Text>R$ {balance.toFixed(2)}</Text>
           </View>
         </View>
       </View>
       <View style={[appCss.card, styles.middleSection]}>
-        <AlkCircularProgress percent={55} label="Margem de lucro" />
+        <AlkCircularProgress percent={Number.parseFloat(profitPorcent.toFixed(2))} label="Margem de lucro" />
         <View style={styles.middleSectionValues}>
-          <View style={styles.middleSectionProfitValue}>
-            <Text style={appCss.infoText4}>Lucro bruto</Text>
-            <Text style={appCss.infoText3}>R$00,00</Text>
+          <View style={styles.middleSectionGrossProfit}>
+            <Text style={appCss.infoText4}>Lucro</Text>
+            <Text style={appCss.infoText3}>R$ {profit.toFixed(2)}</Text>
           </View>
-          <View style={styles.middleSectionCostValue}>
+          <View style={styles.middleSectionCost}>
             <Text style={appCss.infoText4}>Custo</Text>
-            <Text style={appCss.infoText3}>R$00,00</Text>
+            <Text style={appCss.infoText3}>R$ {cost.toFixed(2)}</Text>
           </View>
         </View>
       </View>
       <View style={[appCss.card, styles.bottomSection]}>
-        <AlkButton
-          onPress={() => navigation.navigate("Sale")}
-          style={styles.saleButton}
-          children={
-            <>
-              <MaterialCommunityIcons name="sale" size={25} color={"white"} />
-              <Text style={appCss.actionText}>Vendas</Text>
-            </>
-          }
-        />
-         <AlkButton
-          onPress={() => {}}
-          style={styles.saleButton}
-          children={
-            <>
-              <MaterialCommunityIcons name="alert-circle-check-outline" size={25} color={"white"} />
-              <Text style={appCss.actionText}>Anuncios</Text>
-            </>
-          }
-        />
+        <AlkButton onPress={() => navigation.navigate("Sale")} style={styles.saleButton}>
+          <MaterialCommunityIcons name="sale" size={25} color={"white"} />
+          <Text style={appCss.actionText}>Vendas</Text>
+        </AlkButton>
+        <AlkButton style={styles.saleButton}>
+          <MaterialCommunityIcons name="alert-circle-check-outline" size={25} color={"white"} />
+          <Text style={appCss.actionText}>Anuncios</Text>
+        </AlkButton>
       </View>
     </View>
   );
@@ -96,28 +116,29 @@ const styles = StyleSheet.create({
     flex: 7.5,
     alignItems: "center",
     flexDirection: "row",
+    paddingHorizontal: 15,
   },
   middleSectionValues: {
     flex: 1,
   },
-  middleSectionProfitValue: {
+  middleSectionGrossProfit: {
     justifyContent: "center",
     height: "15%",
     width: "95%",
     margin: 10,
     padding: 10,
-    borderLeftWidth: 5,
+    borderLeftWidth: 8,
     borderLeftColor: ColorsCss.blue.darken2,
     backgroundColor: ColorsCss.grey.darken4,
     borderRadius: 15
   },
-  middleSectionCostValue: {
+  middleSectionCost: {
     justifyContent: "center",
     height: "15%",
     width: "95%",
     margin: 10,
     padding: 5,
-    borderLeftWidth: 5,
+    borderLeftWidth: 8,
     borderLeftColor: ColorsCss.red.darken,
     backgroundColor: ColorsCss.grey.darken4,
     borderRadius: 15,

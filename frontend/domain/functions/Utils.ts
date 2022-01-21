@@ -4,6 +4,12 @@ function textSizeLimiter(value: string | number, limiter: number) {
     return text;
 }
 
+function getCommonDate(date: Date){
+    const month = "" + date.getUTCMonth() + 1
+    const day = date.getDate()
+    const year = date.getFullYear()
+    return `${day}/${month}/${year}`
+}
  function getProperty<T, K extends keyof T>(o: T, propertyName: K): T[K] {
     return o[propertyName]
 }
@@ -11,5 +17,6 @@ function textSizeLimiter(value: string | number, limiter: number) {
 
 export {
     textSizeLimiter,
-    getProperty
+    getProperty,
+    getCommonDate
 };

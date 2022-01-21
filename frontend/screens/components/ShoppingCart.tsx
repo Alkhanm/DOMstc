@@ -16,7 +16,7 @@ export const ShoppingCart: React.FC = () => {
             keyExtractor={({ product }) => product.code.toString()}
             renderItem={({ item: { product, quantity } }) => (
                 <View style={styles.container}>
-                    <Image style={{ width: "10%" }} source={{ uri: product.imageURL, width: 50, height: 50 }} />
+                    <Image style={{ width: "10%" }} source={{ uri: product.imageUrl, width: 50, height: 50 }} />
                     <View key={product.id} style={styles.infos}>
                         <AlkInfo value={product.description} style={styles.info} textStyle={{ fontSize: 16 }} />
                         <AlkInfo value={`R$ ${product.salePrice}`} style={styles.info} textStyle={{ fontSize: 14 }} />
