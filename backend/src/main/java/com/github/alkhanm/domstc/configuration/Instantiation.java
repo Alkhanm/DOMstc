@@ -4,10 +4,11 @@ import com.github.alkhanm.domstc.domain.Category;
 import com.github.alkhanm.domstc.domain.Product;
 import com.github.alkhanm.domstc.repositories.ProductRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
-//@Configuration
+@Configuration
 public class Instantiation implements CommandLineRunner {
     private final ProductRepository productRepository;
 

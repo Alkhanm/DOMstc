@@ -1,29 +1,55 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { ScrollView } from "react-native-gesture-handler";
+import { appCss } from "../../constants/App.css";
 import ColorsCss from "../../constants/Colors.css";
 import LayoutCss from "../../constants/Layout.css";
+import { ProductHttp } from "../../domain/api/ProductsHtpp";
+import { getCategory, getCompany } from "../../domain/functions/ProductFunctions";
+import { formatMonetaryValue } from "../../domain/functions/Utils";
 import { eCategory, eCompany, IProduct } from "../../domain/interfaces/IProduct";
 import { AlkBarcodeReader } from "../widgets/AlkBarcodeReader";
 import { AlkButton } from "../widgets/AlkButton";
 import { AlkInput } from "../widgets/AlkInput";
+import { AlkModal } from "../widgets/AlkModal";
+import { AlkRadioButton, AlkRadioButtonItem } from "../widgets/AlkRadioButton";
 import { Text, View } from "../widgets/Themed";
+
+
+const categoryItems: AlkRadioButtonItem[] = Object.keys(eCategory).map(e => ({
+  text: getCategory(e),
+  value: e
+}))
+
+const companyItems: AlkRadioButtonItem[] = Object.keys(eCompany).map(e => ({
+  text: getCompany(e),
+  value: e
+}))
 
 //TODO: regex para formatar os campos númericos (retirar virgulas, espaços em brancos, etc)
 export default function ProductNew() {
   const Navigation = useNavigation()
   const [product, setProduct] = useState<IProduct>({} as IProduct)
   const [description, setDescription] = useState<string>("");
-  const [category, setCategory] = useState<eCategory>("" as eCategory)
   const [brand, setBrand] = useState<string>("")
+  const [category, setCategory] = useState<eCategory>("" as eCategory)
   const [company, setCompany] = useState<eCompany>("" as eCompany)
-  const [purchasePrice, setPurchasePrice] = useState<string>("")
-  const [salePrice, setSalePrice] = useState<string>("")
+  const [purchasePriceText, setPurchasePriceText] = useState("0")
+  const [salePriceText, setSalePriceText] = useState("0")
   const [barcode, setBarcode] = useState<string>("")
   const [quantity, setQuantity] = useState<string>("")
   const [unit, setUnit] = useState<string>("")
+
+  const salePrice = useMemo(() => {
+    return formatMonetaryValue(salePriceText)
+  }, [salePriceText])
+
+  const purchasePrice = useMemo(() => {
+    return formatMonetaryValue(purchasePriceText)
+  }, [purchasePriceText])
 
 
   useEffect(() => {
@@ -33,26 +59,22 @@ export default function ProductNew() {
     })();
   }, []);
 
-  const fillFields = (): IProduct => {
-    return {
-      id: 0,
-      brand,
-      category,
-      company,
-      imageUrl: "",
-      variation: "",
-      description,
-      code: Number(barcode),
-      quantity: Number(quantity),
-      salePrice: Number(salePrice),
-      purchasePrice: Number(purchasePrice),
-      purchaseDate: new Date().toDateString(),
-    }
-  }
-
+  const fillFields = (): IProduct => ({
+    id: 0,
+    unit: 1,
+    volume: 0,
+    weight: 0,
+    brand, category, company, description, salePrice, purchasePrice,
+    imageUrl: "",
+    variation: "",
+    code: Number(barcode),
+    quantity: Number(quantity),
+    purchaseDate: new Date().toDateString(),
+  })
 
   function handlerSave() {
-    console.log(fillFields())
+    const product: IProduct = fillFields();
+    ProductHttp.create(product)
   }
 
   return (
@@ -62,7 +84,7 @@ export default function ProductNew() {
           {product.imageUrl && <Image source={{ uri: product.imageUrl }} style={styles.img} />}
           <Text style={styles.imgAddText}>Adicionar imagem</Text>
           <TouchableOpacity style={styles.imgAdd}>
-            <MaterialCommunityIcons name="image-multiple-outline" style={styles.icon} />
+            <MaterialCommunityIcons name="image-multiple-outline" style={styles.imgIcon} />
           </TouchableOpacity>
           <AlkInput
             placeholder="Código"
@@ -81,22 +103,47 @@ export default function ProductNew() {
             value={description}
             onChangeText={setDescription}
             icon="text" />
-          <AlkInput
-            placeholder="Categoria"
-            value={category}
-            isInputText={false}
-            // onChangeText={setCategory}
-            icon="bag-carry-on" />
+          <AlkModal
+            VisibleElement={() =>
+              <AlkInput
+                placeholder="Categoria"
+                editable={false}
+                value={category ? getCategory(category).toLowerCase() : ""}
+                icon="factory" >
+                <MaterialCommunityIcons name="arrow-right" size={22} color={ColorsCss.grey.c} />
+              </AlkInput>
+            }>
+            <Text style={appCss.subtitle2}>
+              Selecione a categoria
+            </Text>
+            <AlkRadioButton
+              onSelectChange={setCategory}
+              defaultSelect={category}
+              items={categoryItems} />
+          </AlkModal>
+          <AlkModal
+            VisibleElement={() =>
+              <AlkInput
+                placeholder="Fabricante"
+                value={getCompany(company)}
+                editable={false}
+                icon="factory" >
+                <MaterialCommunityIcons name="arrow-right" size={22} color={ColorsCss.grey.c} />
+              </AlkInput>
+            }>
+            <Text style={appCss.subtitle2}>
+              Selecione a fabricante
+            </Text>
+            <AlkRadioButton
+              onSelectChange={setCompany}
+              defaultSelect={company}
+              items={companyItems} />
+          </AlkModal>
           <AlkInput
             placeholder="Marca"
             value={brand}
             onChangeText={setBrand}
             icon="bag-carry-on" />
-          <AlkInput
-            placeholder="Fabricante"
-            value={company}
-            onChangeText={(e) => console.log(e)}
-            icon="factory" />
           <AlkInput
             placeholder="Quantidade"
             value={quantity}
@@ -107,15 +154,15 @@ export default function ProductNew() {
             <AlkInput
               style={{ width: "50%" }}
               placeholder="Preço de compra"
-              value={purchasePrice}
-              onChangeText={setPurchasePrice}
+              value={`R$ ${purchasePrice.toString()}`}
+              onChangeText={setPurchasePriceText}
               keyboardType="numeric"
               icon="wallet-outline" />
             <AlkInput
               style={{ width: "50%" }}
               placeholder="Preço de venda"
-              value={salePrice}
-              onChangeText={setSalePrice}
+              value={`R$ ${salePrice.toString()}`}
+              onChangeText={setSalePriceText}
               keyboardType="numeric"
               icon="wallet-plus" />
           </View>
@@ -137,7 +184,7 @@ export default function ProductNew() {
           <Text>Cancelar</Text>
         </AlkButton>
       </View>
-    </View>
+    </View >
   );
 
 }
@@ -146,17 +193,16 @@ const isDarkTheme = LayoutCss.isDarkTheme
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 20
-  },
-  card: {
-    flex: 1,
-    margin: 5,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: ColorsCss.grey.darken
   },
   content: {
     flex: 8,
+    margin: 15,
+    justifyContent: "space-around",
+  },
+  scrollContentInfos: {
+    alignItems: "center",
+    justifyContent: "center",
+    alignContent: "space-between",
   },
   actions: {
     flex: 1,
@@ -174,13 +220,13 @@ const styles = StyleSheet.create({
     margin: 5,
     padding: 5
   },
-  icon: {
+  imgIcon: {
     color: isDarkTheme ? "white" : "black",
-    fontSize: 58
+    fontSize: 48
   },
   img: {
-    width: 80,
-    height: 80
+    width: 60,
+    height: 60
   },
   imgAdd: {
     alignItems: "center"
@@ -192,8 +238,6 @@ const styles = StyleSheet.create({
     margin: 5,
     fontWeight: "bold"
   },
-  scrollContentInfos: {
-    alignItems: "center",
-  },
+
 
 });

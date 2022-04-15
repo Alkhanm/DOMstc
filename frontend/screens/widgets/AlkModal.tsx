@@ -20,7 +20,7 @@ export const AlkModal: React.FC<AlkModalShortProps> = ({ children, VisibleElemen
     const [visible, setVisible] = useState(isVisible);
 
     useEffect(() => {
-        setVisible(isVisible)
+        setVisible(isVisible);
     }, [isVisible])
 
     return (
@@ -51,7 +51,7 @@ export const AlkModal: React.FC<AlkModalShortProps> = ({ children, VisibleElemen
                 </View>
             </Modal>
             {VisibleElement &&
-                <View style={styles.visibleElement} onTouchStart={() => setVisible(true)}>
+                <View style={styles.visibleElement} onTouchEnd={() => setVisible(true)}>
                     <VisibleElement />
                 </View>
             }

@@ -16,7 +16,7 @@ export const ProductsDumb: IProduct[] = [
         "volume": 100,
         "weight": 0,
         "unit": 1,
-        "imageURL": "https://firebasestorage.googleapis.com/v0/b/domstc-814e0.appspot.com/o/IMG_20220107_124639.png?alt=media&token=8eed7bd1-902d-408f-95c2-b585e13ef61e"
+        "imageUrl": "https://firebasestorage.googleapis.com/v0/b/domstc-814e0.appspot.com/o/IMG_20220107_124639.png?alt=media&token=8eed7bd1-902d-408f-95c2-b585e13ef61e"
     },
     {
         "id": 11,
@@ -33,7 +33,7 @@ export const ProductsDumb: IProduct[] = [
         "volume": 300,
         "weight": 0,
         "unit": 1,
-        "imageURL": "https://firebasestorage.googleapis.com/v0/b/domstc-814e0.appspot.com/o/Shampoo_Ultra_Liso_Advance_Tec_605.webp?alt=media&token=dcb0f7f6-bcad-442a-9e36-d012ae295ae1"
+        "imageUrl": "https://firebasestorage.googleapis.com/v0/b/domstc-814e0.appspot.com/o/Shampoo_Ultra_Liso_Advance_Tec_605.webp?alt=media&token=dcb0f7f6-bcad-442a-9e36-d012ae295ae1"
     },
     {
         "id": 13,
@@ -50,7 +50,7 @@ export const ProductsDumb: IProduct[] = [
         "volume": 0,
         "weight": 90,
         "unit": 5,
-        "imageURL": "https://firebasestorage.googleapis.com/v0/b/domstc-814e0.appspot.com/o/72147_1_2.jpg?alt=media&token=d859cb63-539a-4ffb-89f9-efe53920f709"
+        "imageUrl": "https://firebasestorage.googleapis.com/v0/b/domstc-814e0.appspot.com/o/72147_1_2.jpg?alt=media&token=d859cb63-539a-4ffb-89f9-efe53920f709"
     },
     {
         "id": 113,
@@ -67,7 +67,7 @@ export const ProductsDumb: IProduct[] = [
         "volume": 80,
         "weight": 0,
         "unit": 5,
-        "imageURL": "https://firebasestorage.googleapis.com/v0/b/domstc-814e0.appspot.com/o/WhatsApp%20Image%202022-01-16%20at%2021.23.45.jpeg?alt=media&token=aa5d4b15-e269-48a6-9802-4144f3f31f01"
+        "imageUrl": "https://firebasestorage.googleapis.com/v0/b/domstc-814e0.appspot.com/o/WhatsApp%20Image%202022-01-16%20at%2021.23.45.jpeg?alt=media&token=aa5d4b15-e269-48a6-9802-4144f3f31f01"
     },
 
 ]

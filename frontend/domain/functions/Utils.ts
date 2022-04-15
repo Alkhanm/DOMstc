@@ -14,9 +14,19 @@ function getCommonDate(date: Date){
     return o[propertyName]
 }
 
+function formatMonetaryValue(value: string): number {
+    const formated = value.replace(/[^0-9]/g, "")
+    if (formated.length < 2) return Number(formated)
+    const lastTwoDigitsIndex = formated.length < 3 ? formated.length - 1 : formated.length - 2;
+    const subarray = formated.substring(0, lastTwoDigitsIndex)
+    const lastTwoDigits = "." + formated.substring(lastTwoDigitsIndex)
+    return Number(subarray.concat(lastTwoDigits))
+  }
 
 export {
     textSizeLimiter,
     getProperty,
-    getCommonDate
+    formatMonetaryValue,
+    getCommonDate,
 };
+

@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    margin: 10,
   },
   title: {
     fontSize: 20,
@@ -54,7 +55,8 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 8,
-    margin: 15
+    margin: 15,
+    alignItems: "center"
   },
   scrollInfos: {
     height: "70%",

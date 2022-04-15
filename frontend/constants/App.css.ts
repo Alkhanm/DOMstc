@@ -46,6 +46,13 @@ export const appCss = StyleSheet.create({
         textTransform: "uppercase",
         color: ColorsCss.grey.lighten
     },
+    subtitle2: {
+        padding: 1,
+        fontSize: 14,
+        alignSelf: "center",
+        fontWeight: "bold",
+        color: ColorsCss.grey.lighten
+    },
     infoText: {
         flex: 1,
         fontSize: 14,

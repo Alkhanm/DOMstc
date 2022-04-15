@@ -8,10 +8,10 @@ export enum eCategory {
     CONDICIONADOR = "CONDICIONADOR"
 }
 export enum eCompany {
-    NATURA = "NATURA",
     AVON = "AVON",
-    HINODE = "HINODE",
     BOTICARIO = "BOTICARIO",
+    HINODE = "HINODE",
+    NATURA = "NATURA",
 };
 
 export type tProductProperty = keyof IProduct;
@@ -29,7 +29,7 @@ export interface IProduct {
     purchasePrice: number;
     salePrice: number;
     imageUrl: string;
-    volume?: number | 0;
-    weight?: number | 0;
-    unit?: number | 1;
+    volume: number | 0;
+    weight: number | 0;
+    unit: number | 1;
 }

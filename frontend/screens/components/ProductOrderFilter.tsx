@@ -9,8 +9,6 @@ import { AlkModal } from "../widgets/AlkModal";
 import { AlkRadioButton, AlkRadioButtonItem } from "../widgets/AlkRadioButton";
 import { Text } from "../widgets/Themed";
 
-type tFilter = (p: IProduct) => IProduct;
-
 interface ProductOrderFilterProps {
     products: IProduct[];
     orderedProducts: IProduct[];
@@ -36,7 +34,7 @@ const filterCategoryOptions: AlkRadioButtonItem[] = [
 ]
 const filterCompanyOptions: AlkRadioButtonItem[] = [
     { text: "Todas", value: { apply: (p: IProduct) => p } },
-    { text: "Avon", value: { apply: createFilter("company")(eCompany.AVON) } },
+    { text: "Avon", value: { apply: (p: IProduct) => p.company == eCompany.AVON }},
     { text: "Natura", value: { apply: createFilter("company")(eCompany.NATURA) } },
 ]
 

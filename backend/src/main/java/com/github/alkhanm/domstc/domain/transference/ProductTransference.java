@@ -3,19 +3,20 @@ package com.github.alkhanm.domstc.domain.transference;
 import java.time.LocalDate;
 
 public record ProductTransference(
-       Long id,
+       long id,
+       long code,
+       int quantity,
+       int volume,
+       int weight,
+       int unit,
+       double purchasePrice,
+       double salePrice,
        String description,
-       Long code,
        String category,
-       Double purchasePrice,
-       Double salePrice,
+       String company,
        String brand,
-       Integer quantity,
-       String variation,
        String imageUrl,
-       Integer volume,
-       Integer weight,
-       Integer unit,
+       String variation,
        LocalDate purchaseDate
 ) {}
 

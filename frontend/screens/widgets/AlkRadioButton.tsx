@@ -17,16 +17,16 @@ interface AlkRadioButtonProps {
 }
 
 export const AlkRadioButton: React.FC<AlkRadioButtonProps> =
-    ({ items, onSelectChange, defaultSelect = items[0].value }) => {
-        const [selectedValue, setSelectedValue] = useState<any>()
+    ({ items, onSelectChange, defaultSelect = items[0] }) => {
+        const [selected, setSelected] = useState<AlkRadioButtonItem>()
 
         function handlerSelect(item: AlkRadioButtonItem) {
             onSelectChange(item.value);
-            setSelectedValue(item);
+            setSelected(item);
         }
 
         useEffect(() => {
-            setSelectedValue(items.find(i => i.value == defaultSelect))
+            setSelected(items.find(i => i.value === defaultSelect))
         }, [])
 
         return (
@@ -40,7 +40,7 @@ export const AlkRadioButton: React.FC<AlkRadioButtonProps> =
                 data={items}
                 renderItem={({ item }) => (
                     <TouchableOpacity onPress={_ => handlerSelect(item)} style={styles.radioItem}>
-                        {selectedValue === item ?
+                        {selected?.value === item.value ?
                             <>
                                 <MaterialCommunityIcons name="radiobox-marked" style={styles.iconSelected} />
                                 <Text numberOfLines={1} ellipsizeMode="tail" style={styles.labelSelected}>{item.text}</Text>
@@ -60,7 +60,7 @@ export const AlkRadioButton: React.FC<AlkRadioButtonProps> =
 /* <View style={vertical ? styles.vertical : {}}>
     {items.map(e =>
         <TouchableOpacity key={e} onPress={_ => handlerSelect(e)} style={styles.radioItem}>
-            {selectedValue === e ?
+            {selected === e ?
                 <MaterialCommunityIcons name="radiobox-marked" style={styles.icon} />
                 :
                 <MaterialCommunityIcons name="radiobox-blank" style={styles.icon} />

@@ -19,7 +19,10 @@ export const ProductContextProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     ProductHttp.fetch()
-      .then(addProducts)
+      .then((res) => {
+        addProducts(res)
+        console.log(res)
+      })
   }, [])
 
   return (

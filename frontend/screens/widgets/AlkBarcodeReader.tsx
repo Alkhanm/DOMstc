@@ -45,6 +45,7 @@ export const AlkBarcodeReader: React.FC<AlkBarcodeReaderProps> = ({ setValue, on
         <AlkModal
             width={100}
             height={100}
+            isVisible={barcodeScanVisibility}
             VisibleElement={ButtonOpenScanComp}
             children={
                 <>

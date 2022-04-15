@@ -10,7 +10,7 @@ interface AlkInputProps extends TextInputProps {
   value: string;
   placeholder: string;
   icon: React.ComponentProps<typeof MaterialCommunityIcons>["name"];
-  isInputText?: boolean;
+  editable?: boolean;
   iconSize?: number;
   style?: ViewStyle | ViewStyle[];
 }
@@ -22,7 +22,7 @@ export const AlkInput: React.FC<AlkInputProps> = ({
   placeholder,
   icon,
   style,
-  isInputText = true,
+  editable = true,
   iconSize,
   children,
   ...rest
@@ -43,21 +43,19 @@ export const AlkInput: React.FC<AlkInputProps> = ({
       <View style={styles.cardInput}>
         <View>
           {(isTyping || Boolean(value)) && (
-            <Text style={[styles.placeholder, isTyping && styles.placeholderSelected]}>{placeholder.toUpperCase()}</Text>
+            <Text style={[styles.placeholderInfo, isTyping && styles.placeholderSelected]}>{placeholder.toUpperCase()}</Text>
           )}
         </View>
-        {isInputText ?
-          <TextInput
-            value={value}
-            onFocus={() => setIsTyping(true)}
-            onBlur={() => setIsTyping(false)}
-            style={styles.input}
-            placeholderTextColor={"#E0E0E060"}
-            placeholder={isTyping ? "" : placeholder}
-            {...rest}
-          /> :
-          <View></View>
-        }
+        <TextInput
+          value={value}
+          editable={editable}
+          onFocus={() => setIsTyping(true)}
+          onBlur={() => setIsTyping(false)}
+          style={styles.input}
+          placeholderTextColor={"#E0E0E060"}
+          placeholder={isTyping ? "" : placeholder}
+          {...rest}
+        />
       </View>
       <View style={styles.cardIcon}>{children}</View>
     </KeyboardAvoidingView>
@@ -67,19 +65,17 @@ export const AlkInput: React.FC<AlkInputProps> = ({
 const styles = StyleSheet.create({
   container: {
     alignSelf: "center",
-    marginBottom: 5,
+    marginBottom: 8,
     flexDirection: "row",
     height: 60,
     padding: 5,
-    borderRadius: 10,
     borderBottomWidth: 0.2,
     borderColor: isDarkTheme ? "#eee" : Colors.grey.lighten2,
   },
   icon: {
-    marginRight: 5,
-    // marginLeft: 5,
+    marginHorizontal: 5,
   },
-  placeholder: {
+  placeholderInfo: {
     opacity: 0.9,
     fontSize: 12,
     fontWeight: "bold",

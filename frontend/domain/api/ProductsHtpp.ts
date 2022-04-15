@@ -14,7 +14,14 @@ async function fetchOne(code: number): Promise<IProduct> {
     return product;
 }
 
+async function create(product: IProduct): Promise<IProduct>{
+    const response = await http.post("/", product)
+    const productNew: IProduct = response.data;
+    return productNew;
+}
+
 export const ProductHttp = {
     fetch,
     fetchOne,
+    create
 }
