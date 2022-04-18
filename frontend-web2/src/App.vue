@@ -7,27 +7,24 @@
     <v-main>
       <router-view />
     </v-main>
-    <v-bottom-navigation>
-      <template> </template>
-    </v-bottom-navigation>
     <v-navigation-drawer permanent v-model="drawer">
       <v-list nav>
         <v-list-item
           @click="$router.push('/')"
           prepend-icon="mdi-home"
-          title="Inicio"
+          title="INICIO"
           value="home"
         />
         <v-list-item
           @click="$router.push('/products')"
           prepend-icon="mdi-cart"
-          title="Produtos"
+          title="PRODUTOS"
           value="products"
         />
         <v-list-item
           @click="$router.push('/sales')"
           prepend-icon="mdi-cart-arrow-down"
-          title="Vendas"
+          title="VENDAS"
           value="sales"
         />
       </v-list>

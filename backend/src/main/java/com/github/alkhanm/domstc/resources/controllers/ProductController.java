@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.springframework.web.bind.annotation.RequestMethod.*;
+
 @RestController
 @RequestMapping("/products")
+@CrossOrigin(origins = "*", methods = {GET, POST})
 public class ProductController {
     private final ProductMapper mapper = ProductMapper.INSTANCE;
     private final ProductService service;
@@ -23,6 +26,12 @@ public class ProductController {
     public @ResponseBody
     List<ProductTransference> getAll() {
         return mapper.toTransferenceList(service.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public @ResponseBody
+    ProductTransference getOne(@PathVariable Long id) {
+        return mapper.toTransference(service.findById(id));
     }
 
     @PostMapping
