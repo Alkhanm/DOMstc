@@ -13,7 +13,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @RequestMapping("/products")
-@CrossOrigin(origins = "*", methods = {GET, POST})
+@CrossOrigin(origins = "*", methods = {GET, POST, DELETE})
 public class ProductController {
     private final ProductMapper mapper = ProductMapper.INSTANCE;
     private final ProductService service;
@@ -36,8 +36,8 @@ public class ProductController {
 
     @PostMapping
     public @ResponseBody
-    Product save(@RequestBody Product product) {
-        return service.save(product);
+    ProductTransference save(@RequestBody Product product) {
+        return mapper.toTransference(service.save(product));
     }
 
     @PostMapping("/all")

@@ -17,11 +17,15 @@ public class Product {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(nullable = false)
     private String description;
+
+    @Column(nullable = false, unique = true)
     private long code;
+
+    private String brand;
     private double purchasePrice;
     private double salePrice;
-    private String brand;
     private int quantity;
     private String variation;
     private String imageUrl;
@@ -34,7 +38,7 @@ public class Product {
     private CompanyEnum company;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    private Category category;
+    private Category category = new Category("");
 
     public void setPurchaseDate(String purchaseDate) {
         this.purchaseDate = LocalDate.parse(purchaseDate);

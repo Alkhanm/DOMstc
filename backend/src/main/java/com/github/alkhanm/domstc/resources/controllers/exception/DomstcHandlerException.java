@@ -14,18 +14,17 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestControllerAdvice
 public class DomstcHandlerException {
-
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(NOT_FOUND)
     public StandardError resourceNotFound (ResourceNotFoundException ex, HttpServletRequest request){
         String error = "Recurso não encontrado";
-        return new StandardError(Instant.now(), NOT_FOUND.value(), error, ex.getMessage(),  request.getRequestURI());
+        return new StandardError(Instant.now(), NOT_FOUND.value(), ex.entity, ex.operation, error, ex.getMessage(),  request.getRequestURI());
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(BAD_REQUEST)
     public StandardError resourceMessageNotReadable (HttpMessageNotReadableException ex, HttpServletRequest request){
         String error = "O recurso não pode ser lido";
-        return new StandardError(Instant.now(), BAD_REQUEST.value(), error, ex.getMessage(),  request.getRequestURI());
+        return new StandardError(Instant.now(), BAD_REQUEST.value(), "", "", error, ex.getMessage(),  request.getRequestURI());
     }
 }

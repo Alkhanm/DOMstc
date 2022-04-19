@@ -30,6 +30,6 @@ public class ProductService {
 
     public Product findById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Esse id não corresponde a nem um produto"));
+                .orElseThrow(() -> new ResourceNotFoundException("Esse id não corresponde a nem um produto", Product.class.getName(), "ENCONTRAR POR ID"));
     }
 }

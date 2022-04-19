@@ -1,4 +1,5 @@
 export enum eCategory {
+    NENHUMA = "NENHUMA",
     SABONETE_EM_BARRA = "SABONETE EM BARRAS",
     CREME_PARA_O_CORPO = "CREME PARA O CORPO",
     SABONETE_LIQUIDO = "SABONETE LIQUIDO",
@@ -8,6 +9,7 @@ export enum eCategory {
     CONDICIONADOR = "CONDICIONADOR"
 }
 export enum eCompany {
+    NENHUMA = "NENHUMA",
     AVON = "AVON",
     BOTICARIO = "BOTICARIO",
     HINODE = "HINODE",

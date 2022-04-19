@@ -4,7 +4,8 @@ public enum CompanyEnum {
     NATURA("NATURA"),
     AVON ("AVON"),
     HINODE("HINODE"),
-    BOTICARIO("BOTICARIO");
+    BOTICARIO("BOTICARIO"),
+    NENHUMA("NENHUMA");
 
     private final String value;
 

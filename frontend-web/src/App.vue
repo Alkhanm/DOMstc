@@ -1,56 +1,33 @@
 <template>
   <v-app theme="dark">
     <v-app-bar app>
-      <v-app-bar-nav-icon variant="text" @click="closeDrawer()" />
+      <v-app-bar-nav-icon variant="text" @click="changeDrawer" />
       <v-app-bar-title id="title"> DomSTC </v-app-bar-title>
     </v-app-bar>
     <v-main>
       <router-view />
     </v-main>
-    <v-bottom-navigation>
-      <template> </template>
-    </v-bottom-navigation>
     <v-navigation-drawer permanent v-model="drawer">
       <v-list nav>
-        <v-list-item
-          @click="$router.push('/')"
-          prepend-icon="mdi-home"
-          title="Inicio"
-          value="home"
-        />
-        <v-list-item
-          @click="$router.push('/products')"
-          prepend-icon="mdi-cart"
-          title="Produtos"
-          value="products"
-        />
-        <v-list-item
-          @click="$router.push('/sales')"
-          prepend-icon="mdi-cart-arrow-down"
-          title="Vendas"
-          value="sales"
-        />
+        <v-list-item @click="$router.push('/')" prepend-icon="mdi-home" title="INICIO" value="home" />
+        <v-list-item @click="$router.push('/products')" prepend-icon="mdi-cart" title="PRODUTOS" value="products" />
+        <v-list-item @click="$router.push('/sales')" prepend-icon="mdi-cart-arrow-down" title="VENDAS" value="sales" />
       </v-list>
     </v-navigation-drawer>
+    <AppError />
   </v-app>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { ref } from "vue";
+import AppError from "./AppError.vue";
 
-export default {
-  setup() {
-    const drawer = ref(true);
+const drawer = ref(true);
 
-    const closeDrawer = () => {
-      drawer.value = !drawer.value;
-    };
-    return {
-      drawer,
-      closeDrawer,
-    };
-  },
+function changeDrawer() {
+  drawer.value = !drawer.value;
 };
+
 </script>
 
 <style scoped>

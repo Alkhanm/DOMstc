@@ -1,0 +1,125 @@
+[33mcommit 5d7f68cd0d19219cf02bab88f1bd6738430184dc[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Alkhanm <joas7777777@hotmail.com>
+Date:   Sun Apr 17 22:09:37 2022 -0300
+
+    (Frontend web - paginas inicias, integração com o backend e Firebase Storage)
+
+[33mcommit fd7bb65ec107f0247caf01301c5856baebd03635[m
+Author: Alkhanm <joas7777777@hotmail.com>
+Date:   Fri Apr 15 19:15:46 2022 -0300
+
+    (Frontend web - criação do projeto com Vue 3)
+
+[33mcommit f1432540299fea112f3f3bd67bdc211fcd66bbab[m
+Author: Alkhanm <joas7777777@hotmail.com>
+Date:   Fri Jan 21 00:16:45 2022 -0300
+
+    FEAT (BACKEND E FRONTEND): estabelendo comunicaça entre as duas aplicaçoes e melhorias no dominio do backend
+
+[33mcommit 524ff795c44ae3bbc975b20e061d5c323d50248f[m
+Author: Alkhanm <joas7777777@hotmail.com>
+Date:   Tue Jan 18 20:00:26 2022 -0300
+
+    FEAT(frontend): criaçao de um componente para filtros e ordenamento de produtos 'ProductOrderFilter'
+
+[33mcommit 8b0d8db54a2a91beef5089eeecad0dd64d198018[m
+Author: Alkhanm <joas7777777@hotmail.com>
+Date:   Mon Jan 17 00:10:50 2022 -0300
+
+    FEAT(frontend): mais  melhorias no componente de registro de vendas
+
+[33mcommit f459c30c5a436502feacea915688f09ae59b3110[m
+Author: Alkhanm <joas7777777@hotmail.com>
+Date:   Sat Jan 15 00:31:18 2022 -0300
+
+    FEAT(frontend): melhores no componente de registro de vendas, adiçao de um carrinho com o produtos a serem vendidos (ShoppingCart) e o contexto para esse componente
+
+[33mcommit 145af5d7e7a4bebe2eeff2acd92024b2f4c7686b[m
+Author: Alkhanm <joas7777777@hotmail.com>
+Date:   Thu Jan 13 23:14:11 2022 -0300
+
+    FEAT(frontend): novos elementos para a tela de registro de vendas
+
+[33mcommit 9fbba9551d643ff1c6019190559ee7536776f505[m
+Author: Alkhanm <joas7777777@hotmail.com>
+Date:   Wed Jan 12 21:43:52 2022 -0300
+
+    FEAT(frontend): componentes para a tela HomeScreen e criaçao do componente para registro de vendas (Sale)
+
+[33mcommit c619621c75472d8c2ee938bd41b61f18898deac0[m
+Author: Alkhanm <joas7777777@hotmail.com>
+Date:   Wed Jan 12 16:13:18 2022 -0300
+
+    FEAT(frontend): adiçao de modais para os filtros da tela de produtos e seçoes iniciais da tela HomeScreen
+
+[33mcommit 04a5ba4cb8225af689caa49c75880b4399dbc772[m
+Author: Alkhanm <joas7777777@hotmail.com>
+Date:   Tue Jan 11 23:37:21 2022 -0300
+
+    FEAT(frotend): componente para criaçao de novo produto (ProductNew) e melhorias na tela ProductScreen (começando a adicionar filtro e ordenamento)
+
+[33mcommit 0b3660e929fb502ee1cea783419baf585faad719[m
+Author: Alkhanm <joas7777777@hotmail.com>
+Date:   Mon Jan 10 23:11:48 2022 -0300
+
+    FEAT(frontend): componentes ProductEdit, ProductDetail e ProductNew para operaçoes basicas em produtos e adiçao de um leitor de codigo de  barras
+
+[33mcommit 3e0c224e403fa1c306ef9ebb9f4840e6caf2ebfb[m
+Author: Alkhanm <joas7777777@hotmail.com>
+Date:   Mon Jan 10 17:56:33 2022 -0300
+
+    FEAT(frontend): adiçao do React Context e de novos componentes para editar e visualizar detalhes dos produtos
+
+[33mcommit fae219a8f50c59b1387704c45019fe1625d5feeb[m
+Author: Alkhanm <joas7777777@hotmail.com>
+Date:   Sun Jan 9 22:41:28 2022 -0300
+
+    FEAT(frontend): integraçao com o firebase storage para buscar imagens e visualizar imagens no componente 'Produto'
+
+[33mcommit dcf727ff1ff817ec1b8004bbb315a7236bdb1424[m
+Author: Alkhanm <joas7777777@hotmail.com>
+Date:   Sun Jan 9 21:39:56 2022 -0300
+
+    FEAT(FRONTEND): estilizaçao da tela de Produtos e 'cards' para produtos
+
+[33mcommit f5b03fb28543bd04ae72cda138b8aa32420b56e0[m
+Author: Alkhanm <joas7777777@hotmail.com>
+Date:   Sat Jan 8 16:55:33 2022 -0300
+
+    Projeto iniciado
+
+[33mcommit 9d0adf7cd121c13cd1cec501752ba47a5af4c121[m
+Author: Alkhanm <joas7777777@hotmail.com>
+Date:   Sat Nov 27 17:23:33 2021 -0300
+
+    FEAT(backend & frontend): automação de teste com selenium para as telas de cadastro e listagem de produtos
+
+[33mcommit d4c069b9f8eacbe199c48c7288e51ff22a97c6ec[m
+Author: Alkhanm <joas7777777@hotmail.com>
+Date:   Sat Nov 27 10:56:27 2021 -0300
+
+    FEAT(backend): adição do selenium
+
+[33mcommit 03f0dcba1c896f43e285bcb0ba38a47bac06380f[m
+Author: Alkhanm <joas7777777@hotmail.com>
+Date:   Fri Nov 26 19:55:19 2021 -0300
+
+    Feat(frontend web): criação de telas para listar e cadastrar produtos
+
+[33mcommit cbddc0709ad9f63e8c19028317a9119f950a18d9[m
+Author: Alkhanm <joas7777777@hotmail.com>
+Date:   Fri Oct 15 13:39:14 2021 -0300
+
+    criaçao do backend
+
+[33mcommit 7f217198bb0a0515bbbb871ef1bf45a6b258d56c[m
+Author: Alkhanm <joas7777777@hotmail.com>
+Date:   Thu Oct 14 19:49:24 2021 -0300
+
+    Feat(Frontend): Adiçao da pagina para cadastro de produtos e funçao de leitor de barra
+
+[33mcommit 8234829e15bb49e2bbbf8d81d7b74de3d9078242[m
+Author: Alkhanm <joas7777777@hotmail.com>
+Date:   Wed Oct 13 21:22:23 2021 -0300
+
+    first commit

@@ -3,12 +3,15 @@ package com.github.alkhanm.domstc.configuration;
 import com.github.alkhanm.domstc.domain.Category;
 import com.github.alkhanm.domstc.domain.Product;
 import com.github.alkhanm.domstc.repositories.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import java.util.List;
 
-@Configuration
+@Profile("test")
+@Configuration()
 public class Instantiation implements CommandLineRunner {
     private final ProductRepository productRepository;
 
@@ -18,18 +21,6 @@ public class Instantiation implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
-        List<Category> categoryList = List.of(
-                new Category("COLONIA"),
-                new Category("SAMPHOO"),
-                new Category(),
-                new Category()
-        );
-        List<Product> productList = List.of(
-                new Product(),
-                new Product(),
-                new Product(),
-                new Product()
-        );
+        //productRepository.deleteAll();
     }
 }
