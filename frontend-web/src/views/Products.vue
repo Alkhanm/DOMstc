@@ -79,7 +79,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
 import * as COLORS from "../colors";
-import { ProductHttp } from "../domain/api/ProductsHtpp";
+import { ProductHttp } from "../domain/api/ProductsHttp";
 import { IAlert } from "../domain/interfaces/IAlert";
 import { IProduct } from "../domain/interfaces/IProduct";
 import { AlertStore } from "../store/alert-store";

@@ -14,13 +14,13 @@
         <v-list-item @click="$router.push('/sales')" prepend-icon="mdi-cart-arrow-down" title="VENDAS" value="sales" />
       </v-list>
     </v-navigation-drawer>
-    <AppError />
+    <AppAlert />
   </v-app>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import AppError from "./AppError.vue";
+import AppAlert from "./AppAlert.vue";
 
 const drawer = ref(true);
 
