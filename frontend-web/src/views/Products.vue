@@ -13,8 +13,8 @@
         </v-btn>
         <v-spacer></v-spacer>
         <product-new></product-new>
-        <v-menu transition="none" close-on-hover  >
-          <template v-slot:activator="{ props, isActive }"  >
+        <v-menu transition="none" close-on-hover>
+          <template v-slot:activator="{ props, isActive }">
             <v-btn class="ml-2" :="props">
               <v-icon class="ma-1">
                 mdi-tune
@@ -23,7 +23,7 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item @click="onExclude" >
+            <v-list-item @click="onExclude">
               <v-list-item-icon class="mr-1" size="small">mdi-delete</v-list-item-icon>
               <v-list-item-title>Excluir</v-list-item-title>
             </v-list-item>
@@ -113,9 +113,8 @@ async function onExclude() {
   }
 }
 
-onMounted(async () => {
-  const data = await ProductHttp.fetch();
-  ProductStore.actions.addAll(data);
+onMounted(() => {
+  ProductStore.actions.fetchAll()
 });
 </script>
 

@@ -12,12 +12,14 @@
                     Ordenar
                 </v-btn>
                 <v-spacer></v-spacer>
+                <v-btn dark @click.stop="$router.push('/sales-new')">
+                    <v-icon class="ma-1">mdi-database-plus</v-icon>
+                    Novo
+                </v-btn>
                 <v-menu transition="none" close-on-hover>
                     <template v-slot:activator="{ props, isActive }">
                         <v-btn class="ml-2" :="props">
-                            <v-icon class="ma-1">
-                                mdi-tune
-                            </v-icon>
+                            <v-icon class="ma-1"> mdi-tune </v-icon>
                             Ações
                         </v-btn>
                     </template>
@@ -42,6 +44,5 @@ import { ISale } from "../domain/interfaces/ISale";
 import { SaleStore } from "../store/sale-store";
 import SaleCard from "./components/SaleCard.vue";
 
-const sales = ref<ISale[]>(SaleStore.state.list)
-
+const sales = ref<ISale[]>(SaleStore.state.list);
 </script>

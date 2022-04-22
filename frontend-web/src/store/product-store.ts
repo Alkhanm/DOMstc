@@ -1,5 +1,6 @@
 
 import { reactive } from "vue";
+import { ProductHttp } from "../domain/api/ProductsHttp";
 import { IProduct } from "../domain/interfaces/IProduct";
 
 interface iProductStore {
@@ -10,6 +11,7 @@ interface iProductStore {
         add: (product: IProduct) => IProduct[],
         addAll: (products: IProduct[]) => IProduct[],
         remove: (product: IProduct) => void,
+        fetchAll: () => Promise<void>;
     }
 }
 
@@ -30,6 +32,10 @@ const ProductStore: iProductStore = {
             const newList = ProductStore.state.list.filter(p => p.id != product.id);
             ProductStore.state.list = newList;
         },
+         fetchAll: async (): Promise<void>  =>{
+            const productsResult = await ProductHttp.fetch();
+            ProductStore.actions.addAll(productsResult);
+        }
     }
 
 }

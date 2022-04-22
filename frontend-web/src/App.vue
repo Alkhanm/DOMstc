@@ -22,12 +22,12 @@
 import { ref } from "vue";
 import AppAlert from "./AppAlert.vue";
 
+
 const drawer = ref(true);
 
 function changeDrawer() {
   drawer.value = !drawer.value;
-};
-
+}
 </script>
 
 <style scoped>

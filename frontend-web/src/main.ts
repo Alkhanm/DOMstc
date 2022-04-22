@@ -11,3 +11,5 @@ app
   .use(router)
   .use(vuetify)
   .mount('#app')
+
+export { vuetify };

@@ -1,6 +1,6 @@
 
 import { reactive } from "vue";
-import { ISale } from "../domain/interfaces/ISale";
+import { eSaleCanal, ISale } from "../domain/interfaces/ISale";
 import { ProductStore } from "./product-store";
 
 interface ISaleStore {
@@ -20,7 +20,8 @@ const SaleStore: ISaleStore = {
             date: new Date(),
             id: 10,
             product: ProductStore.state.list[0],
-            quantity: 2
+            quantity: 2,
+            canal: eSaleCanal.CANAL1
         }]
     }),
     actions: {
