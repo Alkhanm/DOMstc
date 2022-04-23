@@ -37,8 +37,7 @@
         </section>
     </v-container>
 </template>
-
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref } from "vue";
 import { ISale } from "../domain/interfaces/ISale";
 import { SaleStore } from "../store/sale-store";
