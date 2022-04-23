@@ -1,26 +1,24 @@
 package com.github.alkhanm.domstc.configuration;
 
-import com.github.alkhanm.domstc.domain.Category;
-import com.github.alkhanm.domstc.domain.Product;
-import com.github.alkhanm.domstc.repositories.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.github.alkhanm.domstc.services.ProductService;
+import com.github.alkhanm.domstc.services.SaleService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import java.util.List;
-
 @Profile("test")
 @Configuration()
 public class Instantiation implements CommandLineRunner {
-    private final ProductRepository productRepository;
+    private final ProductService productService;
+    private final SaleService saleService;
 
-    public Instantiation(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    public Instantiation(ProductService productService, SaleService saleService) {
+        this.productService = productService;
+        this.saleService = saleService;
     }
 
     @Override
-    public void run(String... args) throws Exception {
-        //productRepository.deleteAll();
+    public void run(String... args) {
+
     }
 }

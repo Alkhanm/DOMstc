@@ -1,7 +1,11 @@
 <template>
-    <v-container fluid class="flex" style="height: 100%">
-        <v-card class="mx-auto">
-            <v-card-header class="center">Produtos cadastrados</v-card-header>
+    <v-container fluid class="flex" style="height: 100%; max-width: 1200px;" >
+        <v-card class="mx-auto mb-5">
+            <v-card-header class="text-center">
+                <v-card-title>
+                    <h3>Vendas Realizadas</h3>
+                </v-card-title>
+            </v-card-header>
             <v-card-actions>
                 <v-btn class="mr-2">
                     <v-icon class="ma-1">mdi-filter</v-icon>
@@ -36,12 +40,17 @@
             <SaleCard :sale="sale" />
         </section>
     </v-container>
+
 </template>
 <script lang="ts" setup>
-import { ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { ISale } from "../domain/interfaces/ISale";
 import { SaleStore } from "../store/sale-store";
 import SaleCard from "./components/SaleCard.vue";
 
-const sales = ref<ISale[]>(SaleStore.state.list);
+const sales = computed<ISale[]>(() => SaleStore.state.list);
+
+onMounted(async () => {
+    await SaleStore.actions.fetchAll()
+})
 </script>

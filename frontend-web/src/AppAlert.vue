@@ -1,5 +1,5 @@
 <template>
-    <v-snackbar v-model="visible" variant="text" multi-line timeout="50000" type="error">
+    <v-snackbar v-model="visible" variant="text" multi-line timeout="2000" type="error">
         <v-alert class="alert" max-width="500px" :border="true" :border-color="AppAlert.color" >
             <v-alert-title :color="AppAlert.color" class="text-white">
                 <v-icon class="mr-2">

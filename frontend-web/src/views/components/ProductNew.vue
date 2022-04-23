@@ -57,7 +57,7 @@
       <span v-if="true" class="loading-card" :style="`width: ${loadingProgress}%`"></span>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="onClickSave"> Salvar </v-btn>
+        <v-btn color="blue darken-1" text @click="handleSave"> Salvar </v-btn>
         <v-btn color="blue darken-1" text @click="clean"> Cancelar </v-btn>
       </v-card-actions>
     </v-card>
@@ -109,7 +109,7 @@ function setIntervalProgressBar(): NodeJS.Timeout {
 }
 
 
-async function onClickSave() {
+async function handleSave() {
   const interval = setIntervalProgressBar()
   const alert: IAlert = {} as IAlert;
   alert.entity = "PRODUCT";

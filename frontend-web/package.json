@@ -7,6 +7,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@js-temporal/polyfill": "^0.4.1",
     "@mdi/font": "5.9.55",
     "axios": "^0.26.1",
     "core-js": "^3.8.3",

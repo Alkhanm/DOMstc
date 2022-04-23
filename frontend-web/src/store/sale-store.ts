@@ -1,5 +1,6 @@
 
 import { reactive } from "vue";
+import { SaleHttp } from "../domain/api/SalesHttp";
 import { eSaleCanal, ISale } from "../domain/interfaces/ISale";
 import { ProductStore } from "./product-store";
 
@@ -11,18 +12,13 @@ interface ISaleStore {
         add: (sale: ISale) => ISale[],
         addAll: (sales: ISale[]) => ISale[],
         remove: (sale: ISale) => void,
+        fetchAll: () => Promise<void>;
     }
 }
 
 const SaleStore: ISaleStore = {
     state: reactive({
-        list: [{
-            date: new Date(),
-            id: 10,
-            product: ProductStore.state.list[0],
-            quantity: 2,
-            canal: eSaleCanal.CANAL1
-        }]
+        list: []
     }),
     actions: {
         add: (sale: ISale): ISale[] => {
@@ -37,6 +33,10 @@ const SaleStore: ISaleStore = {
             const newList = SaleStore.state.list.filter(p => p.id != sale.id);
             SaleStore.state.list = newList;
         },
+        fetchAll: async ():  Promise<void> => {
+            const sales = await SaleHttp.fetch()
+            SaleStore.actions.addAll(sales)
+        }
     }
 
 }

@@ -40,13 +40,6 @@ public class Product {
     @OneToOne(cascade = CascadeType.PERSIST)
     private Category category = new Category("");
 
-    public void setPurchaseDate(String purchaseDate) {
-        this.purchaseDate = LocalDate.parse(purchaseDate);
-    }
-    public void setPurchaseDate(LocalDate purchaseDate) {
-        this.purchaseDate = purchaseDate;
-    }
-
     @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

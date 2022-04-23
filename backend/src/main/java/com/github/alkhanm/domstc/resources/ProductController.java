@@ -1,4 +1,4 @@
-package com.github.alkhanm.domstc.resources.controllers;
+package com.github.alkhanm.domstc.resources;
 
 import com.github.alkhanm.domstc.domain.Product;
 import com.github.alkhanm.domstc.domain.mapper.ProductMapper;
@@ -14,7 +14,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RestController
 @RequestMapping("/products")
 @CrossOrigin(origins = "*", methods = {GET, POST, DELETE})
-public class ProductController {
+public class ProductController implements DomStcController<Product, ProductTransference> {
     private final ProductMapper mapper = ProductMapper.INSTANCE;
     private final ProductService service;
 
@@ -36,8 +36,14 @@ public class ProductController {
 
     @PostMapping
     public @ResponseBody
-    ProductTransference save(@RequestBody Product product) {
+    ProductTransference create(@RequestBody Product product) {
         return mapper.toTransference(service.save(product));
+    }
+
+    @DeleteMapping("/{id}")
+    public @ResponseBody
+    void delete(@PathVariable Long id) {
+        service.delete(id);
     }
 
     @PostMapping("/all")
@@ -48,9 +54,4 @@ public class ProductController {
                 .collect(Collectors.toList());
     }
 
-    @DeleteMapping("/{id}")
-    public @ResponseBody
-    void delete(@PathVariable Long id) {
-        service.delete(id);
-    }
 }

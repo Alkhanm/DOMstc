@@ -1,3 +1,6 @@
+
+import { Temporal } from "@js-temporal/polyfill";
+import { IItem } from "./IItem";
 import { IProduct } from "./IProduct";
 
 export enum eSaleCanal {
@@ -9,8 +12,8 @@ export enum eSaleCanal {
 
 export interface ISale {
     id: number;
-    date: Date;
-    quantity: number;
-    product: IProduct;
+    description?: string;
+    date: Temporal.Instant;
+    items: IItem[];
     canal: eSaleCanal;
 }

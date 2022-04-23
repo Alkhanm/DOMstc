@@ -1,4 +1,4 @@
-package com.github.alkhanm.domstc.resources.controllers.exception;
+package com.github.alkhanm.domstc.resources.exception;
 
 import com.github.alkhanm.domstc.services.exceptions.ResourceNotFoundException;
 import org.springframework.http.converter.HttpMessageNotReadableException;

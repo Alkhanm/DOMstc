@@ -1,18 +1,27 @@
 <template>
   <v-container fluid class="h-100">
-    <v-card density="compact" style="height: 100%;">
+    <v-card density="compact" style="height: 100%">
       <v-card-title class="d-flex justify-center">
         <span>Nova Venda</span>
       </v-card-title>
-      <v-card-content style="display: flex; flex-grow: 1; justify-content: center;;">
+      <v-card-content style="display: flex; flex-grow: 1; justify-content: center">
         <v-form style="max-width: 1000px; width: 100%" ref="form">
           <v-row>
             <v-col cols="12" sm="6" md="6">
-              <v-text-field label="Descrição da venda (opcional)" hint="Nome/descrião da venda" />
+              <v-text-field
+                label="Descrição da venda (opcional)"
+                v-model="sale.description"
+                hint="Nome/descrião da venda"
+              />
             </v-col>
             <v-col cols="12" sm="6" md="6">
-              <v-select label="Canal da venda" :items="Object.values(eSaleCanal)"
-                hint="Plataforma na qual a venda ocorreu (Ex: Shoppee, Amazon, Mercado Livre, etc)" required></v-select>
+              <v-select
+                label="Canal da venda"
+                v-model="sale.canal"
+                :items="Object.values(eSaleCanal)"
+                hint="Plataforma na qual a venda ocorreu (Ex: Shoppee, Amazon, Mercado Livre, etc)"
+                required
+              ></v-select>
             </v-col>
           </v-row>
           <v-divider></v-divider>
@@ -20,8 +29,14 @@
             <v-card-title>
               <h5>Pesquisar produto(s)</h5>
             </v-card-title>
-            <v-autocomplete v-model="productQuery" :items="productsDescription" prepend-icon="mdi-cart"
-              label="Pesquisar produto(s)" clearable no-data-text="Não há produtos no estoque" />
+            <v-autocomplete
+              v-model="productQuery"
+              :items="productsDescription"
+              prepend-icon="mdi-cart"
+              label="Pesquisar produto(s)"
+              clearable
+              no-data-text="Não há produtos no estoque"
+            />
             <SaleItemCard @on-add="add" v-if="itemSelected" :item="itemSelected" />
             <v-divider class="mt-5"></v-divider>
 
@@ -38,25 +53,42 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                <tr @click="itemSelected = ItemFunctions.copy(item)"
-                  :class="item.product.id == itemSelected?.product.id ? 'selected-row' : ''" style="cursor: pointer;"
-                  v-for="item in itemsCart">
+                <tr
+                  @click="itemSelected = ItemFunctions.copy(item)"
+                  :class="
+                    item.product.id == itemSelected?.product.id ? 'selected-row' : ''
+                  "
+                  style="cursor: pointer"
+                  v-for="item in itemsCart"
+                >
                   <td>
-                    <img class="mt-2" width="40" height="40" :src="item.product.imageUrl" />
+                    <img
+                      class="mt-2"
+                      width="40"
+                      height="40"
+                      :src="item.product.imageUrl"
+                    />
                   </td>
                   <td>{{ item.product.description }}</td>
                   <td class="text-center">{{ item.quantity }}</td>
                   <td class="text-right">R$ {{ item.product.salePrice }}</td>
-                  <td class="text-right">R$ {{ item.product.salePrice * item.quantity }}</td>
+                  <td class="text-right">
+                    R$ {{ item.product.salePrice * item.quantity }}
+                  </td>
                 </tr>
               </tbody>
               <tfoot>
                 <tr>
                   <td>
-                    <v-label><strong class="mr-1"> Quantidade de produtos </strong> {{ itemsCart.length }}</v-label>
+                    <v-label
+                      ><strong class="mr-1"> Quantidade de produtos </strong>
+                      {{ itemsCart.length }}</v-label
+                    >
                   </td>
                   <td>
-                    <v-label> <strong class="mr-1"> Valor da venda R$</strong> {{ salePrice }} </v-label>
+                    <v-label>
+                      <strong class="mr-1"> Valor da venda R$</strong> {{ salePrice }}
+                    </v-label>
                   </td>
                   <td></td>
                   <td></td>
@@ -73,8 +105,14 @@
       </v-card-content>
       <v-spacer></v-spacer>
       <v-card-actions style="justify-content: space-around">
-        <v-btn class="ma-4"> Salvar </v-btn>
-        <v-btn class="ma-4" @click="$router.back()"> Voltar </v-btn>
+        <v-btn @click="handleSave" color="info" size="large">
+          <v-icon class="mr-2">mdi-check-all</v-icon>
+          Salvar
+        </v-btn>
+        <v-btn color="info" size="large" @click="$router.back()">
+          <v-icon class="mr-2">mdi-arrow-left</v-icon>
+          Voltar
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-container>
@@ -82,11 +120,16 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
+import { SaleHttp } from "../../domain/api/SalesHttp";
 import { ItemFunctions } from "../../domain/functions/item-functions";
+import { SaleFunctions } from "../../domain/functions/sale-functions";
+import { IAlert } from "../../domain/interfaces/IAlert";
 import { IItem } from "../../domain/interfaces/IItem";
 import { IProduct } from "../../domain/interfaces/IProduct";
 import { eSaleCanal, ISale } from "../../domain/interfaces/ISale";
+import { AlertStore } from "../../store/alert-store";
 import { ProductStore } from "../../store/product-store";
+import { SaleStore } from "../../store/sale-store";
 import SaleItemCard from "./SaleItemCard.vue";
 
 const sale = ref<ISale>({} as ISale);
@@ -98,25 +141,42 @@ const productsDescription = computed(() =>
 );
 const itemsCart = ref<IItem[]>([]);
 const itemSelected = ref<IItem>();
-const salePrice = computed<number>(() => {
-  return itemsCart.value
-    .map(item => item.product.salePrice * item.quantity)
-    .reduce((previous, current) => previous + current, 0)
-})
+const salePrice = computed<number>(() => SaleFunctions.getTotalValue(itemsCart.value));
 
 function add(item: IItem) {
-  const itemFinded: IItem | undefined = itemsCart.value.find(p => p.product.id == item.product.id);
+  const itemFinded = itemsCart.value.find((p) => p.product.id == item.product.id);
   if (!itemFinded) return itemsCart.value.unshift(item);
   const itemIndex: number = itemsCart.value.indexOf(itemFinded);
   itemsCart.value[itemIndex] = item;
+}
+
+async function save(): Promise<ISale> {
+  sale.value.items = itemsCart.value;
+  return await SaleHttp.save(sale.value);
+}
+
+async function handleSave() {
+  const alert: IAlert = {} as IAlert;
+  alert.entity = "PRODUCT";
+  alert.operation = "SAVE";
+  try {
+    SaleStore.actions.add(await save());
+    alert.type = "SUCCESS";
+    alert.msg = `A venda foi salva com sucesso`;
+  } catch {
+    alert.type = "ERROR";
+    alert.msg = "Não foi possivel salvar a venda";
+  } finally {
+    AlertStore.actions.add(alert);
+  }
 }
 
 watch(productQuery, () => {
   if (!productQuery.value) return;
   const code: number = parseInt(productQuery.value.split("-")[1]);
   const product: IProduct = products.value.find((p) => p.code == code)!;
-  const isInTheCart: IItem | undefined = itemsCart.value.find(item => item.product.code == product.code);
-  if (isInTheCart) itemSelected.value = ItemFunctions.copy(isInTheCart)
+  const isInTheCart = itemsCart.value.find((item) => item.product.code == product.code);
+  if (isInTheCart) itemSelected.value = ItemFunctions.copy(isInTheCart);
   else itemSelected.value = { product, quantity: 1 };
 });
 
