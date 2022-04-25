@@ -5,7 +5,7 @@
         {{ sale.description ? sale.description : saleTitle }}
       </h4>
       <v-spacer></v-spacer>
-      {{ formattedDate }}
+      {{ saleDate }}
     </v-card-title>
     <v-card-subtitle class="mb-2">
       {{ sale.canal }}
@@ -14,13 +14,13 @@
       <div v-show="expand">
         <v-divider></v-divider>
         <v-card-text>
-          <p class="more-details-label">
-            <strong>Valor da venda R$ </strong> {{ salePrice }}
-          </p>
-          <p class="more-details-label"><strong>Lucro R$ </strong>{{ salePrice }}</p>
-          <p class="more-details-label">
-            <strong>Produtos vendidos</strong> {{ productQnt }}
-          </p>
+          <label class="more-details-label">
+            <strong>Valor </strong> R$ {{ salePrice }}
+          </label>
+          <label class="more-details-label"><strong>Lucro </strong> R$ {{ salePrice }}</label>
+          <label class="more-details-label">
+            <strong>Produtos: </strong> {{ saleProductQnt }}
+          </label>
         </v-card-text>
         <v-table density="compact">
           <thead>
@@ -37,12 +37,7 @@
             <tr v-for="item in sale.items">
               <td class="text-left">
                 <div style="height: 100%; display: flex; align-items: center">
-                  <img
-                    class="mt-1 mr-2"
-                    width="30"
-                    height="30"
-                    :src="item.product.imageUrl"
-                  />
+                  <img class="mt-1 mr-2" width="30" height="30" :src="item.product.imageUrl" />
                   {{ item.product.description }}
                 </div>
               </td>
@@ -57,13 +52,9 @@
       </div>
     </v-expand-transition>
     <v-card-actions>
-      <v-btn
-        variant="text"
-        :icon="expand ? 'mdi-chevron-up' : 'mdi-chevron-down'"
-        @click="expand = !expand"
-      ></v-btn>
+      <v-btn variant="text" :icon="expand ? 'mdi-chevron-up' : 'mdi-chevron-down'" @click="expand = !expand"></v-btn>
       <v-spacer></v-spacer>
-      <v-btn>
+      <v-btn @click="$router.push({ name: 'sale', params: { id: sale.id } })">
         <v-icon size="large" class="mr-1">mdi-link</v-icon>
         Detalhes
       </v-btn>
@@ -72,10 +63,10 @@
 </template>
 
 <script setup lang="ts">
+import { Intl, Temporal } from "@js-temporal/polyfill";
 import { computed, ref } from "vue";
-import { ISale } from "../../domain/interfaces/ISale";
-import { Temporal, Intl, toTemporalInstant } from "@js-temporal/polyfill";
 import { SaleFunctions } from "../../domain/functions/sale-functions";
+import { ISale } from "../../domain/interfaces/ISale";
 
 interface Props {
   sale: ISale;
@@ -83,24 +74,14 @@ interface Props {
 const props = defineProps<Props>();
 const expand = ref(false);
 
-const salePrice = computed(() => SaleFunctions.getTotalValue(props.sale.items));
-const productQnt = computed(() => {
-  return props.sale.items.map(({ quantity }) => quantity).reduce((p, c) => p + c);
-});
-const formattedDate = computed(() => {
-  const plainDate = Temporal.PlainDateTime.from(props.sale.date.toString());
+const sale = computed(() => props.sale);
+const { saleTitle, salePrice, saleProductQnt } = SaleFunctions.useSaleInfo(sale)
+const saleDate = computed(() => {
+  const dateISO: string = sale.value ? sale.value.date.toString() : ""
+  const plainDate: Temporal.PlainDateTime = Temporal.PlainDateTime.from(dateISO);
   return new Intl.DateTimeFormat("pt-BR", { dateStyle: "full" }).format(plainDate);
 });
-const saleTitle = computed<string>(() => {
-  const items = props.sale.items;
-  const size = items.length;
-  let title = "";
-  if (size >= 1) title = `${title}${items[0].product.description.toUpperCase()}`;
-  if (size >= 2) title = `${title}, ${items[1].product.description.toUpperCase()}`;
-  if (size >= 3) title = `${title}, ${items[2].product.description.toUpperCase()}`;
-  if (size >= 4) title = `${title} e mais ${size - 3}`;
-  return title;
-});
+
 </script>
 
 <style scoped>

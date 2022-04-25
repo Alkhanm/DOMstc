@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import SaleNew from "../views/components/SaleNew.vue"
 import Home from '../views/Home.vue'
 import Products from "../views/Products.vue"
+import Sale from "../views/Sale.vue"
 import Sales from "../views/Sales.vue"
 
 const routes: Array<RouteRecordRaw> = [
@@ -18,10 +19,15 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/sales",
     name: "sales",
-    component: Sales
+    component: Sales,
   },
   {
-    path: "/sales-new",
+    path: "/sales/:id",
+    name: "sale",
+    component: Sale,
+  },
+  {
+    path: "/sale-new",
     component: SaleNew
   }
 ]
@@ -30,6 +36,5 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
-
 
 export default router

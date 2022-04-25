@@ -5,7 +5,9 @@
       <v-app-bar-title id="title"> DomSTC </v-app-bar-title>
     </v-app-bar>
     <v-main>
-      <router-view />
+      <v-container fluid class="flex" style="height: 100%; max-width: 1200px;">
+        <router-view />
+      </v-container>
     </v-main>
     <v-navigation-drawer permanent v-model="drawer">
       <v-list nav>
