@@ -1,9 +1,9 @@
 <template>
-  <v-card density="compact" style="height: 100%">
+  <v-card density="compact" style="height: 100%; display: flex; flex-direction: column;">
     <v-card-header>
       <v-card-title>Nova Venda</v-card-title>
     </v-card-header>
-    <v-card-content style="display: flex; flex-grow: 1; justify-content: center">
+    <v-card-content style="display: flex; flex: 1; justify-content: center">
       <v-form style="max-width: 1000px; width: 100%" ref="form">
         <v-row>
           <v-col cols="12" sm="6" md="6">
@@ -22,9 +22,8 @@
           </v-card-title>
           <v-autocomplete v-model="productQuery" :items="productsDescription" prepend-icon="mdi-cart"
             label="Pesquisar produto(s)" clearable no-data-text="Não há produtos no estoque" />
-          <SaleItemCard @on-add="add" v-if="itemSelected" :item="itemSelected" />
+          <ItemCard @on-add="add" v-if="itemSelected" :item="itemSelected" />
           <v-divider class="mt-5"></v-divider>
-
           <v-table v-if="itemsCart.length" height="250px" fixed-header fixed-footer>
             <thead>
               <tr>
@@ -76,17 +75,21 @@
         </v-card>
       </v-form>
     </v-card-content>
-    <v-spacer></v-spacer>
-    <v-card-actions style="justify-content: space-around">
-      <v-btn @click="handleSave" color="info" size="large">
-        <v-icon class="mr-2">mdi-check-all</v-icon>
-        Salvar
-      </v-btn>
-      <v-btn color="info" size="large" @click="$router.back()">
-        <v-icon class="mr-2">mdi-arrow-left</v-icon>
-        Voltar
-      </v-btn>
-    </v-card-actions>
+    <FloatingActions>
+      <div>
+        <v-btn @click="$router.back()" variant="text" block>
+          <v-icon class="mr-2">mdi-keyboard-return</v-icon>
+          Voltar
+        </v-btn>
+      </div>
+      <v-divider vertical></v-divider>
+      <div>
+        <v-btn @click="handleSave" variant="text" block>
+          <v-icon class="mr-2">mdi-check-all</v-icon>
+          Salvar
+        </v-btn>
+      </div>
+    </FloatingActions>
   </v-card>
 </template>
 
@@ -102,9 +105,10 @@ import { eSaleCanal, ISale } from "../../domain/interfaces/ISale";
 import { AlertStore } from "../../store/alert-store";
 import { ProductStore } from "../../store/product-store";
 import { SaleStore } from "../../store/sale-store";
-import SaleItemCard from "./SaleItemCard.vue";
+import FloatingActions from "./FloatingActions.vue";
+import ItemCard from "./ItemCard.vue";
 
-const sale = ref<ISale>({} as ISale);
+
 
 const productQuery = ref<string>();
 const products = computed<IProduct[]>(() => ProductStore.state.list);
@@ -113,7 +117,13 @@ const productsDescription = computed(() =>
 );
 const itemsCart = ref<IItem[]>([]);
 const itemSelected = ref<IItem>();
-const salePrice = computed<number>(() => SaleFunctions.getTotalValue(itemsCart.value));
+
+const sale = computed<ISale>(() => {
+  const s = {} as ISale;
+  s.items = itemsCart.value;
+  return s;
+});
+const { salePrice } = SaleFunctions.useSaleInfo(sale);
 
 function add(item: IItem) {
   const itemFinded = itemsCart.value.find((p) => p.product.id == item.product.id);

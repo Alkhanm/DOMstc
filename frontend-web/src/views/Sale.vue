@@ -1,21 +1,21 @@
 <template>
-  <v-card density="compact" style="height: 100%">
-    <v-card-header>
-      <v-card-title style="display: flex; width: 100%; justify-content: center;">
-        <h3>{{ saleTitle.toUpperCase() }}</h3>
-      </v-card-title>
-    </v-card-header>
-    <v-card-text style="display: flex; margin-top: 10px; ">
-      <CardInfo text="Valor" :value="`R$ ${salePrice}`" icon="mdi-cash-multiple" />
-      <v-spacer></v-spacer>
-      <CardInfo text="Canal" :value="sale?.canal" icon="mdi-store" />
-      <v-spacer></v-spacer>
-      <CardInfo text="Produtos" :value="`${saleProductQnt} / ${sale?.items.length}`" icon="mdi-cash-multiple" />
-      <v-spacer></v-spacer>
-      <CardInfo text="Data" :value="saleDate" icon="mdi-calendar" />
+  <v-card density="compact" class="card">
+    <v-card-title style="display: flex; width: 100%; justify-content: center;">
+      <h3>{{ saleTitle.toUpperCase() }}</h3>
+    </v-card-title>
+    <v-card-text style="flex: 1">
+      <div style="display: flex; margin-top: 10px; ">
+        <CardInfo text="Valor" :value="`R$ ${salePrice}`" icon="mdi-cash-multiple" />
+        <v-spacer></v-spacer>
+        <CardInfo text="Canal" :value="sale?.canal" icon="mdi-store" />
+        <v-spacer></v-spacer>
+        <CardInfo text="Produtos" :value="`${saleProductQnt} / ${sale?.items.length}`" icon="mdi-shopping" />
+        <v-spacer></v-spacer>
+        <CardInfo text="Data" :value="saleDate" icon="mdi-calendar" />
+      </div>
     </v-card-text>
-    <v-card-content>
-      <v-table height="250px" fixed-header fixed-footer>
+    <v-card-content style="flex: 5">
+      <v-table fixed-header>
         <thead>
           <tr>
             <th>
@@ -42,6 +42,29 @@
         </tbody>
       </v-table>
     </v-card-content>
+    <FloatingActions>
+      <div>
+        <v-btn @click="$router.back()" variant="text" block>
+          <v-icon class="mr-1" size="large">mdi-keyboard-return</v-icon>
+          Voltar
+        </v-btn>
+      </div>
+      <v-divider vertical></v-divider>
+      <div>
+        <v-btn variant="text" block>
+          <v-icon class="mr-1" size="large">mdi-clipboard-edit-outline</v-icon>
+          Editar
+        </v-btn>
+      </div>
+      <v-divider vertical></v-divider>
+      <div>
+        <v-btn variant="text" block>
+          <v-icon class="mr-1" size="large">mdi-delete</v-icon>
+          Excluir
+        </v-btn>
+      </div>
+    </FloatingActions>
+
   </v-card>
 </template>
 
@@ -53,6 +76,7 @@ import { SaleFunctions } from "../domain/functions/sale-functions";
 import { ISale } from "../domain/interfaces/ISale";
 import router from "../router";
 import { SaleStore } from "../store/sale-store";
+import FloatingActions from "./components/FloatingActions.vue";
 import CardInfo from "./widgets/CardInfo.vue";
 
 const params: RouteParams = router.currentRoute.value.params;
@@ -63,7 +87,8 @@ const sale = computed<ISale>(() => sales.value.find(s => s.id == id)!);
 const { salePrice, saleProductQnt, saleTitle } = SaleFunctions.useSaleInfo(sale)
 
 const saleDate = computed(() => {
-  const dateISO: string = sale.value ? sale.value.date.toString() : ""
+  if (!sale.value) return;
+  const dateISO: string = sale.value.date.toString();
   const plainDate: Temporal.PlainDateTime = Temporal.PlainDateTime.from(dateISO);
   return new Intl.DateTimeFormat("pt-BR", { dateStyle: "medium" }).format(plainDate);
 });
@@ -75,4 +100,10 @@ onBeforeMount(async () => {
 </script>
 
 <style scoped>
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+}
 </style>

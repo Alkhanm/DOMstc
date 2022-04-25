@@ -5,6 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -37,8 +39,12 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private CompanyEnum company;
 
+    @OneToMany
+    @JoinColumn(name = "fk_product")
+    private List<ProductStore> productStores = new ArrayList<>();
+
     @OneToOne(cascade = CascadeType.PERSIST)
-    private Category category = new Category("");
+    private Category category;
 
     @Override public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,6 +1,7 @@
 package com.github.alkhanm.domstc.services;
 
 import com.github.alkhanm.domstc.domain.Product;
+import com.github.alkhanm.domstc.domain.Store;
 import com.github.alkhanm.domstc.repositories.ProductRepository;
 import com.github.alkhanm.domstc.services.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;

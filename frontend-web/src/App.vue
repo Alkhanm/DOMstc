@@ -32,9 +32,10 @@ function changeDrawer() {
 }
 </script>
 
-<style scoped>
+<style>
 #title {
   text-align: center;
   font-size: xx-large;
 }
+
 </style>

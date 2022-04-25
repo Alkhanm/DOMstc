@@ -7,17 +7,21 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "tb_item")
-public class Item {
+@AllArgsConstructor
+@Entity(name = "tb_product_store")
+public class ProductStore{
     @Id
     @GeneratedValue
     private Long id;
+    private  double price;
+    private  int qnt;
 
-    @Column(columnDefinition = "integer default 1")
-    private Integer quantity;
+    @OneToOne(targetEntity = Store.class)
+    @JoinColumn(name = "store_id")
+    private Store store;
 
-    @OneToOne
+    @ManyToOne
+
     private Product product;
 }
