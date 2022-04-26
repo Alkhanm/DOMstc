@@ -21,7 +21,7 @@
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-row>
             <v-col cols="12" sm="5" md="5">
-              <v-text-field color="white" label="Código" v-model="product.code"  type="number"
+              <v-text-field color="white" label="Código" v-model="product.code" type="number"
                 hint="Código de barras do produto" :counter="10" required />
             </v-col>
             <v-col cols="12" sm="7" md="7">
@@ -55,16 +55,34 @@
         </v-form>
       </v-card-text>
       <span v-if="true" class="loading-card" :style="`width: ${loadingProgress}%`"></span>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="handleSave"> Salvar </v-btn>
-        <v-btn color="blue darken-1" text @click="clean"> Cancelar </v-btn>
-      </v-card-actions>
+      <FloatingActions>
+        <div>
+          <v-btn color="blue darken-1" block @click="handleSave">
+            <v-icon class="mr-1">mdi-check-all</v-icon>
+            Salvar
+          </v-btn>
+        </div>
+        <v-divider vertical></v-divider>
+        <div>
+          <v-btn :color="GREY.lighten" block>
+            <v-icon class="mr-1">mdi-cached</v-icon>
+            Limpar
+          </v-btn>
+        </div>
+        <v-divider vertical></v-divider>
+        <div>
+          <v-btn color="green" block @click="clean">
+            <v-icon class="mr-1">mdi-keyboard-return</v-icon>
+            sair
+          </v-btn>
+        </div>
+      </FloatingActions>
     </v-card>
   </v-dialog>
 </template>
 
 <script setup lang="ts">
+import { GREY } from "@/colors";
 import { ref } from "vue";
 import { ProductHttp } from "../../domain/api/ProductsHttp";
 import { IAlert } from "../../domain/interfaces/IAlert";
@@ -72,6 +90,7 @@ import { eCategory, eCompany, IProduct } from "../../domain/interfaces/IProduct"
 import { getURLImage, upload } from "../../domain/storage/functions";
 import { AlertStore } from "../../store/alert-store";
 import { ProductStore } from "../../store/product-store";
+import FloatingActions from "./FloatingActions.vue";
 
 const dialog = ref(false);
 const valid = true;

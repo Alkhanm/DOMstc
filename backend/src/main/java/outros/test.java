@@ -1,4 +1,4 @@
-package com.github.alkhanm.domstc;
+package outros;
 
 import lombok.ToString;
 

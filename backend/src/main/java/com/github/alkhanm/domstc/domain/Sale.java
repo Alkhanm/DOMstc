@@ -23,7 +23,7 @@ public class Sale {
 
     private String canal;
 
-    @OneToMany(cascade ={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "sale")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Item> items;
 
     public Sale(String description, String canal, List<Item> items) {

@@ -19,9 +19,6 @@ public class Item {
     @OneToOne
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Sale sale;
-
     public Item(Integer quantity, Product product) {
         this.quantity = quantity;
         this.product = product;
