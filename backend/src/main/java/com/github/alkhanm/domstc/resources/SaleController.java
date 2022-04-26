@@ -5,9 +5,7 @@ import com.github.alkhanm.domstc.domain.mapper.SaleMapper;
 import com.github.alkhanm.domstc.domain.transference.SaleTransference;
 import com.github.alkhanm.domstc.services.SaleService;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
@@ -37,8 +35,8 @@ public class SaleController implements DomStcController<Sale, SaleTransference> 
 
     @PostMapping
     @Override public @ResponseBody
-    SaleTransference create(@RequestBody Sale t) {
-        Sale newSale = service.save(t);
+    SaleTransference create(@RequestBody Sale sale) {
+        Sale newSale = service.save(sale);
         return mapper.toTransference(newSale);
     }
 

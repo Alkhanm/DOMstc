@@ -39,8 +39,8 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private CompanyEnum company;
 
-    @OneToMany
-    @JoinColumn(name = "fk_product")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_store")
     private List<ProductStore> productStores = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.PERSIST)

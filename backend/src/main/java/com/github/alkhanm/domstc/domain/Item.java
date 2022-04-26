@@ -3,7 +3,6 @@ package com.github.alkhanm.domstc.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 
 @Getter
@@ -15,9 +14,16 @@ public class Item {
     @GeneratedValue
     private Long id;
 
-    @Column(columnDefinition = "integer default 1")
-    private Integer quantity;
+    private Integer quantity = 1;
 
     @OneToOne
     private Product product;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Sale sale;
+
+    public Item(Integer quantity, Product product) {
+        this.quantity = quantity;
+        this.product = product;
+    }
 }

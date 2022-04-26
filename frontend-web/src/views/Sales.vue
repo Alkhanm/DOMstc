@@ -46,6 +46,6 @@ import SaleCard from "./components/SaleCard.vue";
 const sales = computed<ISale[]>(() => SaleStore.state.list);
 
 onMounted(async () => {
-    await SaleStore.actions.fetchAll()
+    if (!sales.value.length) await SaleStore.actions.fetchAll()
 })
 </script>

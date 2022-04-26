@@ -113,8 +113,8 @@ async function onExclude() {
   }
 }
 
-onMounted(() => {
-  ProductStore.actions.fetchAll()
+onMounted(async () => {
+  if (!products.value.length) await ProductStore.actions.fetchAll()
 });
 </script>
 

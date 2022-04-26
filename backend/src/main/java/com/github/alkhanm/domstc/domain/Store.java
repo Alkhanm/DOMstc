@@ -3,7 +3,6 @@ package com.github.alkhanm.domstc.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,8 +20,9 @@ public class Store {
 
     private String name;
 
-    @Setter
-    private Double price;
+    public Store(String name) {
+        this.name = name;
+    }
 
     @Override
     public boolean equals(Object o) {

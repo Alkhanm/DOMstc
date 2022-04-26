@@ -13,7 +13,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Builder
 @ToString
-@Entity(name = "tb_sales")
+@Entity(name = "tb_sale")
 public class Sale {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -21,11 +21,16 @@ public class Sale {
     private LocalDateTime date = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
     private String description;
 
-    @Column(nullable = false)
     private String canal;
 
-    @OneToMany(cascade ={CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(cascade ={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "sale")
     private List<Item> items;
+
+    public Sale(String description, String canal, List<Item> items) {
+        this.description = description;
+        this.canal = canal;
+        this.items = items;
+    }
 
     @Override public boolean equals(Object o) {
         if (this == o) return true;

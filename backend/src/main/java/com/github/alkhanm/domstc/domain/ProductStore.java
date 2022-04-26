@@ -1,6 +1,7 @@
 package com.github.alkhanm.domstc.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "tb_product_store")
+@Builder
 public class ProductStore{
     @Id
     @GeneratedValue
@@ -21,7 +23,9 @@ public class ProductStore{
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @ManyToOne
-
-    private Product product;
+    public ProductStore(double price, int qnt, Store store) {
+        this.price = price;
+        this.qnt = qnt;
+        this.store = store;
+    }
 }

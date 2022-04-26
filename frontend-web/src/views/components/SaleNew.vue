@@ -163,7 +163,7 @@ watch(productQuery, () => {
 });
 
 onMounted(async () => {
-  await ProductStore.actions.fetchAll();
+  if (!products.value.length) await ProductStore.actions.fetchAll();
 });
 </script>
 
