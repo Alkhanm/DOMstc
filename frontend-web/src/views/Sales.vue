@@ -13,7 +13,7 @@
                 Ordenar
             </v-btn>
             <v-spacer></v-spacer>
-            <v-btn dark @click.stop="$router.push('/sales/new')">
+            <v-btn dark @click="$router.push('/sales/new')">
                 <v-icon class="ma-1">mdi-database-plus</v-icon>
                 Novo
             </v-btn>
