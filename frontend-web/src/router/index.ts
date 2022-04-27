@@ -6,32 +6,69 @@ import Products from "../views/Products.vue";
 import Sale from "../views/Sale.vue";
 import Sales from "../views/Sales.vue";
 
+function getValues(obj: object, route: string, path = "") {
+  Object.values(obj).forEach((value) => {
+    if (value["name"] === route) {
+      return `${path}`;
+    }
+    if (typeof value === "object") {
+      getValues(value, route, path.length ? path + " - " + value["name"] : value["name"]);
+    }
+  });
+}
+
+export const ROUTES_NAMES = {
+  HOME: {
+    name: "Inicio",
+    path: "/"
+  },
+  SALES: {
+    name: "Vendas",
+    path: "/sales",
+    NEW: {
+      name: "Nova Venda",
+      path: "/sales/new"
+    },
+    SALE: {
+      name: "Venda",
+      path: "/sales/:id"
+    },
+  },
+  PRODUCTS: {
+    name: "Produtos",
+    path: "/products"
+  },
+};
+
+const { HOME, PRODUCTS, SALES } = ROUTES_NAMES;
+
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/',
-    name: 'Inicio',
+    name: HOME.name,
+    path: HOME.path,
     component: Home
   },
   {
-    path: "/products",
-    name: "Produtos",
+    name: PRODUCTS.name,
+    path: PRODUCTS.path,
     component: Products
   },
   {
-    path: "/sales",
-    name: "Vendas",
-    component: Sales,
+    name: SALES.name,
+    path: SALES.path,
+    component: Sales
+
   },
   {
-    path: "/sales/:id",
-    name: "Venda",
+    name: SALES.NEW.name,
+    path: SALES.NEW.path,
+    component: SaleNew
+  },
+  {
+    name: SALES.SALE.name,
+    path: SALES.SALE.path,
     component: Sale,
   },
-  {
-    path: "/sale-new",
-    name: "Nova Venda",
-    component: SaleNew
-  }
 ]
 
 const router = createRouter({
@@ -40,8 +77,9 @@ const router = createRouter({
 })
 
 router.afterEach((to, from) => {
-  if (to.name) {
-    RouteStore.actions.add({ name: to.name.toString(), path: to.fullPath });
+  if (to.name){
+    getValues(ROUTES_NAMES, to.name.toString());
+    console.log(arrResult)
   }
 })
 
