@@ -1,7 +1,7 @@
 <template>
   <v-card density="compact" style="height: 100%; display: flex; flex-direction: column">
     <v-card-header>
-      <v-card-title>Nova Venda</v-card-title>
+      <v-card-title class="d-flex justify-center w-100">Nova Venda</v-card-title>
     </v-card-header>
     <v-card-content style="display: flex; flex: 1; justify-content: center">
       <v-form style="max-width: 1000px; width: 100%" ref="form">
@@ -96,7 +96,7 @@
     </v-card-content>
     <FloatingActions>
       <div>
-         <v-btn color="blue darken-1"  @click="handleSave" variant="text" block>
+        <v-btn color="blue darken-1" @click="handleSave" variant="text" block>
           <v-icon class="mr-2">mdi-check-all</v-icon>
           Salvar
         </v-btn>
@@ -104,13 +104,13 @@
       <v-divider vertical></v-divider>
       <div>
         <v-btn :color="GREY.lighten5" variant="text" block>
-          <v-icon class="mr-1" >mdi-cached</v-icon>
+          <v-icon class="mr-1">mdi-cached</v-icon>
           Limpar
         </v-btn>
       </div>
       <v-divider vertical></v-divider>
       <div>
-       <v-btn color="green"  @click="$router.back()" variant="text" block>
+        <v-btn color="green" @click="$router.back()" variant="text" block>
           <v-icon class="mr-2">mdi-keyboard-return</v-icon>
           Voltar
         </v-btn>

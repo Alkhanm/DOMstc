@@ -1,3 +1,5 @@
+import { IProductStore } from "./IProductStore";
+
 export enum eCategory {
     NENHUMA = "NENHUMA",
     SABONETE_EM_BARRA = "SABONETE EM BARRAS",
@@ -34,4 +36,5 @@ export interface IProduct {
     volume: number | 0;
     weight: number | 0;
     unit: number | 1;
+    productStores: IProductStore[];
 }

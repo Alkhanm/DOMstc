@@ -7,7 +7,6 @@
           <div>
             DomSTC
           </div>
-          <RouteMenu />
         </div>
       </v-app-bar-title>
     </v-app-bar>
@@ -30,7 +29,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import AppAlert from "./AppAlert.vue";
-import RouteMenu from "./views/widgets/RouteMenu.vue";
 
 const drawer = ref(true);
 

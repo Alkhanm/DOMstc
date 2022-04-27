@@ -12,8 +12,7 @@ public class SaleService implements DomStcService<Sale, SaleRepository> {
         this.repository = repository;
     }
 
-    @Override
-    public SaleRepository getRepository() {
+    @Override public SaleRepository getRepository() {
         return repository;
     }
 }

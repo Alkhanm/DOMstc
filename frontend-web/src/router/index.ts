@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import ProductNew from "../views/components/ProductNew.vue";
 import SaleNew from "../views/components/SaleNew.vue";
 import Home from '../views/Home.vue';
 import Products from "../views/Products.vue";
@@ -10,43 +11,34 @@ const routes: Array<RouteRecordRaw> = [
     name: "Inicio",
     path: "/",
     component: Home,
-    meta: {
-      back: () => (undefined)
-    }
   },
   {
     name: "Produtos",
     path: "/products",
     component: Products,
-    meta: {
-      back: () => (undefined)
-    }
+  },
+  {
+    name: "Novo Produto",
+    path: "/products/new",
+    component: ProductNew
+  },
+  {
+    name: "Venda",
+    path: "/sale/:id",
+    props: true,
+    component: Sale,
   },
   {
     name: "Vendas",
     path: "/sales",
     component: Sales,
-    meta: {
-      back: () => (undefined)
-    }
   },
   {
     name: "Nova venda",
     path: "/sales/new",
     component: SaleNew,
-    meta: {
-      back: () => (router.push("/sales"))
-    }
   },
-  {
-    name: "Venda",
-    path: "/sale",
-    props: true,
-    component: Sale,
-    meta: {
-      back: () => (router.push("/sales"))
-    }
-  },
+
 ]
 
 const router = createRouter({

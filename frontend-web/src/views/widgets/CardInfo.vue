@@ -23,7 +23,7 @@ defineProps<Props>();
 <style scoped>
 .info {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     padding: 10px;
     position: relative;
     width: 150px;

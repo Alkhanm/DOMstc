@@ -13,13 +13,14 @@
         Ordenar
       </v-btn>
       <v-spacer></v-spacer>
-      <product-new></product-new>
+      <v-btn dark @click.stop="$router.push('/products/new')">
+        <v-icon class="ma-1">mdi-database-plus</v-icon>
+        Novo
+      </v-btn>
       <v-menu transition="none" close-on-hover>
         <template v-slot:activator="{ props, isActive }">
           <v-btn class="ml-2" :="props">
-            <v-icon class="ma-1">
-              mdi-tune
-            </v-icon>
+            <v-icon class="ma-1"> mdi-tune </v-icon>
             Ações
           </v-btn>
         </template>
@@ -50,8 +51,12 @@
     <tbody>
       <tr v-for="product in products" :key="product.id">
         <td>
-          <v-checkbox @click="() => selectedProducts.push(product)" direction="horizontal" width="10"
-            density="compact" />
+          <v-checkbox
+            @click="() => selectedProducts.push(product)"
+            direction="horizontal"
+            width="10"
+            density="compact"
+          />
         </td>
         <td>
           <img class="ma-1" width="50" height="50" :src="product.imageUrl" />
@@ -87,10 +92,10 @@ import { ProductStore } from "../store/product-store";
 import ProductNew from "./components/ProductNew.vue";
 
 const products = computed(() => ProductStore.state.list);
-const selectedProducts = ref<IProduct[]>([])
+const selectedProducts = ref<IProduct[]>([]);
 
 async function exclude(): Promise<void> {
-  selectedProducts.value.forEach(product => {
+  selectedProducts.value.forEach((product) => {
     ProductStore.actions.remove(product);
     ProductHttp.exclude(product);
   });
@@ -99,7 +104,7 @@ async function exclude(): Promise<void> {
 
 async function onExclude() {
   const countProductExcluded = selectedProducts.value.length;
-  const alert: IAlert = {} as IAlert
+  const alert: IAlert = {} as IAlert;
   alert.entity = "PRODUCT";
   alert.operation = "DELETE";
   alert.msg = `${countProductExcluded} produtos excluidos`;
@@ -114,7 +119,7 @@ async function onExclude() {
 }
 
 onMounted(async () => {
-  if (!products.value.length) await ProductStore.actions.fetchAll()
+  if (!products.value.length) await ProductStore.actions.fetchAll();
 });
 </script>
 

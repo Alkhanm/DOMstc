@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface DomStcService<T, R extends JpaRepository<T, Long>> {
-
     R getRepository();
 
     default List<T> findAll(){
@@ -18,8 +17,7 @@ public interface DomStcService<T, R extends JpaRepository<T, Long>> {
     }
 
     default void delete(Long id) {
-        getRepository().findById(id)
-                .ifPresent(getRepository()::delete);
+        getRepository().findById(id).ifPresent(getRepository()::delete);
     }
 
     default T findById(Long id) {

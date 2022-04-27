@@ -54,7 +54,7 @@
     <v-card-actions>
       <v-btn variant="text" :icon="expand ? 'mdi-chevron-up' : 'mdi-chevron-down'" @click="expand = !expand"></v-btn>
       <v-spacer></v-spacer>
-      <v-btn @click="$router.push({ name: 'Venda', params: { id: sale.id } })">
+      <v-btn @click="$router.push(`/sale/${sale.id}`)">
         <v-icon size="large" class="mr-1">mdi-link</v-icon>
         Detalhes
       </v-btn>
