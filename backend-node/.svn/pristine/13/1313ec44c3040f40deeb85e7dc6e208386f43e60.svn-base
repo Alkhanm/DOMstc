@@ -1,0 +1,134 @@
+
+import { Op, WhereOptions } from "sequelize";
+import Env from "../loaders/env";
+import { getModel, getSequelize } from "../models";
+import { EstMovimentoEstoque } from "../models/est-movimento-estoque-model";
+import { EstSaidaEstoqueModel } from "../models/est-saida-estoque-model";
+import { FinLancamentoFinanceiroModel } from "../models/fin-lancamento-financeiro-model";
+import { PedAgendaTecnicaAgendamentoModel } from "../models/ped-agenda-tecnica-agendamento-model";
+import { PedPedidoItemModel } from "../models/ped-pedido-item-model";
+import { PedPedidoItemMovimentoModel } from "../models/ped-pedido-item-movimento-model";
+import { PedPedidoModel } from "../models/ped-pedido-model";
+import * as DataUtils from "../utils/data-utils";
+import * as CommomRepo from "./commom-repository";
+
+export async function save (record: PedPedidoModel, operadorId: number): Promise<PedPedidoModel> {
+    const result: PedPedidoModel | null = await getSequelize().transaction(async (t) => {
+        // salvando o principal
+        const rec: PedPedidoModel = await CommomRepo.save(PedPedidoModel, record, operadorId, { transaction: t }, false);
+        // salvando os itens
+        if (record.pedPedidoItemList) {
+            // salvando a saida de estoque
+            let estSai: EstSaidaEstoqueModel = getModel(EstSaidaEstoqueModel).build();
+            estSai.empresaSistema = rec.idEmpresaPedido;
+            estSai.idCd = rec.idCd;
+            estSai = await CommomRepo.saveRecord(EstSaidaEstoqueModel, estSai, operadorId, { transaction: t }, false);
+
+            // VINCULANDO SAIDA ESTOQUE AO PEDIDO (SERA SALVO NO FIMS)
+            rec.idSaidaEstoque = estSai.id;
+
+            const idAss: number[] = [];
+            for (const pedIt of record.pedPedidoItemList) {
+                // gerando o moimento de estoque do item
+                let estMov: EstMovimentoEstoque = getModel(EstMovimentoEstoque).build();
+                estMov.empresaSistema = rec.idEmpresaPedido;
+                estMov.idCd = rec.idCd;
+                estMov.idProdutoServico = pedIt.idProdutoServico;
+                estMov.idSaidaEstoque = estSai.id;
+                estMov.descTipoMovimento = "1"; // 1 normal
+                estMov.flagDisponivel = true;
+                estMov.flagFisico = false;
+                if (rec.flagClienteLevou) {
+                    estMov.flagFisico = true;
+                }
+                estMov.valrQuantidade = pedIt.valrQuantidade;
+                estMov.usuarioInclusao = operadorId;
+                estMov = await CommomRepo.saveRecord(EstMovimentoEstoque, estMov, operadorId, { transaction: t }, false);
+
+                // salvando o item e o movimento utilizando o cascade
+                pedIt.idPedido = rec.id;
+                const pedItSav: PedPedidoItemModel = await CommomRepo.save(PedPedidoItemModel, pedIt, operadorId, { transaction: t }, false);
+                idAss.push(pedItSav.id);
+
+                // vinculando o movimento com o item
+                /*
+                const estMovLis: EstMovimentoEstoque[] = [];
+                estMovLis.push(estMov);
+                pedItSav.setDataValue("estMovimentoEstoqueList", estMovLis);
+                await CommomRepo.save(PedPedidoItemModel, pedItSav, operadorId, { transaction: t }, false);
+                */
+                // nao consegui fazendo com a tabela ponte. vou criar uma entidade e salvar
+                const te: PedPedidoItemMovimentoModel = new PedPedidoItemMovimentoModel();
+                te.idMovimentoEstoque = estMov.id;
+                te.idPedidoItem = pedItSav.id;
+                await te.save({ transaction: t });
+            }
+            // REMOVENDO OS VINCULOS SE FOR PRECISO
+            const where: WhereOptions = {
+                id: {
+                    [Op.notIn]: idAss,
+                },
+                idPedido: rec?.id,
+            };
+            await getModel(PedPedidoItemModel).destroy({
+                where,
+                transaction: t,
+            });
+        }
+        // salvando a agenda tecnica
+        if (record.pedAgendaTecnicaAgendamentoList) {
+            const idAss: number[] = [];
+            for (const pedAg of record.pedAgendaTecnicaAgendamentoList) {
+                // salvando
+                pedAg.idPedido = rec.id;
+                const pedAgSav: PedAgendaTecnicaAgendamentoModel = await CommomRepo.save(PedAgendaTecnicaAgendamentoModel, pedAg, operadorId, { transaction: t }, false);
+                idAss.push(pedAgSav.id);
+            }
+            // REMOVENDO OS VINCULOS SE FOR PRECISO
+            const where: WhereOptions = {
+                id: {
+                    [Op.notIn]: idAss,
+                },
+                dataExclusao: {
+                    [Op.is]: null,
+                },
+                idPedido: rec?.id,
+            };
+            await getModel(PedAgendaTecnicaAgendamentoModel).update({
+                operadorAlteracaoId: operadorId,
+                dataAlteracao: DataUtils.dateNowToApiStrDate(),
+                operadorExclusaoId: operadorId,
+                dataExclusao: DataUtils.dateNowToApiStrDate(),
+            }, {
+                where,
+                transaction: t,
+            });
+        }
+        // GERANDO LANC FINANCEIRO
+        let flan: FinLancamentoFinanceiroModel = getModel(FinLancamentoFinanceiroModel).build();
+        flan.dataReferencia = DataUtils.now();
+        flan.dataDocumento = rec.dataPedido;
+        flan.descObservacao = `LANCAMENTO FINANCEIRO CREDITO DO PEDIDO N. ${rec.id}.`;
+        flan.descNumDocumento = String(rec.id);
+        flan.descReferencia = `N. PEDIDO ${rec.id}.`;
+        flan.empresaSistema = rec.idEmpresaPedido;
+        flan.dataVencimento = DataUtils.now();
+        flan.idCentroCusto = Number(Env.idPlanoConta);
+        flan.idTipoDocumento = 2;
+        flan.descTipo = "1";
+        flan.numParcela = 1;
+        flan.numQtdeParcelas = 1;
+        flan.valrBase = rec.valrPedido;
+        flan.idPessoa = rec.idPessoaCliente;
+        flan.valrDocumento = rec.valrPedido;
+        flan = await CommomRepo.saveRecord(FinLancamentoFinanceiroModel, flan, operadorId, { transaction: t }, false);
+
+        // VINCULANDO LANC FIN E ATUALIZANDO
+        rec.idLancamentoFinanceiroCli = flan.id;
+        await CommomRepo.saveRecord(PedPedidoModel, rec, operadorId, { transaction: t }, false);
+
+        // RETURN PRINCIPAL
+        return await CommomRepo.findById(PedPedidoModel, rec.id, t)!;
+    });
+    return result!;
+}

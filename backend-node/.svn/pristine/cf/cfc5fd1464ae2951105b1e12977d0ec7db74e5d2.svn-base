@@ -1,0 +1,16 @@
+import express, { NextFunction, Response, Router } from "express";
+import * as HttpBody from "../middleware/http-body";
+import { RequestApi } from "../middleware/request-api";
+import * as DataUtils from "../utils/data-utils";
+
+const router: Router = express.Router();
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+router.get("/date", (req: RequestApi, res: Response, next: NextFunction) => {
+    res.status(200).json(HttpBody.createHttpBody(200, DataUtils.dateNowToApiStrDate()));
+});
+
+/**
+ * @export {express.Router}
+ */
+export default router;

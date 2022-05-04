@@ -123,7 +123,6 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { SaleHttp } from "../../domain/api/SalesHttp";
 import { ItemFunctions } from "../../domain/functions/item-functions";
-import { SaleFunctions } from "../../domain/functions/sale-functions";
 import { IAlert } from "../../domain/interfaces/IAlert";
 import { IItem } from "../../domain/interfaces/IItem";
 import { IProduct } from "../../domain/interfaces/IProduct";
@@ -134,6 +133,7 @@ import { SaleStore } from "../../store/sale-store";
 import FloatingActions from "./FloatingActions.vue";
 import ItemCard from "./ItemCard.vue";
 import { GREY } from "@/colors";
+import { SaleHooks } from "../../hooks/sale-hooks";
 
 const productQuery = ref<string>();
 const products = computed<IProduct[]>(() => ProductStore.state.list);
@@ -148,7 +148,7 @@ const sale = computed<ISale>(() => {
   s.items = itemsCart.value;
   return s;
 });
-const { salePrice } = SaleFunctions.useSaleInfo(sale);
+const { salePrice } = SaleHooks.useSaleInfo(sale);
 
 function add(item: IItem) {
   const itemFinded = itemsCart.value.find((p) => p.product.id == item.product.id);

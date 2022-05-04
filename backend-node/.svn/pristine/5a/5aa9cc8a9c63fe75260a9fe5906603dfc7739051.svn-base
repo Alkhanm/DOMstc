@@ -1,0 +1,57 @@
+import { DataTypes, Sequelize } from "sequelize";
+import { CommomAuditAltModel } from "./commom/commom-audit-alt-model";
+
+export class WaCondicaoValorModel extends CommomAuditAltModel {
+    declare idCondicao?: number | null;
+
+    declare descValor?: string | null;
+}
+
+export default (sequelize: Sequelize): typeof WaCondicaoValorModel => {
+    WaCondicaoValorModel.init({
+        id: {
+            field: "id",
+            type: DataTypes.BIGINT,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        usuarioInclusao: {
+            field: "idUsuarioInclusao",
+            type: DataTypes.BIGINT,
+        },
+        dataInclusao: {
+            field: "dataInclusao",
+            type: DataTypes.STRING,
+        },
+        usuarioExclusao: {
+            field: "idUsuarioExclusao",
+            type: DataTypes.BIGINT,
+        },
+        dataExclusao: {
+            field: "dataExclusao",
+            type: DataTypes.STRING,
+        },
+        usuarioAlteracao: {
+            field: "idUsuarioAlteracao",
+            type: DataTypes.BIGINT,
+        },
+        dataAlteracao: {
+            field: "dataAlteracao",
+            type: DataTypes.STRING,
+        },
+        idCondicao: {
+            field: "idCondicao",
+            type: DataTypes.BIGINT,
+        },
+        descValor: {
+            field: "descValor",
+            type: DataTypes.STRING,
+        },
+    }, {
+        sequelize, /* We need to pass the connection instance */
+        tableName: "wa_condicaoValor",
+        timestamps: false,
+        version: "numVersao",
+    });
+    return WaCondicaoValorModel;
+};

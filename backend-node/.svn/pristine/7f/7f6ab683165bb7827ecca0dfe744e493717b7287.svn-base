@@ -1,0 +1,47 @@
+import { ModelStatic } from "sequelize/types";
+import { CommomAuditModel } from "../models/commom/commom-audit-model";
+import { CommomModel } from "../models/commom/commom-model";
+
+export async function validationSave<M extends CommomModel | CommomAuditModel> (ModelType: ModelStatic<M>, record: M) {
+    /*
+    switch (ModelType.name) {
+        case CidadeModel.name:
+            await CidadeValidator.validatorSave(record);
+            break;
+        case BairroModel.name:
+            await BairroValidator.validatorSave(record);
+            break;
+        case ConvenioModel.name:
+            await ConvenioValidator.validatorSave(record as ConvenioModel);
+            break;
+        case EstadoCivilModel.name:
+            await EstadoCivilValidator.validatorSave(record);
+            break;
+        case BancoModel.name:
+            await BancoValidator.validatorSave(record);
+            break;
+        case ConselhoModel.name:
+            await ConselhoValidator.validatorSave(record);
+            break;
+        case ProfissaoModel.name:
+            await ProfissaoValidator.validatorSave(record);
+            break;
+        case ProgramaModel.name:
+            await ProgramaValidator.validatorSave(record as ProgramaModel);
+            break;
+        default:
+            break;
+    } */
+}
+
+export function validationDelete (id: number) {
+    id.toString();
+}
+
+export function validationInativar (id: number) {
+    id.toString();
+}
+
+export function validationReativar (id: number) {
+    id.toString();
+}

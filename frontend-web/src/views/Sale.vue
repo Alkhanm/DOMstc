@@ -72,8 +72,8 @@
 import { Intl, Temporal } from "@js-temporal/polyfill";
 import { computed, onBeforeMount } from "vue";
 import { RouteParams } from "vue-router";
-import { SaleFunctions } from "../domain/functions/sale-functions";
 import { ISale } from "../domain/interfaces/ISale";
+import { SaleHooks } from "../hooks/sale-hooks";
 import router from "../router";
 import { SaleStore } from "../store/sale-store";
 import FloatingActions from "./components/FloatingActions.vue";
@@ -84,7 +84,7 @@ const id: number = parseInt(params.id as string);
 
 const sales = computed<ISale[]>(() => SaleStore.state.list);
 const sale = computed<ISale>(() => sales.value.find(s => s.id == id)!);
-const { salePrice, saleProductQnt, saleTitle } = SaleFunctions.useSaleInfo(sale)
+const { salePrice, saleProductQnt, saleTitle } = SaleHooks.useSaleInfo(sale)
 
 const saleDate = computed(() => {
   if (!sale.value) return;

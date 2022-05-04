@@ -1,0 +1,39 @@
+import express, { NextFunction, Response, Router } from "express";
+import * as CommomController from "../controllers/commom-controller";
+import { RequestApi } from "../middleware/request-api";
+import { PesPessoaModel } from "../models/pes-pessoa-model";
+
+const router: Router = express.Router();
+
+router.get("/pes-pessoa", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findAll(PesPessoaModel, req, res, next);
+});
+
+router.get("/pes-pessoa/one", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findOne(PesPessoaModel, req, res, next);
+});
+
+router.post("/pes-pessoa", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.save(PesPessoaModel, req, res, next);
+});
+
+router.get("/pes-pessoa/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findById(PesPessoaModel, req, res, next);
+});
+
+router.put("/pes-pessoa/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.update(PesPessoaModel, req, res, next);
+});
+
+router.put("/pes-pessoa/inativar/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.inativar(PesPessoaModel, req, res, next);
+});
+
+router.put("/pes-pessoa/reativar/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.reativar(PesPessoaModel, req, res, next);
+});
+
+/**
+ * @export {express.Router}
+ */
+export default router;

@@ -1,0 +1,48 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "standard",
+    // https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin#usage
+    // ESLint typescript rules
+    "plugin:@typescript-eslint/recommended",
+    // consider disabling this class of rules if linting takes too long
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript"
+  ],
+  // https://eslint.vuejs.org/user-guide/#how-to-use-custom-parser
+  "parserOptions": {
+    "project": ["./tsconfig.json"], // Specify it only for TypeScript files
+    "ecmaVersion": 2018, // Allows for the parsing of modern ECMAScript features
+    "sourceType": "module" // Allows for the use of imports
+  },
+  // add your custom rules here
+  "rules": {
+    // allow async-await
+    "generator-star-spacing": "off",
+    // allow paren-less arrow functions
+    "arrow-parens": "off",
+    "one-var": "off",
+    "no-void": "off",
+    "multiline-ternary": "off",
+    "semi": ["error", "always"],
+    "comma-dangle": ["error", "always-multiline"],
+    "indent": "off",
+
+    "import/first": "off",
+    "import/namespace": "error",
+    "import/default": "error",
+    "import/export": "error",
+    "import/extensions": "off",
+    "import/no-unresolved": "off",
+    "import/no-extraneous-dependencies": "off",
+    "prefer-promise-reject-errors": "off",
+
+    // TypeScript
+    "quotes": ["error", "double", { "avoidEscape": true }],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-non-null-assertion": "off"
+  }
+}

@@ -1,0 +1,90 @@
+import { DataTypes, Sequelize } from "sequelize";
+import { CommomModel } from "./commom/commom-model";
+import { WaChatValorModel } from "./wa-chat-valor-model";
+import { WaContatoModel } from "./wa-contato-model";
+import { WaContextoModel } from "./wa-contexto-model";
+import { WaMensagemModel } from "./wa-mensagem-model";
+import { WaRemetenteModel } from "./wa-remetente-model";
+
+export class WaChatModel extends CommomModel {
+    declare idRemetente?: number | null;
+    declare waRemetente?: WaRemetenteModel | null;
+    declare idWaContato?: number | null;
+    declare waContato?: WaContatoModel | null;
+    declare idContexto?: number | null;
+    declare waContexto: WaContextoModel | null;
+    declare dataInicio?: Date | null;
+    declare dataFim?: Date | null;
+    declare waMensagemList: WaMensagemModel[] | null;
+    declare waChatValorList: WaChatValorModel[] | null;
+}
+
+export default (sequelize: Sequelize): typeof WaChatModel => {
+    WaChatModel.init({
+        id: {
+            field: "id",
+            type: DataTypes.BIGINT,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        dataInicio: {
+            field: "dataInicio",
+            type: DataTypes.DATE,
+        },
+        dataFim: {
+            field: "dataFim",
+            type: DataTypes.DATE,
+        },
+    }, {
+        sequelize, /* We need to pass the connection instance */
+        tableName: "wa_chat",
+        timestamps: false,
+        version: "numVersao",
+    });
+    WaChatModel.associate = (models: {
+        WaMensagemModel: typeof WaMensagemModel,
+        WaRemetenteModel: typeof WaRemetenteModel,
+        WaContatoModel: typeof WaContatoModel,
+        WaContextoModel: typeof WaContextoModel,
+        WaChatValorModel: typeof WaChatValorModel
+    }) => {
+        WaChatModel.belongsTo(models.WaRemetenteModel, {
+            as: "waRemetente",
+            foreignKey: {
+                name: "idRemetente",
+                field: "idRemetente",
+            },
+        });
+        WaChatModel.belongsTo(models.WaContatoModel, {
+            as: "waContato",
+            foreignKey: {
+                name: "idWaContato",
+                field: "idWaContato",
+            },
+        });
+        WaChatModel.belongsTo(models.WaContextoModel, {
+            as: "waContexto",
+            foreignKey: {
+                name: "idContexto",
+                field: "idContexto",
+            },
+        });
+        WaChatModel.hasMany(models.WaMensagemModel, {
+            as: "waMensagemList",
+            foreignKey: {
+                name: "idChat",
+                field: "idChat",
+            },
+            hooks: true,
+        });
+        WaChatModel.hasMany(models.WaChatValorModel, {
+            as: "waChatValorList",
+            foreignKey: {
+                name: "idChat",
+                field: "idChat",
+            },
+            hooks: true,
+        });
+    };
+    return WaChatModel;
+};

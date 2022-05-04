@@ -1,0 +1,5 @@
+import { CommomAuditModel } from "./commom-audit-model";
+
+export class CommomAuditEmpresaModel extends CommomAuditModel {
+    declare empresaSistema?: number | null;
+}

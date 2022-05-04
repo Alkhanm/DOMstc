@@ -1,0 +1,61 @@
+import { NextFunction, Response } from "express";
+import * as HttpBody from "../middleware/http-body";
+import * as MsgError from "../middleware/msg-error";
+import { RequestApi } from "../middleware/request-api";
+import * as WaVariavelTextoServ from "../services/wa-variavel-texto-service";
+
+export function obterNomePessoa (req: RequestApi, res: Response, next: NextFunction) {
+    // Validate request
+    if (!req.params || !req.params.id) {
+        next(MsgError.createErrorStatus(400));
+        return;
+    }
+
+    WaVariavelTextoServ.obterNomePessoa(Number(req.params.id))
+        .then((rec: object) => {
+            res.status(200).json(HttpBody.createHttpBody(200, rec || ""));
+        })
+        .catch((err: Error) => next(MsgError.solveError(err)));
+}
+
+export function obterDataUltimaManutencao (req: RequestApi, res: Response, next: NextFunction) {
+    // Validate request
+    if (!req.params || !req.params.id) {
+        next(MsgError.createErrorStatus(400));
+        return;
+    }
+
+    WaVariavelTextoServ.obterDataUltimaManutencao(Number(req.params.id))
+        .then((rec: object) => {
+            res.status(200).json(HttpBody.createHttpBody(200, rec));
+        })
+        .catch((err: Error) => next(MsgError.solveError(err)));
+}
+
+export function obterPedidoChat (req: RequestApi, res: Response, next: NextFunction) {
+    // Validate request
+    if (!req.params || !req.params.id) {
+        next(MsgError.createErrorStatus(400));
+        return;
+    }
+
+    WaVariavelTextoServ.obterPedidoChat(Number(req.params.id))
+        .then((rec: object) => {
+            res.status(200).json(HttpBody.createHttpBody(200, rec));
+        })
+        .catch((err: Error) => next(MsgError.solveError(err)));
+}
+
+export function obterMsgAtendenteChat (req: RequestApi, res: Response, next: NextFunction) {
+    // Validate request
+    if (!req.params || !req.params.id) {
+        next(MsgError.createErrorStatus(400));
+        return;
+    }
+
+    WaVariavelTextoServ.obterMsgAtendenteChat(Number(req.params.id))
+        .then((rec: object) => {
+            res.status(200).json(HttpBody.createHttpBody(200, rec));
+        })
+        .catch((err: Error) => next(MsgError.solveError(err)));
+}

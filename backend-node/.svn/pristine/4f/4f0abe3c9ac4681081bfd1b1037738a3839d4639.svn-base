@@ -1,0 +1,216 @@
+import { DataTypes, Sequelize } from "sequelize";
+import { CommomAuditAltEmpresaModel } from "./commom/commom-audit-alt-empresa-model";
+import { FinLancamentoFinanceiroModel } from "./fin-lancamento-financeiro-model";
+import { PedAgendaTecnicaAgendamentoModel } from "./ped-agenda-tecnica-agendamento-model";
+import { PedPedidoItemModel } from "./ped-pedido-item-model";
+
+export class PedPedidoModel extends CommomAuditAltEmpresaModel {
+    declare idSaidaEstoque?: number | null;
+    declare dataPedido?: Date | null;
+    declare idCanalVenda?: number | null;
+    declare idMidia?: number | null;
+    declare idPessoaCliente?: number | null;
+    declare idPessoaFuncionario?: number | null;
+    declare valrPedido?: number | null;
+    declare descObservacao?: string | null;
+    declare dataLigarAgendarServico?: Date | null;
+    declare dataFinalizado?: Date | null;
+    declare idUsuarioFinalizado?: number | null;
+    declare pedPedidoItemList?: PedPedidoItemModel[] | null;
+    declare idLancamentoFinanceiroCli?: number | null;
+    declare finLancamentoFinanceiroCli?: FinLancamentoFinanceiroModel | null;
+    declare idLancamentoFinanceiroFun?: number | null;
+    declare pedAgendaTecnicaAgendamentoList?: PedAgendaTecnicaAgendamentoModel[] | null;
+    declare descMotivoExclusao?: string | null;
+    declare idUsuarioEstornoFinCli?: number | null;
+    declare dataEstornoFinCli?: Date | null;
+    declare flagClienteLevou?: boolean | null;
+    declare idCd?: number | null;
+    declare dataRefComissao?: Date | null;
+    declare valrPercComissaoVenda?: number | null;
+    declare valrComissaoVenda?: number | null;
+    declare valrComissaoTecnica?: number | null;
+    declare idUsuarioLibDesconto?: number | null;
+    declare idEmpresaPedido?: number | null;
+    declare descObsFinanceira?: string | null;
+    declare descSenha?: string | null;
+    declare idOrcamento?: number | null;
+}
+
+export default (sequelize: Sequelize): typeof PedPedidoModel => {
+    PedPedidoModel.init({
+        id: {
+            field: "id",
+            type: DataTypes.BIGINT,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        usuarioInclusao: {
+            field: "idUsuarioInclusao",
+            type: DataTypes.BIGINT,
+        },
+        dataInclusao: {
+            field: "dataInclusao",
+            type: DataTypes.STRING,
+        },
+        usuarioExclusao: {
+            field: "idUsuarioExclusao",
+            type: DataTypes.BIGINT,
+        },
+        dataExclusao: {
+            field: "dataExclusao",
+            type: DataTypes.STRING,
+        },
+        usuarioAlteracao: {
+            field: "idUsuarioAlteracao",
+            type: DataTypes.BIGINT,
+        },
+        dataAlteracao: {
+            field: "dataAlteracao",
+            type: DataTypes.STRING,
+        },
+        empresaSistema: {
+            field: "idEmpresa",
+            type: DataTypes.BIGINT,
+        },
+        idSaidaEstoque: {
+            field: "idSaidaEstoque",
+            type: DataTypes.BIGINT,
+        },
+        dataPedido: {
+            field: "dataPedido",
+            type: DataTypes.DATE,
+        },
+        idCanalVenda: {
+            field: "idCanalVenda",
+            type: DataTypes.BIGINT,
+        },
+        idMidia: {
+            field: "idMidia",
+            type: DataTypes.BIGINT,
+        },
+        idPessoaCliente: {
+            field: "idPessoaCliente",
+            type: DataTypes.BIGINT,
+        },
+        idPessoaFuncionario: {
+            field: "idPessoaFuncionario",
+            type: DataTypes.BIGINT,
+        },
+        valrPedido: {
+            field: "valrPedido",
+            type: DataTypes.DECIMAL,
+        },
+        descObservacao: {
+            field: "descObservacao",
+            type: DataTypes.STRING,
+        },
+        dataLigarAgendarServico: {
+            field: "dataLigarAgendarServico",
+            type: DataTypes.DATE,
+        },
+        dataFinalizado: {
+            field: "dataFinalizado",
+            type: DataTypes.DATE,
+        },
+        idUsuarioFinalizado: {
+            field: "idUsuarioFinalizado",
+            type: DataTypes.BIGINT,
+        },
+        idLancamentoFinanceiroFun: {
+            field: "idLancamentoFinanceiroFun",
+            type: DataTypes.BIGINT,
+        },
+        descMotivoExclusao: {
+            field: "descMotivoExclusao",
+            type: DataTypes.STRING,
+        },
+        idUsuarioEstornoFinCli: {
+            field: "idUsuarioEstornoFinCli",
+            type: DataTypes.BIGINT,
+        },
+        dataEstornoFinCli: {
+            field: "dataEstornoFinCli",
+            type: DataTypes.DATE,
+        },
+        flagClienteLevou: {
+            field: "flagClienteLevou",
+            type: DataTypes.BOOLEAN,
+        },
+        idCd: {
+            field: "idCd",
+            type: DataTypes.BIGINT,
+        },
+        dataRefComissao: {
+            field: "dataRefComissao",
+            type: DataTypes.DATE,
+        },
+        valrPercComissaoVenda: {
+            field: "valrPercComissaoVenda",
+            type: DataTypes.DECIMAL,
+        },
+        valrComissaoVenda: {
+            field: "valrComissaoVenda",
+            type: DataTypes.DECIMAL,
+        },
+        valrComissaoTecnica: {
+            field: "valrComissaoTecnica",
+            type: DataTypes.DECIMAL,
+        },
+        idUsuarioLibDesconto: {
+            field: "idUsuarioLibDesconto",
+            type: DataTypes.BIGINT,
+        },
+        idEmpresaPedido: {
+            field: "idEmpresaPedido",
+            type: DataTypes.BIGINT,
+        },
+        descObsFinanceira: {
+            field: "descObsFinanceira",
+            type: DataTypes.STRING,
+        },
+        descSenha: {
+            field: "descSenha",
+            type: DataTypes.STRING,
+        },
+        idOrcamento: {
+            field: "idOrcamento",
+            type: DataTypes.BIGINT,
+        },
+    }, {
+        sequelize, /* We need to pass the connection instance */
+        tableName: "ped_pedido",
+        timestamps: false,
+        version: "numVersao",
+    });
+    PedPedidoModel.associate = (models: {
+        PedPedidoItemModel: typeof PedPedidoItemModel,
+        FinLancamentoFinanceiroModel: typeof FinLancamentoFinanceiroModel,
+        PedAgendaTecnicaAgendamentoModel: typeof PedAgendaTecnicaAgendamentoModel,
+    }) => {
+        PedPedidoModel.hasMany(models.PedPedidoItemModel, {
+            as: "pedPedidoItemList",
+            foreignKey: {
+                name: "idPedido",
+                field: "idPedido",
+            },
+            hooks: true,
+        });
+        PedPedidoModel.belongsTo(models.FinLancamentoFinanceiroModel, {
+            as: "finLancamentoFinanceiroCli",
+            foreignKey: {
+                name: "idLancamentoFinanceiroCli",
+                field: "idLancamentoFinanceiroCli",
+            },
+        });
+        PedPedidoModel.hasMany(models.PedAgendaTecnicaAgendamentoModel, {
+            as: "pedAgendaTecnicaAgendamentoList",
+            foreignKey: {
+                name: "idPedido",
+                field: "idPedido",
+            },
+            hooks: true,
+        });
+    };
+    return PedPedidoModel;
+};

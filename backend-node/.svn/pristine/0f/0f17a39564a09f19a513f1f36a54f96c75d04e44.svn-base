@@ -1,0 +1,196 @@
+import { DataTypes, Sequelize } from "sequelize";
+import { CommomAuditAltEmpresaModel } from "./commom/commom-audit-alt-empresa-model";
+
+export class FinLancamentoFinanceiroModel extends CommomAuditAltEmpresaModel {
+    declare descTipo?: string | null;
+    declare idPessoa?: number | null;
+    declare dataReferencia?: Date | null;
+    declare dataDocumento?: Date | null;
+    declare dataVencimento?: Date | null;
+    declare valrBase?: number | null;
+    declare valrDesconto?: number | null;
+    declare valrJuros?: number | null;
+    declare valrMulta?: number | null;
+    declare valrDocumento?: number | null;
+    declare descReferencia?: string | null;
+    declare descNumDocumento?: string | null;
+    declare descObservacao?: string | null;
+    declare numQtdeParcelas?: number | null;
+    declare numParcela?: number | null;
+    declare idCentroCusto?: number | null;
+    declare idTipoDocumento?: number | null;
+    declare idLancamentoFinanceiroParc?: number | null;
+    declare dataPagto?: Date | null;
+    declare dataCompensacao?: Date | null;
+    declare idFormaPagto?: number | null;
+    declare idContaFinanceira?: number | null;
+    declare descCartaoAut?: string | null;
+    declare dataCheque?: Date | null;
+    declare dataChequeBomPara?: Date | null;
+    declare descChequeCorrentista?: string | null;
+    declare descChequeNumero?: string | null;
+    declare idTransferenciaFinanceiraCred?: number | null;
+    declare idTransferenciaFinanceiraDeb?: number | null;
+    // finLancamentoFinanceiroParcList
+}
+
+export default (sequelize: Sequelize): typeof FinLancamentoFinanceiroModel => {
+    FinLancamentoFinanceiroModel.init({
+        id: {
+            field: "id",
+            type: DataTypes.BIGINT,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        usuarioInclusao: {
+            field: "idUsuarioInclusao",
+            type: DataTypes.BIGINT,
+        },
+        dataInclusao: {
+            field: "dataInclusao",
+            type: DataTypes.STRING,
+        },
+        usuarioExclusao: {
+            field: "idUsuarioExclusao",
+            type: DataTypes.BIGINT,
+        },
+        dataExclusao: {
+            field: "dataExclusao",
+            type: DataTypes.STRING,
+        },
+        usuarioAlteracao: {
+            field: "idUsuarioAlteracao",
+            type: DataTypes.BIGINT,
+        },
+        dataAlteracao: {
+            field: "dataAlteracao",
+            type: DataTypes.STRING,
+        },
+        empresaSistema: {
+            field: "idEmpresa",
+            type: DataTypes.BIGINT,
+        },
+        descTipo: {
+            field: "descTipo",
+            type: DataTypes.STRING,
+        },
+        idPessoa: {
+            field: "idPessoa",
+            type: DataTypes.NUMBER,
+        },
+        dataReferencia: {
+            field: "dataReferencia",
+            type: DataTypes.DATEONLY,
+        },
+        dataDocumento: {
+            field: "dataDocumento",
+            type: DataTypes.DATEONLY,
+        },
+        dataVencimento: {
+            field: "dataVencimento",
+            type: DataTypes.DATEONLY,
+        },
+        valrBase: {
+            field: "valrBase",
+            type: DataTypes.DECIMAL,
+        },
+        valrDesconto: {
+            field: "valrDesconto",
+            type: DataTypes.DECIMAL,
+        },
+        valrJuros: {
+            field: "valrJuros",
+            type: DataTypes.DECIMAL,
+        },
+        valrMulta: {
+            field: "valrMulta",
+            type: DataTypes.DECIMAL,
+        },
+        valrDocumento: {
+            field: "valrDocumento",
+            type: DataTypes.DECIMAL,
+        },
+        descReferencia: {
+            field: "descReferencia",
+            type: DataTypes.STRING,
+        },
+        descNumDocumento: {
+            field: "descNumDocumento",
+            type: DataTypes.STRING,
+        },
+        descObservacao: {
+            field: "descObservacao",
+            type: DataTypes.STRING,
+        },
+        numQtdeParcelas: {
+            field: "numQtdeParcelas",
+            type: DataTypes.INTEGER,
+        },
+        numParcela: {
+            field: "numParcela",
+            type: DataTypes.INTEGER,
+        },
+        idCentroCusto: {
+            field: "idCentroCusto",
+            type: DataTypes.BIGINT,
+        },
+        idTipoDocumento: {
+            field: "idTipoDocumento",
+            type: DataTypes.BIGINT,
+        },
+        idLancamentoFinanceiroParc: {
+            field: "idLancamentoFinanceiroParc",
+            type: DataTypes.BIGINT,
+        },
+        dataPagto: {
+            field: "dataPagto",
+            type: DataTypes.DATE,
+        },
+        dataCompensacao: {
+            field: "dataCompensacao",
+            type: DataTypes.DATEONLY,
+        },
+        idFormaPagto: {
+            field: "idFormaPagto",
+            type: DataTypes.BIGINT,
+        },
+        idContaFinanceira: {
+            field: "idContaFinanceira",
+            type: DataTypes.BIGINT,
+        },
+        descCartaoAut: {
+            field: "descCartaoAut",
+            type: DataTypes.STRING,
+        },
+        dataCheque: {
+            field: "dataCheque",
+            type: DataTypes.DATEONLY,
+        },
+        dataChequeBomPara: {
+            field: "dataChequeBomPara",
+            type: DataTypes.DATEONLY,
+        },
+        descChequeCorrentista: {
+            field: "descChequeCorrentista",
+            type: DataTypes.STRING,
+        },
+        descChequeNumero: {
+            field: "descChequeNumero",
+            type: DataTypes.STRING,
+        },
+        idTransferenciaFinanceiraCred: {
+            field: "idTransferenciaFinanceiraCred",
+            type: DataTypes.BIGINT,
+        },
+        idTransferenciaFinanceiraDeb: {
+            field: "idTransferenciaFinanceiraDeb",
+            type: DataTypes.BIGINT,
+        },
+    }, {
+        sequelize, /* We need to pass the connection instance */
+        tableName: "fin_lancamentoFinanceiro",
+        timestamps: false,
+        version: "numVersao",
+    });
+    return FinLancamentoFinanceiroModel;
+};

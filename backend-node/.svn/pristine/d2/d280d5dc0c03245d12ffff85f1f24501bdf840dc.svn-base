@@ -1,0 +1,15 @@
+import { AppAttributes } from "../middleware/app-attributes";
+import { PedPedidoItemModel } from "../models/ped-pedido-item-model";
+import { PedPedidoModel } from "../models/ped-pedido-model";
+import * as PedPedidoRepo from "../repositories/ped-pedido-repository";
+import * as Validation from "../validation";
+
+export async function save (record: PedPedidoModel, appAttributes: AppAttributes): Promise<PedPedidoModel> {
+    await Validation.validationSave(PedPedidoModel, record);
+    if (record.pedPedidoItemList && record.pedPedidoItemList.length > 0) {
+        for await (const elem of record.pedPedidoItemList) {
+            await Validation.validationSave(PedPedidoItemModel, elem);
+        }
+    }
+    return PedPedidoRepo.save(record, appAttributes.operadorId!);
+}

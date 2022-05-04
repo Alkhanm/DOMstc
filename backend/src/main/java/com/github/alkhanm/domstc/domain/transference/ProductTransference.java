@@ -3,7 +3,7 @@ package com.github.alkhanm.domstc.domain.transference;
 import com.github.alkhanm.domstc.domain.ProductStore;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 public record ProductTransference(
        long id,
@@ -21,6 +21,6 @@ public record ProductTransference(
        String imageUrl,
        String variation,
        LocalDate purchaseDate,
-       List<ProductStore> productStores
+       Set<ProductStore> productStores
 ) {}
 

@@ -1,0 +1,7 @@
+import { CommomModel } from "./commom-model";
+
+export class CommomAltModel extends CommomModel {
+    declare usuarioAlteracao: number | undefined;
+
+    declare dataAlteracao: string | undefined;
+}

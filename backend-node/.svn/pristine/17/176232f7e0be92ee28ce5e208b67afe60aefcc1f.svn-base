@@ -1,0 +1,85 @@
+import { DataTypes, Sequelize } from "sequelize";
+import { CommomAuditAltModel } from "./commom/commom-audit-alt-model";
+import { WaContextoGatilhoModel } from "./wa-contexto-gatilho-model";
+import { WaRoboModel } from "./wa-robo-model";
+
+export class WaContextoModel extends CommomAuditAltModel {
+    declare descNome?: string | null;
+    declare idRobo?: number | null;
+    declare waRobo?: WaRoboModel | null;
+    declare numTipo?: number | null;
+    declare waContextoGatilhoList?: WaContextoGatilhoModel[] | null;
+}
+
+export default (sequelize: Sequelize): typeof WaContextoModel => {
+    WaContextoModel.init({
+        id: {
+            field: "id",
+            type: DataTypes.BIGINT,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        usuarioInclusao: {
+            field: "idUsuarioInclusao",
+            type: DataTypes.BIGINT,
+        },
+        dataInclusao: {
+            field: "dataInclusao",
+            type: DataTypes.STRING,
+        },
+        usuarioExclusao: {
+            field: "idUsuarioExclusao",
+            type: DataTypes.BIGINT,
+        },
+        dataExclusao: {
+            field: "dataExclusao",
+            type: DataTypes.STRING,
+        },
+        usuarioAlteracao: {
+            field: "idUsuarioAlteracao",
+            type: DataTypes.BIGINT,
+        },
+        dataAlteracao: {
+            field: "dataAlteracao",
+            type: DataTypes.STRING,
+        },
+        descNome: {
+            field: "descNome",
+            type: DataTypes.STRING,
+        },
+        numTipo: {
+            field: "numTipo",
+            type: DataTypes.INTEGER,
+        },
+    }, {
+        sequelize, /* We need to pass the connection instance */
+        tableName: "wa_contexto",
+        timestamps: false,
+        version: "numVersao",
+    });
+    WaContextoModel.associate = (models: {
+        WaContextoGatilhoModel: typeof WaContextoGatilhoModel,
+        WaRoboModel: typeof WaRoboModel
+    }) => {
+        WaContextoModel.belongsTo(models.WaRoboModel, {
+            as: "waRobo",
+            foreignKey: {
+                name: "idRobo",
+                field: "idRobo",
+                allowNull: false,
+            },
+        });
+        WaContextoModel.hasMany(models.WaContextoGatilhoModel, {
+            as: "waContextoGatilhoList",
+            foreignKey: {
+                name: "idGatilho",
+                field: "idGatilho",
+                allowNull: false,
+            },
+            onUpdate: "CASCADE",
+            onDelete: "CASCADE",
+            hooks: true,
+        });
+    };
+    return WaContextoModel;
+};

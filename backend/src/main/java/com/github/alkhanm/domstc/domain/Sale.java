@@ -23,7 +23,8 @@ public class Sale {
 
     private String canal;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, targetEntity = Item.class)
+    @JoinColumn(name = "sale_id")
     private List<Item> items;
 
     public Sale(String description, String canal, List<Item> items) {

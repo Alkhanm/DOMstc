@@ -1,0 +1,111 @@
+import { DataTypes, Sequelize } from "sequelize";
+import { CommomAuditAltModel } from "./commom/commom-audit-alt-model";
+import { PesPessoaModel } from "./pes-pessoa-model";
+import { WaContatoModel } from "./wa-contato-model";
+
+export class PesContatoModel extends CommomAuditAltModel {
+    declare idPessoa?: number | null;
+    declare pesPessoa?: PesPessoaModel | null;
+    declare descDDD?: string | null;
+    declare descTelefone?: string | null;
+    declare descContato?: string | null;
+    declare flagSms?: boolean | null;
+    declare flagWhats?: boolean | null;
+    declare flagPrincipal?: boolean | null;
+    declare descTipo?: boolean | null;
+    declare numRating?: number | null;
+    declare idWaContato?: number | null;
+    declare waContato?: WaContatoModel | null;
+}
+
+export default (sequelize: Sequelize): typeof PesContatoModel => {
+    PesContatoModel.init({
+        id: {
+            field: "id",
+            type: DataTypes.BIGINT,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        usuarioInclusao: {
+            field: "idUsuarioInclusao",
+            type: DataTypes.BIGINT,
+        },
+        dataInclusao: {
+            field: "dataInclusao",
+            type: DataTypes.STRING,
+        },
+        usuarioExclusao: {
+            field: "idUsuarioExclusao",
+            type: DataTypes.BIGINT,
+        },
+        dataExclusao: {
+            field: "dataExclusao",
+            type: DataTypes.STRING,
+        },
+        usuarioAlteracao: {
+            field: "idUsuarioAlteracao",
+            type: DataTypes.BIGINT,
+        },
+        dataAlteracao: {
+            field: "dataAlteracao",
+            type: DataTypes.STRING,
+        },
+        descDDD: {
+            field: "descDDD",
+            type: DataTypes.STRING,
+        },
+        descTelefone: {
+            field: "descTelefone",
+            type: DataTypes.STRING,
+        },
+        descContato: {
+            field: "descContato",
+            type: DataTypes.STRING,
+        },
+        flagSms: {
+            field: "flagSms",
+            type: DataTypes.BOOLEAN,
+        },
+        flagWhats: {
+            field: "flagWhats",
+            type: DataTypes.BOOLEAN,
+        },
+        flagPrincipal: {
+            field: "flagPrincipal",
+            type: DataTypes.BOOLEAN,
+        },
+        descTipo: {
+            field: "descTipo",
+            type: DataTypes.STRING,
+        },
+        numRating: {
+            field: "numRating",
+            type: DataTypes.INTEGER,
+        },
+    }, {
+        sequelize, /* We need to pass the connection instance */
+        tableName: "pes_contato",
+        timestamps: false,
+        version: "numVersao",
+    });
+    PesContatoModel.associate = (models: {
+        PesPessoaModel: typeof PesPessoaModel,
+        WaContatoModel: typeof WaContatoModel
+    }) => {
+        PesContatoModel.belongsTo(models.PesPessoaModel, {
+            as: "pesPessoa",
+            foreignKey: {
+                name: "idPessoa",
+                field: "idPessoa",
+            },
+        });
+        PesContatoModel.belongsTo(models.WaContatoModel, {
+            as: "waContato",
+            foreignKey: {
+                name: "idWaContato",
+                field: "idWaContato",
+            },
+        });
+    };
+    return PesContatoModel;
+};

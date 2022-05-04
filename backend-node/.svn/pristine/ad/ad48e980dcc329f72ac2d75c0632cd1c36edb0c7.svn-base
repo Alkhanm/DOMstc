@@ -1,0 +1,35 @@
+import express, { NextFunction, Response, Router } from "express";
+import * as CommomController from "../controllers/commom-controller";
+import { RequestApi } from "../middleware/request-api";
+import { WaRegraModel } from "../models/wa-regra-model";
+
+const router: Router = express.Router();
+
+router.get("/wa-regra", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findAll(WaRegraModel, req, res, next);
+});
+
+router.post("/wa-regra", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.save(WaRegraModel, req, res, next);
+});
+
+router.get("/wa-regra/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findById(WaRegraModel, req, res, next);
+});
+
+router.put("/wa-regra/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.update(WaRegraModel, req, res, next);
+});
+
+router.put("/wa-regra/inativar/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.inativar(WaRegraModel, req, res, next);
+});
+
+router.put("/wa-regra/reativar/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.reativar(WaRegraModel, req, res, next);
+});
+
+/**
+ * @export {express.Router}
+ */
+export default router;

@@ -1,0 +1,109 @@
+import { DataTypes, Sequelize } from "sequelize";
+import { CommomAltModel } from "./commom/commom-alt-model";
+import { EstMovimentoEstoque } from "./est-movimento-estoque-model";
+import { EstProdutoServicoModel } from "./est-produto-servico-model";
+import { PedPedidoModel } from "./ped-pedido-model";
+
+export class PedPedidoItemModel extends CommomAltModel {
+    declare idPedido?: number;
+    declare pedPedido?: PedPedidoModel;
+    declare idProdutoServico?: number;
+    declare estProdutoServico?: EstProdutoServicoModel;
+    declare valrQuantidade?: number;
+    declare numDiasProximoContato?: number;
+    declare numDiasProximoContatoSugerido?: number;
+    declare valrPrecoUnitario?: number;
+    declare valrPrecoSugerido?: number;
+    declare valrDesconto?: number;
+    declare valrPercDesconto?: number;
+    declare valrTotal?: number;
+    declare estMovimentoEstoqueList?: EstMovimentoEstoque[] | null;
+    // estProdutoInfoList
+    // tmkAgendaVendaList
+}
+
+export default (sequelize: Sequelize): typeof PedPedidoItemModel => {
+    PedPedidoItemModel.init({
+        id: {
+            field: "id",
+            type: DataTypes.BIGINT,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        usuarioAlteracao: {
+            field: "idUsuarioAlteracao",
+            type: DataTypes.BIGINT,
+        },
+        dataAlteracao: {
+            field: "dataAlteracao",
+            type: DataTypes.STRING,
+        },
+        valrQuantidade: {
+            field: "valrQuantidade",
+            type: DataTypes.DECIMAL,
+        },
+        numDiasProximoContato: {
+            field: "numDiasProximoContato",
+            type: DataTypes.INTEGER,
+        },
+        numDiasProximoContatoSugerido: {
+            field: "numDiasProximoContatoSugerido",
+            type: DataTypes.INTEGER,
+        },
+        valrPrecoUnitario: {
+            field: "valrPrecoUnitario",
+            type: DataTypes.DECIMAL,
+        },
+        valrPrecoSugerido: {
+            field: "valrPrecoSugerido",
+            type: DataTypes.DECIMAL,
+        },
+        valrDesconto: {
+            field: "valrDesconto",
+            type: DataTypes.DECIMAL,
+        },
+        valrPercDesconto: {
+            field: "valrPercDesconto",
+            type: DataTypes.DECIMAL,
+        },
+        valrTotal: {
+            field: "valrTotal",
+            type: DataTypes.DECIMAL,
+        },
+    }, {
+        sequelize, /* We need to pass the connection instance */
+        tableName: "ped_pedidoItem",
+        timestamps: false,
+        version: "numVersao",
+    });
+    PedPedidoItemModel.associate = (models: {
+        PedPedidoModel: typeof PedPedidoModel,
+        EstProdutoServicoModel: typeof EstProdutoServicoModel,
+        EstMovimentoEstoque: typeof EstMovimentoEstoque
+    }) => {
+        PedPedidoItemModel.belongsTo(models.PedPedidoModel, {
+            as: "pedPedido",
+            foreignKey: {
+                name: "idPedido",
+                field: "idPedido",
+                allowNull: false,
+            },
+        });
+        PedPedidoItemModel.belongsTo(models.EstProdutoServicoModel, {
+            as: "estProdutoServico",
+            foreignKey: {
+                name: "idProdutoServico",
+                field: "idprodutoServico",
+                allowNull: false,
+            },
+        });
+        PedPedidoItemModel.belongsToMany(models.EstMovimentoEstoque, {
+            as: "estMovimentoEstoqueList",
+            through: "ped_pedidoItemMovimento",
+            foreignKey: "idPedidoItem",
+            otherKey: "idMovimentoEstoque",
+            timestamps: false,
+        });
+    };
+    return PedPedidoItemModel;
+};

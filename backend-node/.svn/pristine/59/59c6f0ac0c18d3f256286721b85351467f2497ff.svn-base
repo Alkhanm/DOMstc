@@ -1,0 +1,39 @@
+import express, { NextFunction, Response, Router } from "express";
+import * as CommomController from "../controllers/commom-controller";
+import { RequestApi } from "../middleware/request-api";
+import { WaContatoModel } from "../models/wa-contato-model";
+
+const router: Router = express.Router();
+
+router.get("/wa-contato", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findAll(WaContatoModel, req, res, next);
+});
+
+router.get("/wa-contato/one", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findOne(WaContatoModel, req, res, next);
+});
+
+router.post("/wa-contato", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.save(WaContatoModel, req, res, next);
+});
+
+router.get("/wa-contato/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findById(WaContatoModel, req, res, next);
+});
+
+router.put("/wa-contato/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.update(WaContatoModel, req, res, next);
+});
+
+router.put("/wa-contato/inativar/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.inativar(WaContatoModel, req, res, next);
+});
+
+router.put("/wa-contato/reativar/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.reativar(WaContatoModel, req, res, next);
+});
+
+/**
+ * @export {express.Router}
+ */
+export default router;

@@ -1,0 +1,35 @@
+import express, { NextFunction, Response, Router } from "express";
+import * as CommomController from "../controllers/commom-controller";
+import { RequestApi } from "../middleware/request-api";
+import { WaChatValorModel } from "../models/wa-chat-valor-model";
+
+const router: Router = express.Router();
+
+router.get("/wa-chat-valor", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findAll(WaChatValorModel, req, res, next);
+});
+
+router.get("/wa-chat-valor/one", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findOne(WaChatValorModel, req, res, next);
+});
+
+router.post("/wa-chat-valor", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.save(WaChatValorModel, req, res, next);
+});
+
+router.get("/wa-chat-valor/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findById(WaChatValorModel, req, res, next);
+});
+
+router.put("/wa-chat-valor/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.update(WaChatValorModel, req, res, next);
+});
+
+router.delete("/wa-chat-valor/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.destroy(WaChatValorModel, req, res, next);
+});
+
+/**
+ * @export {express.Router}
+ */
+export default router;

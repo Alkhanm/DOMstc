@@ -1,0 +1,11 @@
+import { CommomModel } from "./commom-model";
+
+export class CommomAuditModel extends CommomModel {
+    declare usuarioInclusao: number | undefined;
+
+    declare dataInclusao: string | undefined;
+
+    declare usuarioExclusao: number | null;
+
+    declare dataExclusao: string | null;
+}

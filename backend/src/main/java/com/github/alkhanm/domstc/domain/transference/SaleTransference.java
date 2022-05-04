@@ -1,12 +1,12 @@
 package com.github.alkhanm.domstc.domain.transference;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 public record SaleTransference(
         Long id,
         LocalDateTime date,
         String description,
         String canal,
-        List<ItemTransference> items
+        Set<ItemTransference> items
 ) {
 }

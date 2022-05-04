@@ -1,0 +1,31 @@
+import express, { NextFunction, Response, Router } from "express";
+import * as CommomController from "../controllers/commom-controller";
+import { RequestApi } from "../middleware/request-api";
+import { WaGatilhoModel } from "../models/wa-gatilho-model";
+
+const router: Router = express.Router();
+
+router.get("/wa-gatilho", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findAll(WaGatilhoModel, req, res, next);
+});
+
+router.get("/wa-gatilho/one", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findOne(WaGatilhoModel, req, res, next);
+});
+
+router.post("/wa-gatilho", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.save(WaGatilhoModel, req, res, next);
+});
+
+router.get("/wa-gatilho/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findById(WaGatilhoModel, req, res, next);
+});
+
+router.put("/wa-gatilho/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.update(WaGatilhoModel, req, res, next);
+});
+
+/**
+ * @export {express.Router}
+ */
+export default router;

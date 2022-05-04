@@ -1,0 +1,83 @@
+import { DataTypes, Sequelize } from "sequelize";
+import { CommomAuditAltModel } from "./commom/commom-audit-alt-model";
+import { PesPessoaModel } from "./pes-pessoa-model";
+import { WaCampanhaModel } from "./wa-campanha-model";
+
+export class WaCampanhaPessoaModel extends CommomAuditAltModel {
+    declare idCampanha?: number | null;
+    declare waCampanha: WaCampanhaModel | null;
+    declare idPessoa?: number | null;
+    declare pesPessoa: PesPessoaModel | null;
+    declare numStatus?: number | null;
+    declare descHistorico: string | null;
+}
+
+export default (sequelize: Sequelize): typeof WaCampanhaPessoaModel => {
+    WaCampanhaPessoaModel.init({
+        id: {
+            field: "id",
+            type: DataTypes.BIGINT,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        usuarioInclusao: {
+            field: "idUsuarioInclusao",
+            type: DataTypes.BIGINT,
+        },
+        dataInclusao: {
+            field: "dataInclusao",
+            type: DataTypes.STRING,
+        },
+        usuarioExclusao: {
+            field: "idUsuarioExclusao",
+            type: DataTypes.BIGINT,
+        },
+        dataExclusao: {
+            field: "dataExclusao",
+            type: DataTypes.STRING,
+        },
+        usuarioAlteracao: {
+            field: "idUsuarioAlteracao",
+            type: DataTypes.BIGINT,
+        },
+        dataAlteracao: {
+            field: "dataAlteracao",
+            type: DataTypes.STRING,
+        },
+        numStatus: {
+            field: "numStatus",
+            type: DataTypes.INTEGER,
+        },
+        descHistorico: {
+            field: "descHistorico",
+            type: DataTypes.STRING,
+        },
+    }, {
+        sequelize, /* We need to pass the connection instance */
+        tableName: "wa_campanhaPessoa",
+        timestamps: false,
+        version: "numVersao",
+    });
+    WaCampanhaPessoaModel.associate = (models: {
+        WaCampanhaModel: typeof WaCampanhaModel,
+        PesPessoaModel: typeof PesPessoaModel
+    }) => {
+        WaCampanhaPessoaModel.belongsTo(models.WaCampanhaModel, {
+            as: "waCampanha",
+            foreignKey: {
+                name: "idCampanha",
+                field: "idCampanha",
+                allowNull: false,
+            },
+        });
+        WaCampanhaPessoaModel.belongsTo(models.PesPessoaModel, {
+            as: "pesPessoa",
+            foreignKey: {
+                name: "idPessoa",
+                field: "idPessoa",
+                allowNull: false,
+            },
+        });
+    };
+    return WaCampanhaPessoaModel;
+};

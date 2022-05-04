@@ -1,0 +1,24 @@
+{
+  "development": 
+    {
+      "database": "domstc",
+      "username": "postgres",
+      "password": "abc101",
+      "options": {
+        "host": "localhost",
+        "port": 5432,
+        "dialect": "postgres",
+        "dialectOptions": {
+          "dateStrings": true,
+          "typeCast": true
+        },
+        "timezone": "-03:00",
+        "pool": {
+          "max": 1,
+          "min": 0,
+          "acquire": 30000,
+          "idle": 10000
+        }
+      }
+    }
+}

@@ -1,0 +1,82 @@
+import { DataTypes, Sequelize } from "sequelize";
+import { CommomAuditEmpresaModel } from "./commom/commom-audit-empresa-model";
+
+export class EstMovimentoEstoque extends CommomAuditEmpresaModel {
+    declare idEntradaEstoque?: number | null;
+    declare idSaidaEstoque?: number | null;
+    declare idProdutoServico?: number | null;
+    declare descTipoMovimento?: string | null;
+    declare flagFisico?: boolean | null;
+    declare flagDisponivel?: boolean | null;
+    declare valrQuantidade?: number | null;
+    declare idCd?: number | null;
+}
+
+export default (sequelize: Sequelize): typeof EstMovimentoEstoque => {
+    EstMovimentoEstoque.init({
+        id: {
+            field: "id",
+            type: DataTypes.BIGINT,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        usuarioInclusao: {
+            field: "idUsuarioInclusao",
+            type: DataTypes.BIGINT,
+        },
+        dataInclusao: {
+            field: "dataInclusao",
+            type: DataTypes.STRING,
+        },
+        usuarioExclusao: {
+            field: "idUsuarioExclusao",
+            type: DataTypes.BIGINT,
+        },
+        dataExclusao: {
+            field: "dataExclusao",
+            type: DataTypes.STRING,
+        },
+        empresaSistema: {
+            field: "idEmpresa",
+            type: DataTypes.BIGINT,
+        },
+        idEntradaEstoque: {
+            field: "idEntradaEstoque",
+            type: DataTypes.BIGINT,
+        },
+        idSaidaEstoque: {
+            field: "idSaidaEstoque",
+            type: DataTypes.BIGINT,
+        },
+        idProdutoServico: {
+            field: "idProdutoServico",
+            type: DataTypes.BIGINT,
+        },
+        descTipoMovimento: {
+            field: "descTipoMovimento",
+            type: DataTypes.STRING,
+        },
+        flagFisico: {
+            field: "flagFisico",
+            type: DataTypes.BOOLEAN,
+        },
+        flagDisponivel: {
+            field: "flagDisponivel",
+            type: DataTypes.BOOLEAN,
+        },
+        valrQuantidade: {
+            field: "valrQuantidade",
+            type: DataTypes.DECIMAL,
+        },
+        idCd: {
+            field: "idCd",
+            type: DataTypes.BIGINT,
+        },
+    }, {
+        sequelize, /* We need to pass the connection instance */
+        tableName: "est_movimentoEstoque",
+        timestamps: false,
+        version: "numVersao",
+    });
+    return EstMovimentoEstoque;
+};

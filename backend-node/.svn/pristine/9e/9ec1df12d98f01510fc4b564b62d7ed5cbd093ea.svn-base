@@ -1,0 +1,35 @@
+import express, { NextFunction, Response, Router } from "express";
+import * as CommomController from "../controllers/commom-controller";
+import { RequestApi } from "../middleware/request-api";
+import { WaContextoGatilhoValorModel } from "../models/wa-contexto-gatilho-valor-model";
+
+const router: Router = express.Router();
+
+router.get("/wa-contexto-gatilho-valor", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findAll(WaContextoGatilhoValorModel, req, res, next);
+});
+
+router.post("/wa-contexto-gatilho-valor", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.save(WaContextoGatilhoValorModel, req, res, next);
+});
+
+router.get("/wa-contexto-gatilho-valor/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findById(WaContextoGatilhoValorModel, req, res, next);
+});
+
+router.put("/wa-contexto-gatilho-valor/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.update(WaContextoGatilhoValorModel, req, res, next);
+});
+
+router.put("/wa-contexto-gatilho-valor/inativar/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.inativar(WaContextoGatilhoValorModel, req, res, next);
+});
+
+router.put("/wa-contexto-gatilho-valor/reativar/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.reativar(WaContextoGatilhoValorModel, req, res, next);
+});
+
+/**
+ * @export {express.Router}
+ */
+export default router;

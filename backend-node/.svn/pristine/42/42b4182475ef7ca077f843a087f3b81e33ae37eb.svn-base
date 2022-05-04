@@ -1,0 +1,32 @@
+import { DataTypes, Sequelize } from "sequelize";
+import { CommomModel } from "./commom/commom-model";
+
+export class WaGatilhoModel extends CommomModel {
+    declare descNome?: string | null;
+    declare numGatilho?: number | null;
+}
+
+export default (sequelize: Sequelize): typeof WaGatilhoModel => {
+    WaGatilhoModel.init({
+        id: {
+            field: "id",
+            type: DataTypes.BIGINT,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        descNome: {
+            field: "descNome",
+            type: DataTypes.STRING,
+        },
+        numGatilho: {
+            field: "numGatilho",
+            type: DataTypes.INTEGER,
+        },
+    }, {
+        sequelize, /* We need to pass the connection instance */
+        tableName: "wa_gatilho",
+        timestamps: false,
+        version: "numVersao",
+    });
+    return WaGatilhoModel;
+};

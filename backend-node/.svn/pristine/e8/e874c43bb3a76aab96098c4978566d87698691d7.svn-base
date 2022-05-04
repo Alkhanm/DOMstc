@@ -1,0 +1,58 @@
+/* eslint-disable indent */
+import express from "express";
+import * as JwtAuth from "../middleware/jwt-auth";
+import PedPedidoRouter from "./ped-pedido-router";
+import PesContatoRouter from "./pes-contato-router";
+import PesPessoaRouter from "./pes-pessoa-router";
+import TesteRouter from "./teste-router";
+import UtilsRouter from "./utils-router";
+import WaCampanhaPessoaRouter from "./wa-campanha-pessoa-router";
+import WaCampanhaRouter from "./wa-campanha-router";
+import WaChatRouter from "./wa-chat-router";
+import WaChatValorRouter from "./wa-chat-valor-router";
+import WaCondicaoRouter from "./wa-condicao-router";
+import WaContatoRouter from "./wa-contato-router";
+import WaContextoGatilhoRouter from "./wa-contexto-gatilho-router";
+import WaContextoGatilhoValorRouter from "./wa-contexto-gatilho-valor-router";
+import WaContextoRouter from "./wa-contexto-router";
+import WaGatilhoRouter from "./wa-gatilho-router";
+import WaMensagemRouter from "./wa-mensagem-router";
+import WaRegraAcaoRouter from "./wa-regra-acao-router";
+import WaRegraRouter from "./wa-regra-router";
+import WaVariavelTextoRouter from "./wa-variavel-texto-router";
+
+const URL_BASE = "/api";
+
+export default (app: express.Application): void => {
+  // controle de acesso
+  app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+    // se acesso a pasta URL_BASE usuario tem que estar logado
+    if (req.originalUrl.lastIndexOf(`${URL_BASE}/`) > -1) {
+      JwtAuth.isAuthenticated(req, res, next);
+      return;
+    }
+    next();
+  });
+
+  app.use("/teste", TesteRouter);
+  // app.use("/auth", AuthRouter);
+  app.use("/utils", UtilsRouter);
+
+  app.use(URL_BASE, PedPedidoRouter);
+  app.use(URL_BASE, PesContatoRouter);
+  app.use(URL_BASE, PesPessoaRouter);
+  app.use(URL_BASE, WaCampanhaPessoaRouter);
+  app.use(URL_BASE, WaCampanhaRouter);
+  app.use(URL_BASE, WaChatRouter);
+  app.use(URL_BASE, WaChatValorRouter);
+  app.use(URL_BASE, WaCondicaoRouter);
+  app.use(URL_BASE, WaContatoRouter);
+  app.use(URL_BASE, WaContextoGatilhoRouter);
+  app.use(URL_BASE, WaContextoGatilhoValorRouter);
+  app.use(URL_BASE, WaContextoRouter);
+  app.use(URL_BASE, WaGatilhoRouter);
+  app.use(URL_BASE, WaMensagemRouter);
+  app.use(URL_BASE, WaRegraAcaoRouter);
+  app.use(URL_BASE, WaRegraRouter);
+  app.use(URL_BASE, WaVariavelTextoRouter);
+};

@@ -1,0 +1,35 @@
+import express, { NextFunction, Response, Router } from "express";
+import * as CommomController from "../controllers/commom-controller";
+import { RequestApi } from "../middleware/request-api";
+import { WaCampanhaPessoaModel } from "../models/wa-campanha-pessoa-model";
+
+const router: Router = express.Router();
+
+router.get("/wa-campanha-pessoa", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findAll(WaCampanhaPessoaModel, req, res, next);
+});
+
+router.post("/wa-campanha-pessoa", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.save(WaCampanhaPessoaModel, req, res, next);
+});
+
+router.get("/wa-campanha-pessoa/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findById(WaCampanhaPessoaModel, req, res, next);
+});
+
+router.put("/wa-campanha-pessoa/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.update(WaCampanhaPessoaModel, req, res, next);
+});
+
+router.put("/wa-campanha-pessoa/inativar/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.inativar(WaCampanhaPessoaModel, req, res, next);
+});
+
+router.put("/wa-campanha-pessoa/reativar/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.reativar(WaCampanhaPessoaModel, req, res, next);
+});
+
+/**
+ * @export {express.Router}
+ */
+export default router;

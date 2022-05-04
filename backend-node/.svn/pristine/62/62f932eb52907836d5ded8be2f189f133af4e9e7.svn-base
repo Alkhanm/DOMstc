@@ -1,0 +1,106 @@
+import { DataTypes, Sequelize } from "sequelize";
+import { CommomAuditAltModel } from "./commom/commom-audit-alt-model";
+
+export class WaContatoModel extends CommomAuditAltModel {
+    declare descIdContact?: string | null;
+    declare descPushName?: string | null;
+    declare descTypeContact?: string | null;
+    declare flagBusiness?: boolean | null;
+    declare flagEnterprise?: boolean | null;
+    declare flagStatusMute?: boolean | null;
+    declare flagPSA?: boolean | null;
+    declare flagUser?: boolean | null;
+    declare flagWAContact?: boolean | null;
+    declare descProfilePicThumbObj?: string | null;
+    declare descMsgs?: string | null;
+    declare descJson?: string | null;
+}
+
+export default (sequelize: Sequelize): typeof WaContatoModel => {
+    WaContatoModel.init({
+        id: {
+            field: "id",
+            type: DataTypes.BIGINT,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        usuarioInclusao: {
+            field: "idUsuarioInclusao",
+            type: DataTypes.BIGINT,
+        },
+        dataInclusao: {
+            field: "dataInclusao",
+            type: DataTypes.STRING,
+        },
+        usuarioExclusao: {
+            field: "idUsuarioExclusao",
+            type: DataTypes.BIGINT,
+        },
+        dataExclusao: {
+            field: "dataExclusao",
+            type: DataTypes.STRING,
+        },
+        usuarioAlteracao: {
+            field: "idUsuarioAlteracao",
+            type: DataTypes.BIGINT,
+        },
+        dataAlteracao: {
+            field: "dataAlteracao",
+            type: DataTypes.STRING,
+        },
+        descIdContact: {
+            field: "descIdContact",
+            type: DataTypes.STRING,
+        },
+        descPushName: {
+            field: "descPushName",
+            type: DataTypes.STRING,
+        },
+        descTypeContact: {
+            field: "descTypeContact",
+            type: DataTypes.STRING,
+        },
+        flagBusiness: {
+            field: "flagBusiness",
+            type: DataTypes.BOOLEAN,
+        },
+        flagEnterprise: {
+            field: "flagEnterprise",
+            type: DataTypes.BOOLEAN,
+        },
+        flagStatusMute: {
+            field: "flagStatusMute",
+            type: DataTypes.BOOLEAN,
+        },
+        flagPSA: {
+            field: "flagPSA",
+            type: DataTypes.BOOLEAN,
+        },
+        flagUser: {
+            field: "flagUser",
+            type: DataTypes.BOOLEAN,
+        },
+        flagWAContact: {
+            field: "flagWAContact",
+            type: DataTypes.BOOLEAN,
+        },
+        descProfilePicThumbObj: {
+            field: "descProfilePicThumbObj",
+            type: DataTypes.STRING,
+        },
+        descMsgs: {
+            field: "descMsgs",
+            type: DataTypes.STRING,
+        },
+        descJson: {
+            field: "descJson",
+            type: DataTypes.STRING,
+        },
+    }, {
+        sequelize, /* We need to pass the connection instance */
+        tableName: "wa_contato",
+        timestamps: false,
+        version: "numVersao",
+    });
+    return WaContatoModel;
+};

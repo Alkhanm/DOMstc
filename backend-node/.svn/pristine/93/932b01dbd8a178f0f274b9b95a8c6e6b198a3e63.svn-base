@@ -1,0 +1,36 @@
+import express, { NextFunction, Response, Router } from "express";
+import * as CommomController from "../controllers/commom-controller";
+import { RequestApi } from "../middleware/request-api";
+import { PedPedidoModel } from "../models/ped-pedido-model";
+import * as PedPedidoServ from "../services/ped-pedido-service";
+
+const router: Router = express.Router();
+
+router.get("/ped-pedido", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findAll(PedPedidoModel, req, res, next);
+});
+
+router.post("/ped-pedido", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.save(PedPedidoModel, req, res, next, PedPedidoServ.save);
+});
+
+router.get("/ped-pedido/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findById(PedPedidoModel, req, res, next);
+});
+
+router.put("/ped-pedido/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.update(PedPedidoModel, req, res, next);
+});
+
+router.put("/ped-pedido/inativar/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.inativar(PedPedidoModel, req, res, next);
+});
+
+router.put("/ped-pedido/reativar/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.reativar(PedPedidoModel, req, res, next);
+});
+
+/**
+ * @export {express.Router}
+ */
+export default router;

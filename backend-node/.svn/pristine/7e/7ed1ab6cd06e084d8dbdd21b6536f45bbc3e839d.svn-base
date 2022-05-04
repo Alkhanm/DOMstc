@@ -1,0 +1,32 @@
+import { DataTypes, Sequelize } from "sequelize";
+import { CommomModel } from "./commom/commom-model";
+
+export class WaOperadorModel extends CommomModel {
+    declare descNome?: string | null;
+    declare numOperador?: number | null;
+}
+
+export default (sequelize: Sequelize): typeof WaOperadorModel => {
+    WaOperadorModel.init({
+        id: {
+            field: "id",
+            type: DataTypes.BIGINT,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        descNome: {
+            field: "descNome",
+            type: DataTypes.STRING,
+        },
+        numOperador: {
+            field: "numOperador",
+            type: DataTypes.INTEGER,
+        },
+    }, {
+        sequelize, /* We need to pass the connection instance */
+        tableName: "wa_operador",
+        timestamps: false,
+        version: "numVersao",
+    });
+    return WaOperadorModel;
+};

@@ -1,0 +1,35 @@
+import express, { NextFunction, Response, Router } from "express";
+import * as CommomController from "../controllers/commom-controller";
+import { RequestApi } from "../middleware/request-api";
+import { WaContextoModel } from "../models/wa-contexto-model";
+
+const router: Router = express.Router();
+
+router.get("/wa-contexto", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findAll(WaContextoModel, req, res, next);
+});
+
+router.post("/wa-contexto", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.save(WaContextoModel, req, res, next);
+});
+
+router.get("/wa-contexto/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findById(WaContextoModel, req, res, next);
+});
+
+router.put("/wa-contexto/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.update(WaContextoModel, req, res, next);
+});
+
+router.put("/wa-contexto/inativar/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.inativar(WaContextoModel, req, res, next);
+});
+
+router.put("/wa-contexto/reativar/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.reativar(WaContextoModel, req, res, next);
+});
+
+/**
+ * @export {express.Router}
+ */
+export default router;

@@ -1,0 +1,47 @@
+import { DataTypes, Sequelize } from "sequelize";
+import { CommomAuditEmpresaModel } from "./commom/commom-audit-empresa-model";
+
+export class EstSaidaEstoqueModel extends CommomAuditEmpresaModel {
+    declare idCd?: number | null;
+}
+
+export default (sequelize: Sequelize): typeof EstSaidaEstoqueModel => {
+    EstSaidaEstoqueModel.init({
+        id: {
+            field: "id",
+            type: DataTypes.BIGINT,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        usuarioInclusao: {
+            field: "idUsuarioInclusao",
+            type: DataTypes.BIGINT,
+        },
+        dataInclusao: {
+            field: "dataInclusao",
+            type: DataTypes.STRING,
+        },
+        usuarioExclusao: {
+            field: "idUsuarioExclusao",
+            type: DataTypes.BIGINT,
+        },
+        dataExclusao: {
+            field: "dataExclusao",
+            type: DataTypes.STRING,
+        },
+        empresaSistema: {
+            field: "idEmpresa",
+            type: DataTypes.BIGINT,
+        },
+        idCd: {
+            field: "idCd",
+            type: DataTypes.BIGINT,
+        },
+    }, {
+        sequelize, /* We need to pass the connection instance */
+        tableName: "est_saidaEstoque",
+        timestamps: false,
+        version: "numVersao",
+    });
+    return EstSaidaEstoqueModel;
+};

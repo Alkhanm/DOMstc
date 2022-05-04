@@ -64,39 +64,37 @@
                 v-model="product.brand"
                 hint="Marca/linha a qual o produto pertence"
                 required
-              >
-              </v-text-field>
+              />
             </v-col>
             <v-col cols="12">
               <v-select
                 :items="storesSelectList"
                 eager
                 v-model="storeQuery"
-                :item-text="'name'"
                 return-object
                 label="Selecione a empresa"
               >
               </v-select>
             </v-col>
-            <v-col cols="12" md="4" sm="4">
+            <v-col cols="13" md="4" sm="5">
               <v-text-field
-                label="Preço de compra"
+                :label="`Preço de compra (${storeQuery})`"
                 v-model="product.purchasePrice"
                 hint="Custo de aquisição para este produto"
                 required
               />
             </v-col>
-            <v-col cols="12" md="4" sm="4">
+            <v-col cols="13" md="4" sm="5">
               <v-text-field
-                label="Preço de venda"
+                :label="`Preço de venda (${storeQuery})`"
                 v-model="product.salePrice"
                 hint="Valor padrão para a revenda deste produto"
                 required
               />
             </v-col>
-            <v-col cols="12" md="2" sm="2">
+            <v-col cols="13" md="3" sm="">
               <v-text-field
-                label="Quantidade"
+                :label="`Quantidade (${storeQuery})`"
                 v-model="product.quantity"
                 hint="Unidades desse produto"
                 required
@@ -145,19 +143,23 @@ import { AlertStore } from "../../store/alert-store";
 import { ProductStore } from "../../store/product-store";
 import FloatingActions from "./FloatingActions.vue";
 
-const dialog = ref(false);
 const valid = true;
 const product = ref<IProduct>({} as IProduct);
 
-const storeQuery = ref<string>();
+const storeQuery = ref<string>("TODOS");
 const stores = ref<IStore[]>([]);
 const storesSelectList = computed<string[]>(() => {
-  return stores.value.map(store => `${store.id} - ${store.name}`)
-})
-const selectedStore = computed<IStore | undefined>(() => {
-  const id = parseInt(storeQuery.value?.split("-")[0]!);
-  const result = stores.value.find((store) => store.id === id);
-  return result;});
+  const list: string[] = stores.value.map((store) => store.name);
+  list.unshift("TODOS");
+  return list;
+});
+const selectedStore = computed<IStore | null>(() => {
+  if (!storeQuery) return null;
+  const result = stores.value.find(
+    (s) => s.name.toLowerCase() === storeQuery.value.toLowerCase()
+  );
+  return result || null;
+});
 
 const imageFile = ref();
 const imagePreview = ref("");
@@ -178,6 +180,7 @@ async function uploadImage(): Promise<string> {
 async function save(): Promise<IProduct> {
   product.value.imageUrl = await uploadImage();
   const productSaved = await ProductHttp.save(product.value);
+  console.log({ ...productSaved });
   return productSaved;
 }
 
@@ -211,16 +214,11 @@ async function handleSave() {
 }
 
 function clean() {
-  dialog.value = false;
   product.value = {} as IProduct;
   loadingProgress.value = 0;
   imagePreview.value = "";
   imageFile.value = {};
 }
-
-watch(selectedStore, () => {
-  console.log({...selectedStore.value})
-})
 
 onMounted(async () => {
   stores.value = await StoreHttp.fetchAll();

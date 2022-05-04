@@ -1,0 +1,66 @@
+{
+  "development": {
+    "username": "root",
+    "password": "dbaideiatec",
+    "database": "refiltek_mfiltros",
+    "options": {
+      "host": "localhost",
+      "port": 3306,
+      "dialect": "mysql",
+      "dialectOptions": {
+        "dateStrings": true,
+        "typeCast": true
+      },
+      "timezone": "-03:00",
+      "pool": {
+        "max": 1,
+        "min": 0,
+        "acquire": 30000,
+        "idle": 10000
+      }
+    }
+  },
+  "test": {
+    "username": "root",
+    "password": "dbaideiatec",
+    "database": "refiltek_mfiltros",
+    "options": {
+      "host": "localhost",
+      "port": 3306,
+      "dialect": "mysql",
+      "dialectOptions": {
+        "dateStrings": true,
+        "typeCast": true
+      },
+      "timezone": "-03:00",
+      "pool": {
+        "max": 1,
+        "min": 0,
+        "acquire": 30000,
+        "idle": 10000
+      }
+    }
+  },
+  "production": {
+    "username": "remoto",
+    "password": "2fm@mysql1",
+    "database": "refiltek_teste",
+    "options": {
+      "host": "34.95.229.87",
+      "port": 3306,
+      "dialect": "mysql",
+      "dialectOptions": {
+        "dateStrings": true,
+        "typeCast": true
+      },
+      "timezone": "-03:00",
+      "logging": false,
+      "pool": {
+        "max": 1,
+        "min": 0,
+        "acquire": 30000,
+        "idle": 10000
+      }
+    }
+  }
+}

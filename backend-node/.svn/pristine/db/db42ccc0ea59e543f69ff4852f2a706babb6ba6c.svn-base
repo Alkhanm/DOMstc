@@ -1,0 +1,26 @@
+import express, { NextFunction, Response, Router } from "express";
+import * as WaVariavelTextoController from "../controllers/wa-variavel-texto-controller";
+import { RequestApi } from "../middleware/request-api";
+
+const router: Router = express.Router();
+
+router.get("/wa-variavel-texto/nome-pessoa/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    WaVariavelTextoController.obterNomePessoa(req, res, next);
+});
+
+router.get("/wa-variavel-texto/data-ultima-manutencao/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    WaVariavelTextoController.obterDataUltimaManutencao(req, res, next);
+});
+
+router.get("/wa-variavel-texto/pedido-chat/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    WaVariavelTextoController.obterPedidoChat(req, res, next);
+});
+
+router.get("/wa-variavel-texto/msg-atendente/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    WaVariavelTextoController.obterMsgAtendenteChat(req, res, next);
+});
+
+/**
+ * @export {express.Router}
+ */
+export default router;

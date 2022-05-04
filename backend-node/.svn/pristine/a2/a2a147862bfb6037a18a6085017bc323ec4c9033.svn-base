@@ -1,0 +1,18 @@
+import { AppAttributes } from "../middleware/app-attributes";
+import { PesContatoModel } from "../models/pes-contato-model";
+import { WaContatoModel } from "../models/wa-contato-model";
+import * as CommomRepo from "../repositories/commom-repository";
+import * as Validation from "../validation";
+
+export async function save (record: PesContatoModel, appAttributes: AppAttributes): Promise<PesContatoModel> {
+    await Validation.validationSave(PesContatoModel, record);
+    if (record.waContato) {
+        await Validation.validationSave(WaContatoModel, record.waContato);
+    }
+    return CommomRepo.saveAssociation(PesContatoModel, record, appAttributes.operadorId!, [{
+        association: "waContato",
+        ModelType: WaContatoModel,
+        fkName: "idWaContato",
+        action: 1, // 0 destroy, 1 inative
+    }]);
+}

@@ -1,0 +1,9 @@
+#can be 'development' or 'production'
+NODE_ENV=development
+
+#your app port
+PORT=3000
+
+SECRET=054efa38e4958a7023057fa3be255b045de04ce5
+
+ID_CENTRO_CUSTO=2

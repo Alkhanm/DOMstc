@@ -1,0 +1,17 @@
+import * as WaVariavelTextoRepo from "../repositories/wa-variavel-texto-repository";
+
+export async function obterNomePessoa (idWaContato: number): Promise<object> {
+    return WaVariavelTextoRepo.obterNomePessoa(idWaContato);
+}
+
+export async function obterDataUltimaManutencao (idWaContato: number): Promise<object> {
+    return WaVariavelTextoRepo.obterDataUltimaManutencao(idWaContato);
+}
+
+export async function obterPedidoChat (idChat: number): Promise<object> {
+    return WaVariavelTextoRepo.obterPedidoChat(idChat);
+}
+
+export async function obterMsgAtendenteChat (idChat: number): Promise<object> {
+    return WaVariavelTextoRepo.obterMsgAtendenteChat(idChat);
+}

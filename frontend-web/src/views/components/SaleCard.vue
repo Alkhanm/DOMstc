@@ -65,8 +65,8 @@
 <script setup lang="ts">
 import { Intl, Temporal } from "@js-temporal/polyfill";
 import { computed, ref } from "vue";
-import { SaleFunctions } from "../../domain/functions/sale-functions";
 import { ISale } from "../../domain/interfaces/ISale";
+import { SaleHooks } from "../../hooks/sale-hooks";
 
 interface Props {
   sale: ISale;
@@ -75,7 +75,7 @@ const props = defineProps<Props>();
 const expand = ref(false);
 
 const sale = computed(() => props.sale);
-const { saleTitle, salePrice, saleProductQnt } = SaleFunctions.useSaleInfo(sale)
+const { saleTitle, salePrice, saleProductQnt } = SaleHooks.useSaleInfo(sale)
 const saleDate = computed(() => {
   const dateISO: string = sale.value ? sale.value.date.toString() : ""
   const plainDate: Temporal.PlainDateTime = Temporal.PlainDateTime.from(dateISO);

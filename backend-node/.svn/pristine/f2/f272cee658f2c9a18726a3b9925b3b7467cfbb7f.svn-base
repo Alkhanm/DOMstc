@@ -1,0 +1,40 @@
+import express, { NextFunction, Response, Router } from "express";
+import * as CommomController from "../controllers/commom-controller";
+import { RequestApi } from "../middleware/request-api";
+import { PesContatoModel } from "../models/pes-contato-model";
+import * as ContatoServ from "../services/contato-service";
+
+const router: Router = express.Router();
+
+router.get("/pes-contato", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findAll(PesContatoModel, req, res, next);
+});
+
+router.get("/pes-contato/one", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findOne(PesContatoModel, req, res, next);
+});
+
+router.post("/pes-contato", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.save(PesContatoModel, req, res, next, ContatoServ.save);
+});
+
+router.get("/pes-contato/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findById(PesContatoModel, req, res, next);
+});
+
+router.put("/pes-contato/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.update(PesContatoModel, req, res, next, ContatoServ.save);
+});
+
+router.put("/pes-contato/inativar/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.inativar(PesContatoModel, req, res, next);
+});
+
+router.put("/pes-contato/reativar/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.reativar(PesContatoModel, req, res, next);
+});
+
+/**
+ * @export {express.Router}
+ */
+export default router;

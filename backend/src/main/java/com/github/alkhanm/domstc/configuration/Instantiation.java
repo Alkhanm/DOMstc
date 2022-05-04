@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.util.List;
+import java.util.Set;
 
 @Profile("test")
 @Configuration()
@@ -18,7 +19,7 @@ public class Instantiation implements CommandLineRunner {
     private final SaleRepository saleRepository;
     private final StoreRepository storeRepository;
 
-    public Instantiation( ProductRepository productRepository, SaleRepository saleRepository, StoreRepository storeRepository) {
+    public Instantiation(ProductRepository productRepository, SaleRepository saleRepository, StoreRepository storeRepository) {
         this.productRepository = productRepository;
         this.saleRepository = saleRepository;
         this.storeRepository = storeRepository;
@@ -36,37 +37,20 @@ public class Instantiation implements CommandLineRunner {
         List<Store> stores = List.of(shopee, amazon, mercadoLivre);
 
         List<Product> products = List.of(
-                Product.builder()
-                        .description("Petit Libellule").brand("Petit").category(perfume).code(1234434576).purchasePrice(13.5)
-                        .salePrice(23.9).quantity(3).company(CompanyEnum.AVON).imageUrl("")
-                        .productStores(List.of(
-                                new ProductStore(29, 3, amazon),
-                                new ProductStore(27, 2, mercadoLivre),
-                                new ProductStore(2, 5, shopee)
-                        ))
-                        .build(),
-                Product.builder()
-                        .description("Musk Freeze").brand("Musk").category(perfume).code(961255896).purchasePrice(6.5)
-                        .salePrice(15).quantity(15).company(CompanyEnum.AVON).imageUrl("")
-                        .productStores(List.of(
-                                new ProductStore(2, 5, shopee)
-                        ))
-                        .build(),
-                Product.builder()
-                        .description("Musk Storm").brand("Musk").category(perfume).code(1234453576).purchasePrice(6.1)
-                        .salePrice(16).quantity(11).company(CompanyEnum.AVON).imageUrl("")
-                        .productStores(List.of(
-                                new ProductStore(29, 3, amazon),
-                                new ProductStore(2, 5, shopee)
-                        ))
-                        .build(),
-                Product.builder().description("Shampo Anticaspa").brand("Advance Tecniques").category(shampooAnticaspa).code(524153252).purchasePrice(23.5)
-                        .salePrice(33.9).quantity(12).company(CompanyEnum.AVON).imageUrl("")
-                        .productStores(List.of(
-                                new ProductStore(29, 2, amazon),
-                                new ProductStore(29, 3, mercadoLivre)
-                        ))
-                        .build()
+                new Product("Petit Libellule", 1234434576, "Petit", 13.5, 23.9, 3, CompanyEnum.AVON, perfume, Set.of(
+                        new ProductStore(29, 3, amazon),
+                        new ProductStore(2, 5, shopee)
+                )),
+                new Product("Musk Freeze", 961255896, "Musk", 6.5, 215, 8, CompanyEnum.AVON, perfume, Set.of(
+                        new ProductStore(2, 5, shopee)
+                )),
+                new Product("Musk Storm", 1234453576, "Musk", 6.1, 16, 10, CompanyEnum.AVON, perfume, Set.of(
+                        new ProductStore(2, 5, shopee)
+                )),
+                new Product("Shampo Anticaspa", 524153252, "Advance Tecniques", 23.5, 33.9, 12, CompanyEnum.AVON, shampooAnticaspa, Set.of(
+                        new ProductStore(29, 2, amazon),
+                        new ProductStore(29, 3, mercadoLivre)
+                ))
         );
         List<Item> items1 = List.of(
                 new Item(2, products.get(1))

@@ -5,9 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Getter
 @NoArgsConstructor
@@ -31,20 +29,45 @@ public class Product {
     private int quantity;
     private String variation;
     private String imageUrl;
-    private int volume;
-    private int weight;
-    private int unit;
+    private Integer volume;
+    private Integer weight;
     private LocalDate purchaseDate = LocalDate.now();
 
     @Enumerated(EnumType.STRING)
     private CompanyEnum company;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_store")
-    private List<ProductStore> productStores = new ArrayList<>();
+    @JoinColumn(name = "product_id")
+    private final List<ProductStore> productStores = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.PERSIST)
     private Category category;
+
+    public Product(String description, long code, String brand, double purchasePrice, double salePrice, int quantity, CompanyEnum company, Category category, Collection<ProductStore> productStores) {
+        this.description = description;
+        this.code = code;
+        this.brand = brand;
+        this.purchasePrice = purchasePrice;
+        this.salePrice = salePrice;
+        this.quantity = quantity;
+        this.company = company;
+        this.category = category;
+        this.productStores.addAll(Set.copyOf(productStores));
+    }
+
+    public void addProductStore(ProductStore productStores){
+        this.productStores.add(productStores);
+    }
+
+    public void addStoreAsDefaultValues(Store store) {
+        final int PRODUCT_QUANTITY = 1;
+        ProductStore productStore = new ProductStore(salePrice, PRODUCT_QUANTITY, store);
+        productStores.add(productStore);
+    }
+
+    public Set<ProductStore> getProductStores(){
+        return Set.copyOf(productStores);
+    }
 
     @Override public boolean equals(Object o) {
         if (this == o) return true;

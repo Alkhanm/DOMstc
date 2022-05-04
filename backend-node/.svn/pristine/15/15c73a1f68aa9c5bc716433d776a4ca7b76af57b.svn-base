@@ -1,0 +1,31 @@
+import express, { NextFunction, Response, Router } from "express";
+import * as CommomController from "../controllers/commom-controller";
+import { RequestApi } from "../middleware/request-api";
+import { WaChatModel } from "../models/wa-chat-model";
+
+const router: Router = express.Router();
+
+router.get("/wa-chat", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findAll(WaChatModel, req, res, next);
+});
+
+router.get("/wa-chat/one", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findOne(WaChatModel, req, res, next);
+});
+
+router.post("/wa-chat", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.save(WaChatModel, req, res, next);
+});
+
+router.get("/wa-chat/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findById(WaChatModel, req, res, next);
+});
+
+router.put("/wa-chat/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.update(WaChatModel, req, res, next);
+});
+
+/**
+ * @export {express.Router}
+ */
+export default router;

@@ -1,0 +1,35 @@
+import express, { NextFunction, Response, Router } from "express";
+import * as CommomController from "../controllers/commom-controller";
+import { RequestApi } from "../middleware/request-api";
+import { WaRegraAcaoModel } from "../models/wa-regra-acao-model";
+
+const router: Router = express.Router();
+
+router.get("/wa-regra-acao", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findAll(WaRegraAcaoModel, req, res, next);
+});
+
+router.post("/wa-regra-acao", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.save(WaRegraAcaoModel, req, res, next);
+});
+
+router.get("/wa-regra-acao/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findById(WaRegraAcaoModel, req, res, next);
+});
+
+router.put("/wa-regra-acao/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.update(WaRegraAcaoModel, req, res, next);
+});
+
+router.put("/wa-regra-acao/inativar/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.inativar(WaRegraAcaoModel, req, res, next);
+});
+
+router.put("/wa-regra-acao/reativar/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.reativar(WaRegraAcaoModel, req, res, next);
+});
+
+/**
+ * @export {express.Router}
+ */
+export default router;

@@ -1,0 +1,35 @@
+import express, { NextFunction, Response, Router } from "express";
+import * as CommomController from "../controllers/commom-controller";
+import { RequestApi } from "../middleware/request-api";
+import { WaCondicaoModel } from "../models/wa-condicao-model";
+
+const router: Router = express.Router();
+
+router.get("/wa-condicao", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findAll(WaCondicaoModel, req, res, next);
+});
+
+router.post("/wa-condicao", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.save(WaCondicaoModel, req, res, next);
+});
+
+router.get("/wa-condicao/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findById(WaCondicaoModel, req, res, next);
+});
+
+router.put("/wa-condicao/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.update(WaCondicaoModel, req, res, next);
+});
+
+router.put("/wa-condicao/inativar/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.inativar(WaCondicaoModel, req, res, next);
+});
+
+router.put("/wa-condicao/reativar/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.reativar(WaCondicaoModel, req, res, next);
+});
+
+/**
+ * @export {express.Router}
+ */
+export default router;

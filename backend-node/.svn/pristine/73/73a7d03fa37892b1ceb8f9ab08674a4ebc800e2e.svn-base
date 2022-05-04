@@ -1,0 +1,131 @@
+import { DataTypes, Sequelize } from "sequelize";
+import { CommomAuditAltModel } from "./commom/commom-audit-alt-model";
+
+export class PedAgendaTecnicaAgendamentoModel extends CommomAuditAltModel {
+    declare idAgendaTecnica?: number | null;
+    declare idPedido?: number | null;
+    declare idOs?: number | null;
+    declare idPessoaFuncionarioTecnico?: number | null;
+    declare idTipoServicoAgendaTecnica?: number | null;
+    declare idNivelServicoAgendaTecnica?: number | null;
+    declare descDetalheServico?: string | null;
+    declare flagLigarAntes?: boolean | null;
+    declare descObservacao?: string | null;
+    declare idEndereco?: number | null;
+    declare idArea?: number | null;
+    declare numQtdeTempo?: number | null;
+    declare flagRestricaoHorario?: boolean | null;
+    declare descRestricaoHorario?: string | null;
+    declare descStatusAgenda?: string | null;
+    declare descMotivoExclusao?: string | null;
+    declare flagImpresso?: boolean | null;
+}
+
+export default (sequelize: Sequelize): typeof PedAgendaTecnicaAgendamentoModel => {
+    PedAgendaTecnicaAgendamentoModel.init({
+        id: {
+            field: "id",
+            type: DataTypes.BIGINT,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        usuarioInclusao: {
+            field: "idUsuarioInclusao",
+            type: DataTypes.BIGINT,
+        },
+        dataInclusao: {
+            field: "dataInclusao",
+            type: DataTypes.STRING,
+        },
+        usuarioExclusao: {
+            field: "idUsuarioExclusao",
+            type: DataTypes.BIGINT,
+        },
+        dataExclusao: {
+            field: "dataExclusao",
+            type: DataTypes.STRING,
+        },
+        usuarioAlteracao: {
+            field: "idUsuarioAlteracao",
+            type: DataTypes.BIGINT,
+        },
+        dataAlteracao: {
+            field: "dataAlteracao",
+            type: DataTypes.STRING,
+        },
+        idAgendaTecnica: {
+            field: "idAgendaTecnica",
+            type: DataTypes.BIGINT,
+        },
+        idPedido: {
+            field: "idPedido",
+            type: DataTypes.BIGINT,
+        },
+        idOs: {
+            field: "idOs",
+            type: DataTypes.BIGINT,
+        },
+        idPessoaFuncionarioTecnico: {
+            field: "idPessoaFuncionarioTecnico",
+            type: DataTypes.BIGINT,
+        },
+        idTipoServicoAgendaTecnica: {
+            field: "idTipoServicoAgendaTecnica",
+            type: DataTypes.BIGINT,
+        },
+        idNivelServicoAgendaTecnica: {
+            field: "idNivelServicoAgendaTecnica",
+            type: DataTypes.BIGINT,
+        },
+        descDetalheServico: {
+            field: "descDetalheServico",
+            type: DataTypes.STRING,
+        },
+        flagLigarAntes: {
+            field: "flagLigarAntes",
+            type: DataTypes.BOOLEAN,
+        },
+        descObservacao: {
+            field: "descObservacao",
+            type: DataTypes.STRING,
+        },
+        idEndereco: {
+            field: "idEndereco",
+            type: DataTypes.BIGINT,
+        },
+        idArea: {
+            field: "idArea",
+            type: DataTypes.BIGINT,
+        },
+        numQtdeTempo: {
+            field: "numQtdeTempo",
+            type: DataTypes.INTEGER,
+        },
+        flagRestricaoHorario: {
+            field: "flagRestricaoHorario",
+            type: DataTypes.BOOLEAN,
+        },
+        descRestricaoHorario: {
+            field: "descRestricaoHorario",
+            type: DataTypes.STRING,
+        },
+        descStatusAgenda: {
+            field: "descStatusAgenda",
+            type: DataTypes.STRING,
+        },
+        descMotivoExclusao: {
+            field: "descMotivoExclusao",
+            type: DataTypes.STRING,
+        },
+        flagImpresso: {
+            field: "flagImpresso",
+            type: DataTypes.BOOLEAN,
+        },
+    }, {
+        sequelize, /* We need to pass the connection instance */
+        tableName: "ped_agendaTecnicaAgendamento",
+        timestamps: false,
+        version: "numVersao",
+    });
+    return PedAgendaTecnicaAgendamentoModel;
+};

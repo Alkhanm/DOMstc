@@ -1,0 +1,131 @@
+import { QueryTypes } from "sequelize";
+import { getSequelize } from "../models";
+
+export async function obterNomePessoa (idWaContato: number): Promise<object> {
+    let select = "";
+    select += "select\n";
+    select += "    pp2.descNomeRazaoSocial as nomePessoa\n";
+    select += "from\n";
+    select += "    pes_contato pc\n";
+    select += "    join pes_pessoa pp2 on pc.idPessoa = pp2.id\n";
+    select += "where\n";
+    select += "    pc.dataExclusao is null\n";
+    select += "    and pp2.dataExclusao is null\n";
+    select += "    and pc.idWaContato = :idWaContato\n";
+
+    const rows = await getSequelize().query(select, {
+        replacements: { idWaContato },
+        type: QueryTypes.SELECT,
+    });
+    return rows[0];
+}
+
+export async function obterDataUltimaManutencao (idWaContato: number): Promise<object> {
+    let select = "";
+    select += "select\n";
+    select += "    max(vw.dataUltManutencao) as dataUltManutencao\n";
+    select += "from (\n";
+    select += "    select\n";
+    select += "        max(pp.dataPedido) as dataUltManutencao\n";
+    select += "    from\n";
+    select += "        ped_pedido pp\n";
+    select += "        join pes_pessoa pp2 on pp.idPessoaCliente = pp2.id\n";
+    select += "        join pes_contato pc on pp2.id = pc.idPessoa\n";
+    select += "        join ped_pedidoItem ppi on pp.id = ppi.idPedido\n";
+    select += "        join est_produtoServico eps on ppi.idprodutoServico = eps.id\n";
+    select += "        join est_produtoServicoRefil epsr on eps.id = epsr.idProdutoServico\n";
+    select += "    where\n";
+    select += "        pp.dataExclusao is null\n";
+    select += "        and pc.idWaContato = :idWaContato\n";
+    select += "    union all\n";
+    select += "    select\n";
+    select += "        max(ao.dataOs) as dataUltManutencao\n";
+    select += "    from\n";
+    select += "        ass_os ao\n";
+    select += "        join pes_pessoa pp2 on ao.idPessoaCliente = pp2.id\n";
+    select += "        join pes_contato pc on pp2.id = pc.idPessoa\n";
+    select += "        join ass_osItem aoi on ao.id = aoi.idOs\n";
+    select += "        join est_produtoServico eps on aoi.idprodutoServico = eps.id\n";
+    select += "        join est_produtoServicoRefil epsr on eps.id = epsr.idProdutoServico\n";
+    select += "    where\n";
+    select += "        ao.dataExclusao is null\n";
+    select += "        and pc.idWaContato = :idWaContato\n";
+    select += "    ) as vw\n";
+
+    const rows = await getSequelize().query(select, {
+        replacements: { idWaContato },
+        type: QueryTypes.SELECT,
+    });
+    return rows[0];
+}
+
+export async function obterPedidoChat (idChat: number): Promise<object> {
+    let select = "";
+    select += "select distinct\n";
+    select += "    pp.id,\n";
+    select += "    pp2.descNomeRazaoSocial as nomePessoa,\n";
+    select += "    (select\n";
+    select += "        concat(pesend.descEndereco,\n";
+    select += "                case when coalesce(pesend.descNumero, '') = '' then ' S/N' else concat(' N. ', pesend.descNumero) end,\n";
+    select += "                case when coalesce(pesend.descComplemento, '') = '' then '' else concat(' ', pesend.descComplemento) end,\n";
+    select += "                ' ', bar.descBairro,\n";
+    select += "                case when coalesce(pesend.descCep, '') = '' then '' else concat(cast(' CEP.' as char), fnFormatarCep(pesend.descCep)) end,\n";
+    select += "                ' ', cid.descCidade,\n";
+    select += "                '-', cid.descUF) as descEndereco\n";
+    select += "        from\n";
+    select += "            pes_endereco as pesend\n";
+    select += "            inner join pes_cidade as cid on pesend.idCidade = cid.id\n";
+    select += "            inner join pes_bairro as bar on pesend.idBairro = bar.id\n";
+    select += "        where\n";
+    select += "            pesend.dataExclusao is null\n";
+    select += "            and pesend.id = pata.idEndereco) as descEndereco,\n";
+    select += "    pat.dataAgendaTecnica as dataAgenda,\n";
+    select += "    cpd.descNome as descPeriodo\n";
+    select += "from\n";
+    select += "    wa_chatValor wcv\n";
+    select += "    join ped_pedido pp on cast(wcv.descValor as UNSIGNED) = pp.id \n";
+    select += "    join pes_pessoa pp2 on pp.idPessoaCliente = pp2.id\n";
+    select += "    join ped_agendaTecnicaAgendamento pata on pp.id = pata.idPedido\n";
+    select += "    join ped_agendaTecnica pat on pata.idAgendaTecnica = pat.id\n";
+    select += "    join conf_periodoDia cpd on pat.idPeriodoDia = cpd.id\n";
+    select += "where\n";
+    select += "    wcv.idChat = :idChat\n";
+    select += "    and wcv.descVariavel = 'idPedido_agenda'\n";
+    select += "limit 1\n";
+
+    const rows = await getSequelize().query(select, {
+        replacements: { idChat },
+        type: QueryTypes.SELECT,
+    });
+    return rows[0];
+}
+
+export async function obterMsgAtendenteChat (idChat: number): Promise<object> {
+    let select = "";
+    select += "select distinct\n";
+    select += "    pp.descNomeRazaoSocial as nomePessoa,\n";
+    select += "    concat(pp.id, ' - ', pp.descNomeRazaoSocial) as codNomePessoa,\n";
+    select += "    wc2.descIdContact as fonePessoa,\n";
+    select += "    wc5.descNome as nomeCampanha\n";
+    select += "from\n";
+    select += "    wa_chat wc\n";
+    select += "    join wa_contato wc2 on wc.idWaContato = wc2.id\n";
+    select += "    join pes_contato pc on wc2.id = pc.idWaContato\n";
+    select += "    join pes_pessoa pp on pc.idPessoa = pp.id\n";
+    select += "    join wa_contexto wc3 on wc.idContexto = wc3.id\n";
+    select += "    join wa_robo wr on wc3.idRobo = wr.id\n";
+    select += "    join wa_contexto wc4 on wc4.idRobo = wr.id\n";
+    select += "    join wa_contextoGatilho wcg on wc4.id = wcg.idContexto\n";
+    select += "    join wa_contextoGatilhoValor wcgv on wcg.id = wcgv.idContextoGatilho\n";
+    select += "        and wcgv.descVariavel = 'idCampanha'\n";
+    select += "    join wa_campanha wc5 on cast(wcgv.descValor as UNSIGNED) = wc5.id\n";
+    select += "where\n";
+    select += "    wc.id = :idChat\n";
+    select += "limit 1\n";
+
+    const rows = await getSequelize().query(select, {
+        replacements: { idChat },
+        type: QueryTypes.SELECT,
+    });
+    return rows[0];
+}

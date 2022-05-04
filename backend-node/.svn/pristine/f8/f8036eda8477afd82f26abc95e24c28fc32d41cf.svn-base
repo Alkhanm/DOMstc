@@ -1,0 +1,32 @@
+import { DataTypes, Model, Sequelize } from "sequelize";
+
+export class PedPedidoItemMovimentoModel extends Model {
+    declare numVersao?: number;
+    declare idPedidoItem?: number;
+    declare idMovimentoEstoque?: number;
+}
+
+export default (sequelize: Sequelize): typeof PedPedidoItemMovimentoModel => {
+    PedPedidoItemMovimentoModel.init({
+        numVersao: {
+            field: "numVersao",
+            type: DataTypes.BIGINT,
+        },
+        idPedidoItem: {
+            field: "idPedidoItem",
+            type: DataTypes.BIGINT,
+            primaryKey: true,
+        },
+        idMovimentoEstoque: {
+            field: "idMovimentoEstoque",
+            type: DataTypes.BIGINT,
+            primaryKey: true,
+        },
+    }, {
+        sequelize, /* We need to pass the connection instance */
+        tableName: "ped_pedidoItemMovimento",
+        timestamps: false,
+        version: "numVersao",
+    });
+    return PedPedidoItemMovimentoModel;
+};

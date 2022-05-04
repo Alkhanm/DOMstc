@@ -1,0 +1,31 @@
+import express, { NextFunction, Response, Router } from "express";
+import * as CommomController from "../controllers/commom-controller";
+import { RequestApi } from "../middleware/request-api";
+import { WaMensagemModel } from "../models/wa-mensagem-model";
+
+const router: Router = express.Router();
+
+router.get("/wa-mensagem", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findAll(WaMensagemModel, req, res, next);
+});
+
+router.get("/wa-mensagem/one", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findOne(WaMensagemModel, req, res, next);
+});
+
+router.post("/wa-mensagem", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.save(WaMensagemModel, req, res, next);
+});
+
+router.get("/wa-mensagem/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.findById(WaMensagemModel, req, res, next);
+});
+
+router.put("/wa-mensagem/:id", (req: RequestApi, res: Response, next: NextFunction) => {
+    CommomController.update(WaMensagemModel, req, res, next);
+});
+
+/**
+ * @export {express.Router}
+ */
+export default router;
