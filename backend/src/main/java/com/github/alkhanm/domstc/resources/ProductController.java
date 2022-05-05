@@ -1,5 +1,6 @@
 package com.github.alkhanm.domstc.resources;
 
+import com.github.alkhanm.domstc.domain.Category;
 import com.github.alkhanm.domstc.domain.Product;
 import com.github.alkhanm.domstc.domain.mapper.ProductMapper;
 import com.github.alkhanm.domstc.domain.transference.ProductTransference;
@@ -34,9 +35,16 @@ public class ProductController implements DomStcController<Product, ProductTrans
         return mapper.toTransference(service.findById(id));
     }
 
+    @GetMapping("/categories")
+    public @ResponseBody
+    List<Category> getAllCategories(){
+        return service.findAllCategories();
+    }
+
     @PostMapping
     public @ResponseBody
     ProductTransference create(@RequestBody Product product) {
+        System.out.println(product);
         return mapper.toTransference(service.save(product));
     }
 
@@ -53,5 +61,4 @@ public class ProductController implements DomStcController<Product, ProductTrans
                 .map(service::save)
                 .collect(Collectors.toList());
     }
-
 }

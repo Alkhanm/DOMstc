@@ -1,15 +1,6 @@
+import { ICategory } from "./ICategory";
 import { IProductStore } from "./IProductStore";
 
-export enum eCategory {
-    NENHUMA = "NENHUMA",
-    SABONETE_EM_BARRA = "SABONETE EM BARRAS",
-    CREME_PARA_O_CORPO = "CREME PARA O CORPO",
-    SABONETE_LIQUIDO = "SABONETE LIQUIDO",
-    PERFUME = "PERFUME",
-    COLONIA = "COLÔNIA",
-    SAMPHOO = "SAMPHOO",
-    CONDICIONADOR = "CONDICIONADOR"
-}
 export enum eCompany {
     NENHUMA = "NENHUMA",
     AVON = "AVON",
@@ -24,7 +15,7 @@ export interface IProduct {
     id: number;
     code: number;
     quantity: number;
-    category: eCategory;
+    category: ICategory;
     company: eCompany;
     brand: string;
     description: string;

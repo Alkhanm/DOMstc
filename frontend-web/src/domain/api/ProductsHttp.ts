@@ -1,3 +1,4 @@
+import { ICategory } from "../interfaces/ICategory";
 import { IProduct } from "../interfaces/IProduct";
 import { http } from "./http";
 
@@ -23,8 +24,15 @@ async function exclude(product: IProduct): Promise<void> {
     await http.delete(`/products/${product.id}`);
 }
 
+async function fetchAllCategories(): Promise<ICategory[]> {
+    const response = await http.get('/products/categories');
+    const categories: ICategory[] = response.data;
+    return categories;
+}
+
 export const ProductHttp = {
     fetch,
+    fetchAllCategories,
     fetchOne,
     save,
     exclude

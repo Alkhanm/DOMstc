@@ -40,7 +40,7 @@ public class Product {
     @JoinColumn(name = "product_id")
     private final List<ProductStore> productStores = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(targetEntity = Category.class)
     private Category category;
 
     public Product(String description, long code, String brand, double purchasePrice, double salePrice, int quantity, CompanyEnum company, Category category, Collection<ProductStore> productStores) {
