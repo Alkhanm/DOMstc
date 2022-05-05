@@ -21,7 +21,7 @@
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-row>
-            <v-col cols="12" sm="3" md="3">
+            <v-col class="column" cols="12" sm="3" md="3">
               <v-text-field
                 color="white"
                 label="Código"
@@ -32,7 +32,7 @@
                 required
               />
             </v-col>
-            <v-col cols="12" sm="9" md="9">
+            <v-col class="column" cols="12" sm="9" md="9">
               <v-text-field
                 label="Descrição"
                 v-model="product.description"
@@ -40,7 +40,7 @@
                 required
               />
             </v-col>
-            <v-col cols="12" sm="5" md="5">
+            <v-col class="column d-flex" cols="12" sm="5" md="5">
               <v-select
                 :items="Object.values(eCompany)"
                 v-model="product.company"
@@ -48,8 +48,11 @@
                 hint="Nome empresa responsavel por fabricar o produto (ex: Avon, Natura, etc)"
                 required
               />
+              <div class="add-new">
+                <v-icon size="xx-large">mdi-database-plus</v-icon>
+              </div>
             </v-col>
-            <v-col cols="12" sm="7" md="7">
+            <v-col class="column d-flex" cols="12" sm="7" md="7">
               <v-autocomplete
                 label="Selecione a categoria"
                 :items="Object.values(eCategory)"
@@ -57,8 +60,11 @@
                 hint="Categoria do produto (ex: Shampoo, Sabonete, Hidratante, etc)"
                 required
               />
+              <div class="add-new">
+                <v-icon size="xx-large">mdi-database-plus</v-icon>
+              </div>
             </v-col>
-            <v-col cols="12">
+            <v-col class="column" cols="12">
               <v-text-field
                 label="Marca"
                 v-model="product.brand"
@@ -66,39 +72,45 @@
                 required
               />
             </v-col>
-            <v-col cols="12">
+            <v-col class="column d-flex" cols="12" md="12" sm="12">
               <v-select
                 :items="storesSelectList"
-                eager
                 v-model="storeQuery"
                 return-object
                 label="Selecione a empresa"
-              >
-              </v-select>
+              />
+              <div class="add-new">
+                <v-icon size="xx-large">mdi-database-plus</v-icon>
+              </div>
             </v-col>
-            <v-col cols="13" md="4" sm="5">
+            <v-col class="column" md="4" sm="4">
               <v-text-field
-                :label="`Preço de compra (${storeQuery})`"
+                :label="`Preço de compra (${storeQuery.toLowerCase()})`"
                 v-model="product.purchasePrice"
                 hint="Custo de aquisição para este produto"
                 required
               />
             </v-col>
-            <v-col cols="13" md="4" sm="5">
+            <v-col class="column"  md="4" sm="4">
               <v-text-field
-                :label="`Preço de venda (${storeQuery})`"
+                :label="`Preço de venda (${storeQuery.toLowerCase()})`"
                 v-model="product.salePrice"
                 hint="Valor padrão para a revenda deste produto"
                 required
               />
             </v-col>
-            <v-col cols="13" md="3" sm="">
+            <v-col class="column"  md="3" sm="3">
               <v-text-field
-                :label="`Quantidade (${storeQuery})`"
+                :label="`Quantidade (${storeQuery.toLowerCase()})`"
                 v-model="product.quantity"
                 hint="Unidades desse produto"
                 required
               />
+            </v-col>
+            <v-col class="column"  md="1" sm="1">
+              <v-btn variant="text" height="56">
+                <v-icon size="xx-large">mdi-check-underline</v-icon>
+              </v-btn>
             </v-col>
           </v-row>
         </v-form>
@@ -153,6 +165,7 @@ const storesSelectList = computed<string[]>(() => {
   list.unshift("TODOS");
   return list;
 });
+
 const selectedStore = computed<IStore | null>(() => {
   if (!storeQuery) return null;
   const result = stores.value.find(
@@ -180,7 +193,6 @@ async function uploadImage(): Promise<string> {
 async function save(): Promise<IProduct> {
   product.value.imageUrl = await uploadImage();
   const productSaved = await ProductHttp.save(product.value);
-  console.log({ ...productSaved });
   return productSaved;
 }
 
@@ -230,6 +242,12 @@ onMounted(async () => {
   width: 100px;
 }
 
+.column {
+  padding: 0px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
 .product-img {
   width: 50px;
   height: 50px;
@@ -242,6 +260,19 @@ onMounted(async () => {
 
 #image-input {
   display: none;
+}
+
+.add-new {
+  height: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 3px;
+  margin-right: 5px;
+  cursor: pointer;
+  border-bottom-style: solid;
+  border-bottom-width: 1.5px;
+  border-bottom-color: rgba(104, 104, 102, 0.863);
 }
 
 .loading-card {

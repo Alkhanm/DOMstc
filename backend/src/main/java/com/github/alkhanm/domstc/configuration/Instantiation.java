@@ -37,7 +37,7 @@ public class Instantiation implements CommandLineRunner {
         List<Store> stores = List.of(shopee, amazon, mercadoLivre);
 
         List<Product> products = List.of(
-                new Product("Petit Libellule", 1234434576, "Petit", 13.5, 23.9, 3, CompanyEnum.AVON, perfume, Set.of(
+                new Product("Petit Libellule", 1234434576, "Petit", 13.5, 23.9, 3, CompanyEnum.AVON, perfume, List.of(
                         new ProductStore(29, 3, amazon),
                         new ProductStore(2, 5, shopee)
                 )),
@@ -47,7 +47,7 @@ public class Instantiation implements CommandLineRunner {
                 new Product("Musk Storm", 1234453576, "Musk", 6.1, 16, 10, CompanyEnum.AVON, perfume, Set.of(
                         new ProductStore(2, 5, shopee)
                 )),
-                new Product("Shampo Anticaspa", 524153252, "Advance Tecniques", 23.5, 33.9, 12, CompanyEnum.AVON, shampooAnticaspa, Set.of(
+                new Product("Shampo Anticaspa", 524153252, "Advance Tecniques", 23.5, 33.9, 12, CompanyEnum.AVON, shampooAnticaspa, List.of(
                         new ProductStore(29, 2, amazon),
                         new ProductStore(29, 3, mercadoLivre)
                 ))

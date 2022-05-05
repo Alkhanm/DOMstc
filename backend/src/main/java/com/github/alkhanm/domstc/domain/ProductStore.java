@@ -29,6 +29,12 @@ public class ProductStore{
         this.qnt = qnt;
         this.store = store;
     }
+    public ProductStore(long id, double price, int qnt, Store store) {
+        this.id = id;
+        this.price = price;
+        this.qnt = qnt;
+        this.store = store;
+    }
 
     @Override
     public boolean equals(Object o) {
