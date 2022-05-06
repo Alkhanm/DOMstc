@@ -2,7 +2,7 @@
 import { computed, ComputedRef } from "vue";
 import { ISale } from "../domain/interfaces/ISale";
 
-function useSaleInfo(sale: ComputedRef<ISale | undefined>) {
+function use(sale: ComputedRef<ISale | undefined>) {
     const salePrice = computed(() => sale.value?.items
         .map(item => item.product.salePrice * item.quantity)
         .reduce((previous, current) => previous + current, 0) || 0
@@ -31,5 +31,5 @@ function useSaleInfo(sale: ComputedRef<ISale | undefined>) {
 }
 
 export const SaleHooks = {
-    useSaleInfo
+    use
 }

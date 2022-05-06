@@ -84,7 +84,7 @@ const id: number = parseInt(params.id as string);
 
 const sales = computed<ISale[]>(() => SaleStore.state.list);
 const sale = computed<ISale>(() => sales.value.find(s => s.id == id)!);
-const { salePrice, saleProductQnt, saleTitle } = SaleHooks.useSaleInfo(sale)
+const { salePrice, saleProductQnt, saleTitle } = SaleHooks.use(sale)
 
 const saleDate = computed(() => {
   if (!sale.value) return;

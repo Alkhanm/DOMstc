@@ -127,7 +127,7 @@ const sale = computed<ISale>(() => {
   s.items = itemsCart.value;
   return s;
 });
-const { salePrice } = SaleHooks.useSaleInfo(sale);
+const { salePrice } = SaleHooks.use(sale);
 
 function add(item: IItem) {
   const itemFinded = itemsCart.value.find((p) => p.product.id == item.product.id);

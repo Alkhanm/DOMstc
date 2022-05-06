@@ -28,8 +28,7 @@ public class Instantiation implements CommandLineRunner {
         this.categoryRepository = categoryRepository;
     }
 
-    @Override
-    public void run(String... args) {
+    @Override public void run(String... args) {
         Category perfume = new Category( "PERFUME");
         Category saboneteEmBarras = new Category( "Sabonete em barras");
         Category shampooAnticaspa = new Category( "Shampoo anticaspa");
@@ -41,7 +40,7 @@ public class Instantiation implements CommandLineRunner {
         List<Store> stores = List.of(shopee, amazon, mercadoLivre);
 
         List<Product> products = List.of(
-                new Product("Petit Libellule", 1234434576, "Petit", 13.5, 23.9, 3, CompanyEnum.AVON, perfume, List.of(
+                new Product("Petite Libellule", 1234434576, "Petite", 13.5, 23.9, 3, CompanyEnum.AVON, perfume, List.of(
                         new ProductStore(29, 3, amazon),
                         new ProductStore(2, 5, shopee)
                 )),

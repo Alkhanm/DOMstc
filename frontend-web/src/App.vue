@@ -28,6 +28,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import AppAlert from "./AppAlert.vue";
 
 const drawer = ref(true);
 
