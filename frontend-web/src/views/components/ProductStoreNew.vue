@@ -11,41 +11,27 @@
       <v-card-content>
         <v-row>
           <v-col cols="12" class="column d-flex">
-            <v-select
-              :items="storesSelectList"
-              v-model="storeQuery"
-              label="Definir valores desta loja:"
-              prepend-inner-icon="mdi-shopping"
-            />
+            <v-select :items="storesSelectList" v-model="storeQuery" label="Definir valores desta loja:"
+              prepend-inner-icon="mdi-shopping" />
             <div class="add-new">
               <v-icon size="xx-large">mdi-database-plus</v-icon>
             </div>
           </v-col>
           <v-col cols="12" sm="6" md="6" class="column">
-            <v-text-field
-              :label="`Preço de venda (${storeQuery.toLowerCase()})`"
-              v-model="productStore.price"
-              hint="Valor padrão para a revenda deste produto"
-              required
-              prepend-inner-icon="mdi-cash"
-            />
+            <v-text-field label="Preço de venda" v-model="productStore.price"
+              hint="Valor padrão para a revenda deste produto" required prepend-inner-icon="mdi-cash" />
           </v-col>
           <v-col cols="12" sm="4" md="4" class="column">
-            <v-text-field
-              :label="`Estoque (${storeQuery.toLowerCase()})`"
-              v-model="productStore.quantity"
-              hint="Unidades desse produto"
-              required
-              prepend-inner-icon="mdi-counter"
-            />
+            <v-text-field label="Estoque" v-model="productStore.quantity" hint="Unidades desse produto" required
+              prepend-inner-icon="mdi-counter" />
           </v-col>
           <v-col cols="12" sm="2" md="2" class="column">
-            <v-btn block variant="contained-text" height="56px">
-              <v-icon size="xx-large">mdi-plus</v-icon>
+            <v-btn @click="addProductStore" block variant="contained-text" height="56px">
+              <v-icon size="xx-large">mdi-check</v-icon>
             </v-btn>
           </v-col>
         </v-row>
-        <v-table height="250">
+        <v-table height="200">
           <thead>
             <tr>
               <th>Loja</th>
@@ -54,13 +40,19 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="ps of productStores">
+            <tr v-if="productStoreList.length" v-for="ps of productStoreList">
               <td>{{ ps.store.name }}</td>
               <td>{{ ps.price }}</td>
               <td>{{ ps.quantity }}</td>
             </tr>
+            <v-alert style="padding: 4px;" v-else>
+              Caso nenhuma loja seja salva, esse produto será salvo em todas elas com o valor de venda padrão.
+            </v-alert>
           </tbody>
         </v-table>
+        <v-btn variant="contained-text" block>
+          Confirmar
+        </v-btn>
       </v-card-content>
     </v-card>
   </v-dialog>
@@ -69,10 +61,9 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
 import { StoreHttp } from "../../domain/api/StoreHttp";
-import { ProductStoreFunctions } from "../../domain/functions/product-store-funtion";
+import { IProduct } from "../../domain/interfaces/IProduct";
 import { IProductStore } from "../../domain/interfaces/IProductStore";
 import { IStore } from "../../domain/interfaces/IStore";
-import { IProduct } from "../../domain/interfaces/IProduct";
 
 const isVisible = ref(false);
 
@@ -81,35 +72,31 @@ const { product } = defineProps<{ product: IProduct }>();
 const storeQuery = ref<string>("TODAS");
 const stores = ref<IStore[]>([]);
 
+const productStore = ref<IProductStore>({} as IProductStore)
+const productStoreList = ref<IProductStore[]>([])
+
 const storesSelectList = computed<string[]>(() => {
-  const list: string[] = stores.value.map((store) => store.name);
+  const list: string[] = stores.value.map(({ id, name }) => `${id} - ${name}`);
   list.unshift("TODAS");
   return list;
 });
 
 const selectedStore = computed<IStore | null>(() => {
-  if (!storeQuery) return null;
-  const result = stores.value.find(
-    (s) => s.name.toLowerCase() === storeQuery.value.toLowerCase()
-  );
-  return result || null;
+  if (!storeQuery || storeQuery.value === "TODAS") return null;
+  const id = parseInt(storeQuery.value.split("-")[0]);
+  const result = stores.value.find(s => s.id == id);
+  return result!;
 });
 
-const productStores = computed(() => {
-  const result = stores.value.map((store) =>
-    ProductStoreFunctions.create(product, store)
-  );
-  result.unshift(ProductStoreFunctions.create(product, {} as IStore));
-  return result;
-});
-
-const productStore = computed<IProductStore>(() => {
-  const result =
-    productStores.value.find((ps) => ps.store.id == selectedStore.value?.id) ||
-    productStores.value[0];
-
-  return result;
-});
+function addProductStore() {
+  if (!selectedStore.value) return;
+  productStore.value.store = selectedStore.value;
+  const productStoreFinded = productStoreList.value.find((e) => e.store.id === productStore.value.store.id);
+  if (!productStoreFinded) return productStoreList.value.push({ ...productStore.value });
+  const { price, quantity } = productStore.value;
+  productStoreFinded.price = price ? price : productStoreFinded.price;
+  productStoreFinded.quantity = quantity ? quantity : productStoreFinded.quantity;
+}
 
 onMounted(async () => {
   stores.value = await StoreHttp.fetchAll();

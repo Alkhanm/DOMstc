@@ -1,22 +1,21 @@
 package com.github.alkhanm.domstc.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Getter @ToString
+@Getter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "tb_category")
 public class Category {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     @Column(unique = true, nullable = false)
@@ -25,9 +24,10 @@ public class Category {
     @OneToMany(targetEntity = Product.class)
     @JoinColumn(name = "category_id")
     @JsonIgnore
+    @ToString.Exclude
     private List<Product> products = new ArrayList<>();
 
-    public Category( String name) {
+    public Category(String name) {
         this.name = name;
     }
 
