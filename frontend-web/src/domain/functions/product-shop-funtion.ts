@@ -1,8 +1,8 @@
 import { IProduct } from "../interfaces/IProduct";
-import { IProductStore } from "../interfaces/IProductStore";
+import { IProductShop } from "../interfaces/IProductShop";
 import { IStore } from "../interfaces/IStore";
 
-function create(product: IProduct, store: IStore, empty?: boolean): IProductStore {
+function create(product: IProduct, store: IStore, empty?: boolean): IProductShop {
     return {
         price: product.salePrice,
         quantity: product.quantity ? 1 : product.quantity,
@@ -11,6 +11,6 @@ function create(product: IProduct, store: IStore, empty?: boolean): IProductStor
 }
 
 
-export const ProductStoreFunctions = {
+export const ProductShopFunctions = {
     create
 }

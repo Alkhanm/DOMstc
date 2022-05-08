@@ -15,6 +15,22 @@ function getValues(obj: object, route: string, path = "") {
     });
 }
 
+function acceptOnlyNumber(event: any) {
+    const expect = event.target.value.toString() + event.key.toString();
+    if (!/^[0-9]*\.?[0-9]*$/.test(expect)) {
+        event.preventDefault();
+    }
+}
+
+function acceptOnlyIntegerNumber(event: any) {
+    const expect = event.target.value.toString() + event.key.toString();
+    if (!/^[0-9]*$/.test(expect)) {
+      event.preventDefault();
+    }
+}
+
 export const UtilFunctions = {
-    dateFormat
+    dateFormat,
+    acceptOnlyNumber,
+    acceptOnlyIntegerNumber
 }

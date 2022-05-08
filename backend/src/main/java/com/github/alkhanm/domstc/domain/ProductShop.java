@@ -11,9 +11,9 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "tb_product_store")
+@Entity(name = "tb_product_shop")
 @Builder
-public class ProductStore{
+public class ProductShop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,12 +24,12 @@ public class ProductStore{
     @JoinColumn(name = "store_id")
     private Store store;
 
-    public ProductStore(double price, int qnt, Store store) {
+    public ProductShop(double price, int qnt, Store store) {
         this.price = price;
         this.qnt = qnt;
         this.store = store;
     }
-    public ProductStore(long id, double price, int qnt, Store store) {
+    public ProductShop(long id, double price, int qnt, Store store) {
         this.id = id;
         this.price = price;
         this.qnt = qnt;
@@ -40,7 +40,7 @@ public class ProductStore{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductStore that = (ProductStore) o;
+        ProductShop that = (ProductShop) o;
         return Objects.equals(id, that.id);
     }
 

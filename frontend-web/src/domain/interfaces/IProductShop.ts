@@ -1,6 +1,6 @@
 import { IStore } from "./IStore";
 
-export interface IProductStore {
+export interface IProductShop {
     id?: number;
     price: number;
     quantity: number;

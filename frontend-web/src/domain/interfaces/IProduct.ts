@@ -1,5 +1,5 @@
 import { ICategory } from "./ICategory";
-import { IProductStore } from "./IProductStore";
+import { IProductShop } from "./IProductShop";
 
 export enum eCompany {
     NENHUMA = "NENHUMA",
@@ -27,5 +27,5 @@ export interface IProduct {
     volume: number | 0;
     weight: number | 0;
     unit: number | 1;
-    productStores: IProductStore[];
+    productShops: IProductShop[];
 }

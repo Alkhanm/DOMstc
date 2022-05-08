@@ -38,12 +38,12 @@ public class Product {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
-    private final List<ProductStore> productStores = new ArrayList<>();
+    private final List<ProductShop> productStores = new ArrayList<>();
 
     @ManyToOne(targetEntity = Category.class)
     private Category category;
 
-    public Product(String description, long code, String brand, double purchasePrice, double salePrice, int quantity, CompanyEnum company, Category category, Collection<ProductStore> productStores) {
+    public Product(String description, long code, String brand, double purchasePrice, double salePrice, int quantity, CompanyEnum company, Category category, Collection<ProductShop> productStores) {
         this.description = description;
         this.code = code;
         this.brand = brand;
@@ -55,17 +55,17 @@ public class Product {
         this.productStores.addAll(Set.copyOf(productStores));
     }
 
-    public void addProductStore(ProductStore productStores){
+    public void addProductStore(ProductShop productStores){
         this.productStores.add(productStores);
     }
 
     public void addStoreAsDefaultValues(Store store) {
         final int PRODUCT_QUANTITY = 1;
-        ProductStore productStore = new ProductStore(salePrice, PRODUCT_QUANTITY, store);
+        ProductShop productStore = new ProductShop(salePrice, PRODUCT_QUANTITY, store);
         productStores.add(productStore);
     }
 
-    public Set<ProductStore> getProductStores(){
+    public Set<ProductShop> getProductStores(){
         return Set.copyOf(productStores);
     }
 

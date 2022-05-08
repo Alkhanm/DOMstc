@@ -18,19 +18,19 @@
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-row>
-            <v-col class="column" cols="12" sm="3" md="3">
+            <v-col class="column" cols="12" sm="4" md="4">
               <v-text-field
                 color="white"
                 label="Código"
                 v-model="product.code"
-                type="number"
                 hint="Código de barras do produto"
                 :counter="10"
                 required
                 prepend-inner-icon="mdi-barcode"
+                @keypress="UtilFunctions.acceptOnlyIntegerNumber"
               />
             </v-col>
-            <v-col class="column" cols="12" sm="9" md="9">
+            <v-col class="column" cols="12" sm="8" md="8">
               <v-text-field
                 label="Descrição"
                 v-model="product.description"
@@ -74,9 +74,10 @@
                 prepend-inner-icon="mdi-format-title"
               />
             </v-col>
-            <v-col class="column" md="7" sm="7">
+            <v-col class="column" md="5" sm="5">
               <v-text-field
                 label="Preço de compra"
+                @keypress="UtilFunctions.acceptOnlyNumber"
                 v-model="product.purchasePrice"
                 hint="Custo de aquisição para este produto"
                 required
@@ -85,14 +86,25 @@
             </v-col>
             <v-col class="column" md="5" sm="5">
               <v-text-field
+                label="Preço de venda"
+                v-model="product.salePrice"
+                hint="Valor padrão de revenda (aplica-se a todas as lojas)"
+                required
+                prepend-inner-icon="mdi-cash"
+                @keypress="UtilFunctions.acceptOnlyNumber"
+              />
+            </v-col>
+            <v-col class="column" md="2" sm="2">
+              <v-text-field
                 label="Estoque"
                 v-model="product.quantity"
+                @keypress="UtilFunctions.acceptOnlyIntegerNumber"
                 hint="Unidades desse produto"
                 required
                 prepend-inner-icon="mdi-counter"
               />
             </v-col>
-          <ProductStoreNew :product="product" />
+            <ProductStoreNew :product="product" />
           </v-row>
         </v-form>
       </v-card-text>
@@ -126,23 +138,16 @@
 import { GREY } from "@/colors";
 import { computed, onMounted, ref } from "vue";
 import { ProductHttp } from "../../domain/api/ProductsHttp";
-import { StoreHttp } from "../../domain/api/StoreHttp";
-import { ProductStoreFunctions } from "../../domain/functions/product-store-funtion";
-import { IAlert } from "../../domain/interfaces/IAlert";
+import { UtilFunctions } from "../../domain/functions/util-functions";
 import { ICategory } from "../../domain/interfaces/ICategory";
 import { eCompany, IProduct } from "../../domain/interfaces/IProduct";
-import { IProductStore } from "../../domain/interfaces/IProductStore";
-import { IStore } from "../../domain/interfaces/IStore";
+import { IProductShop } from "../../domain/interfaces/IProductShop";
 import { ImageUploadHooks } from "../../hooks/image-upload-hooks";
-import { AlertStore } from "../../store/alert-store";
-import { ProductStore } from "../../store/product-store";
 import FloatingActions from "./FloatingActions.vue";
 import ProductStoreNew from "./ProductStoreNew.vue";
-
 const valid = true;
 
-const product = ref<IProduct>({ productStores: [] as IProductStore[] } as IProduct);
-const productEmpty: IProduct = product.value;
+const product = ref<IProduct>({ productShops: [] as IProductShop[] } as IProduct);
 
 const categoryQuery = ref<string>("");
 const categories = ref<ICategory[]>([] as ICategory[]);
@@ -150,42 +155,9 @@ const categoriesSelectList = computed(() =>
   categories.value.map(({ name }) => name.toUpperCase())
 );
 
-const storeQuery = ref<string>("TODAS");
-const stores = ref<IStore[]>([]);
-
 const { imageFile, imagePreview, onGetImage, uploadImage } = ImageUploadHooks.use(
   product
 );
-
-const storesSelectList = computed<string[]>(() => {
-  const list: string[] = stores.value.map((store) => store.name);
-  list.unshift("TODAS");
-  return list;
-});
-
-const selectedStore = computed<IStore | null>(() => {
-  if (!storeQuery) return null;
-  const result = stores.value.find(
-    (s) => s.name.toLowerCase() === storeQuery.value.toLowerCase()
-  );
-  return result || null;
-});
-
-const productStores = computed(() => {
-  const result = stores.value.map((store) =>
-    ProductStoreFunctions.create(product.value, store)
-  );
-  result.unshift(ProductStoreFunctions.create(product.value, {} as IStore));
-  return result;
-});
-
-const productStore = computed<IProductStore>(() => {
-  const result =
-    productStores.value.find((ps) => ps.store.id == selectedStore.value?.id) ||
-    productStores.value[0];
-
-  return result;
-});
 
 async function save(): Promise<IProduct> {
   product.value.imageUrl = await uploadImage();
@@ -194,30 +166,17 @@ async function save(): Promise<IProduct> {
 }
 
 async function handleSave() {
-  const alert: IAlert = {} as IAlert;
-  alert.entity = "PRODUCT";
-  alert.operation = "SAVE";
-  try {
-    ProductStore.actions.add(await save());
-    alert.type = "SUCCESS";
-    alert.msg = `O produto ${product.value.description.toUpperCase()} foi salvo com sucesso`;
-    clean();
-  } catch {
-    alert.type = "ERROR";
-    alert.msg = `Não foi possivel salvar o produto : ${product.value.description}`;
-  } finally {
-    AlertStore.actions.add(alert);
-  }
+  console.log({ ...product.value });
+  return;
 }
 
 function clean() {
-  product.value = { ...productEmpty };
+  product.value = { productShops: [] as IProductShop[] } as IProduct;
   imagePreview.value = "";
   imageFile.value = {};
 }
 
 onMounted(async () => {
-  stores.value = await StoreHttp.fetchAll();
   categories.value = await ProductHttp.fetchAllCategories();
 });
 </script>

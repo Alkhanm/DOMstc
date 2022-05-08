@@ -9,29 +9,50 @@
         <v-card-title>Definir valor para lojas </v-card-title>
       </v-card-header>
       <v-card-content>
-        <v-row>
-          <v-col cols="12" class="column d-flex">
-            <v-select :items="storesSelectList" v-model="storeQuery" label="Definir valores desta loja:"
-              prepend-inner-icon="mdi-shopping" />
-            <div class="add-new">
-              <v-icon size="xx-large">mdi-database-plus</v-icon>
-            </div>
-          </v-col>
-          <v-col cols="12" sm="6" md="6" class="column">
-            <v-text-field label="Preço de venda" v-model="productStore.price"
-              hint="Valor padrão para a revenda deste produto" required prepend-inner-icon="mdi-cash" />
-          </v-col>
-          <v-col cols="12" sm="4" md="4" class="column">
-            <v-text-field label="Estoque" v-model="productStore.quantity" hint="Unidades desse produto" required
-              prepend-inner-icon="mdi-counter" />
-          </v-col>
-          <v-col cols="12" sm="2" md="2" class="column">
-            <v-btn @click="addProductStore" block variant="contained-text" height="56px">
-              <v-icon size="xx-large">mdi-check</v-icon>
-            </v-btn>
-          </v-col>
-        </v-row>
-        <v-table height="200">
+        <v-form ref="form" v-model="valid" :lazy-validation="true">
+          <v-row>
+            <v-col cols="12" class="column d-flex">
+              <v-select
+                :items="storesSelectList"
+                v-model="storeQuery"
+                label="Definir valores desta loja:"
+                prepend-inner-icon="mdi-shopping"
+                :rules="storeRules"
+              />
+              <div class="add-new">
+                <v-icon size="xx-large">mdi-database-plus</v-icon>
+              </div>
+            </v-col>
+            <v-col cols="12" sm="6" md="6" class="column">
+              <v-text-field
+                label="Preço de venda"
+                v-model="productShop.price"
+                hint="Valor padrão para a revenda deste produto"
+                @keypress="UtilFunctions.acceptOnlyNumber"
+                required
+                prepend-inner-icon="mdi-cash"
+                :rules="priceRules"
+              />
+            </v-col>
+            <v-col cols="12" sm="5" md="5" class="column">
+              <v-text-field
+                label="Estoque"
+                v-model="productShop.quantity"
+                @keypress="UtilFunctions.acceptOnlyIntegerNumber"
+                hint="Unidades desse produto"
+                required
+                prepend-inner-icon="mdi-counter"
+                :rules="quantityRules"
+              />
+            </v-col>
+            <v-col cols="12" sm="1" md="1" class="column">
+              <v-btn @click="addProductShop" block variant="contained-text" height="56px">
+                <v-icon size="xx-large">mdi-check</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-form>
+        <v-table v-if="productShopList.length" height="200">
           <thead>
             <tr>
               <th>Loja</th>
@@ -40,63 +61,94 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-if="productStoreList.length" v-for="ps of productStoreList">
+            <tr v-for="ps of productShopList" @click="handlerSelectTable(ps)">
               <td>{{ ps.store.name }}</td>
               <td>{{ ps.price }}</td>
               <td>{{ ps.quantity }}</td>
             </tr>
-            <v-alert style="padding: 4px;" v-else>
-              Caso nenhuma loja seja salva, esse produto será salvo em todas elas com o valor de venda padrão.
-            </v-alert>
           </tbody>
         </v-table>
-        <v-btn variant="contained-text" block>
+        <v-alert v-else class="mt-5" type="info" color="grey" variant="contained-text">
+          Caso nenhuma loja seja salva, esse produto será cadastrado em todas com o valor
+          de venda padrão.
+        </v-alert>
+      </v-card-content>
+      <v-card-actions>
+        <v-btn @click="handlerConfirm" :disabled="!valid" variant="contained-text" block>
           Confirmar
         </v-btn>
-      </v-card-content>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { StoreHttp } from "../../domain/api/StoreHttp";
 import { IProduct } from "../../domain/interfaces/IProduct";
-import { IProductStore } from "../../domain/interfaces/IProductStore";
+import { IProductShop } from "../../domain/interfaces/IProductShop";
 import { IStore } from "../../domain/interfaces/IStore";
-
-const isVisible = ref(false);
-
+import { UtilFunctions } from "../../domain/functions/util-functions";
+import { RulesFunctions } from "../../domain/functions/rules-functions";
 const { product } = defineProps<{ product: IProduct }>();
 
-const storeQuery = ref<string>("TODAS");
+const isVisible = ref(false);
+const form = ref();
+const valid = ref<boolean>(true);
+
+const { priceRules, quantityRules, storeRules } = RulesFunctions;
+
+const storeQuery = ref<string>("NENHUMA");
 const stores = ref<IStore[]>([]);
 
-const productStore = ref<IProductStore>({} as IProductStore)
-const productStoreList = ref<IProductStore[]>([])
+const productShop = ref<IProductShop>({} as IProductShop);
+const productShopList = ref<IProductShop[]>([]);
 
 const storesSelectList = computed<string[]>(() => {
   const list: string[] = stores.value.map(({ id, name }) => `${id} - ${name}`);
-  list.unshift("TODAS");
+  list.unshift("NENHUMA");
   return list;
 });
 
 const selectedStore = computed<IStore | null>(() => {
   if (!storeQuery || storeQuery.value === "TODAS") return null;
   const id = parseInt(storeQuery.value.split("-")[0]);
-  const result = stores.value.find(s => s.id == id);
+  const result = stores.value.find((s) => s.id == id);
   return result!;
 });
 
-function addProductStore() {
+async function addProductShop() {
+  const validate = await form.value.validate();
+  if (!validate.valid) return;
   if (!selectedStore.value) return;
-  productStore.value.store = selectedStore.value;
-  const productStoreFinded = productStoreList.value.find((e) => e.store.id === productStore.value.store.id);
-  if (!productStoreFinded) return productStoreList.value.push({ ...productStore.value });
-  const { price, quantity } = productStore.value;
-  productStoreFinded.price = price ? price : productStoreFinded.price;
-  productStoreFinded.quantity = quantity ? quantity : productStoreFinded.quantity;
+  productShop.value.store = selectedStore.value;
+  const productShopIndex: number = productShopList.value.findIndex(
+    (ps) => ps.store.id === productShop.value.store.id
+  );
+  if (productShopIndex === -1)
+    return productShopList.value.push({ ...productShop.value });
+  const productShopFinded = productShopList.value[productShopIndex];
+  productShopList.value[productShopIndex] = {
+    ...productShop.value,
+    store: productShopFinded.store,
+  };
 }
+
+function handlerSelectTable(ps: IProductShop) {
+  productShop.value = { ...ps };
+  storeQuery.value = `${ps.store.id} - ${ps.store.name}`;
+}
+
+async function handlerConfirm() {
+  const validate: any = await form.value.validate();
+  if (!validate.valid) return;
+  product.productShops = productShopList.value;
+  isVisible.value = false;
+}
+
+watch(productShop.value, async () => {
+  if (!valid.value) await form.value.resetValidation();
+});
 
 onMounted(async () => {
   stores.value = await StoreHttp.fetchAll();

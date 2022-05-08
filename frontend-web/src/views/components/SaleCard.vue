@@ -75,7 +75,7 @@ const props = defineProps<Props>();
 const expand = ref(false);
 
 const sale = computed(() => props.sale);
-const { saleTitle, salePrice, saleProductQnt } = SaleHooks.useSaleInfo(sale)
+const { saleTitle, salePrice, saleProductQnt } = SaleHooks.use(sale)
 const saleDate = computed(() => {
   const dateISO: string = sale.value ? sale.value.date.toString() : ""
   const plainDate: Temporal.PlainDateTime = Temporal.PlainDateTime.from(dateISO);

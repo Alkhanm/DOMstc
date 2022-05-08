@@ -1,6 +1,6 @@
 package com.github.alkhanm.domstc.domain.transference;
 
-import com.github.alkhanm.domstc.domain.ProductStore;
+import com.github.alkhanm.domstc.domain.ProductShop;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -21,6 +21,6 @@ public record ProductTransference(
        String imageUrl,
        String variation,
        LocalDate purchaseDate,
-       Set<ProductStore> productStores
+       Set<ProductShop> productStores
 ) {}
 
