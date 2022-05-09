@@ -26,11 +26,10 @@ const barcodeRules = [
     (v: string) => (v.length === 13) || "Valor invalido"
 ]
 
-const getAutocompleteRules = <T>(element: T, elementList: T[]) => {
+const getAutocompleteRules = <T extends { id: number }>(element: T, elementList: T[]) => {
     const msg = "Selecione algum item"
-    console.log(element)
-    const autocompleteExistRule = () => (!!element) || msg + "1";
-    const autocompleExistInListRule = () => (!elementList.some(e => e === element)) || msg;
+    const autocompleteExistRule = () => (!!element) || msg;
+    const autocompleExistInListRule = () => (elementList.some(e => e.id != element.id)) || msg;
     return [
         autocompleteExistRule,
         autocompleExistInListRule

@@ -157,7 +157,7 @@
 
 <script setup lang="ts">
 import { GREY } from "@/colors";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { ProductHttp } from "../../domain/api/ProductsHttp";
 import { RulesFunctions } from "../../domain/functions/rules-functions";
 import { UtilFunctions } from "../../domain/functions/util-functions";
@@ -184,7 +184,9 @@ const categorySelectList = computed(() =>
 );
 
 const { priceRules, defaultRules, barcodeRules, getAutocompleteRules } = RulesFunctions;
-const autocompleteRules = computed(() => getAutocompleteRules(product.value.category, categoryList.value));
+const autocompleteRules = computed(() =>
+  getAutocompleteRules(product.value.category, categoryList.value)
+);
 
 async function save(): Promise<IProduct> {
   product.value.imageUrl = await uploadImage();
@@ -198,16 +200,23 @@ async function handleSave() {
   product.value = await save();
 }
 
-async function clean() {
-  await form.value.reset();
+function clean() {
+  product.value = {} as IProduct;
+  console.log({ ...product.value });
   imagePreview.value = "";
   imageFile.value = {};
 }
 
+watch(categoryQuery, () => {
+  const category = categoryList.value.find(
+    (c) => c.name.toUpperCase() === categoryQuery.value
+  );
+  if (category) product.value.category = category;
+});
+
 onMounted(async () => {
   categoryList.value = await ProductHttp.fetchAllCategories();
 });
-
 </script>
 
 <style scoped>
