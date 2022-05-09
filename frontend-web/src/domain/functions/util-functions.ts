@@ -29,8 +29,15 @@ function acceptOnlyIntegerNumber(event: any) {
     }
 }
 
+function acceptOnlyIntegerNumberAndSpace(event: any) {
+    const expect = event.target.value.toString() + event.key.toString();
+    if (!/^[0-9]*||\s$/.test(expect)) {
+      event.preventDefault();
+    }
+}
 export const UtilFunctions = {
     dateFormat,
     acceptOnlyNumber,
-    acceptOnlyIntegerNumber
+    acceptOnlyIntegerNumber,
+    acceptOnlyIntegerNumberAndSpace
 }

@@ -20,14 +20,14 @@
           <v-row>
             <v-col class="column" cols="12" sm="4" md="4">
               <v-text-field
-                color="white"
                 label="Código"
-                v-model="product.code"
+                v-model.trim="codebar"
                 hint="Código de barras do produto"
-                :counter="10"
+                maxlength="15"
                 required
                 prepend-inner-icon="mdi-barcode"
-                @keypress="UtilFunctions.acceptOnlyIntegerNumber"
+                @keypress="UtilFunctions.acceptOnlyIntegerNumberAndSpace"
+                :rules="barcodeRules"
               />
             </v-col>
             <v-col class="column" cols="12" sm="8" md="8">
@@ -37,6 +37,7 @@
                 hint="Titulo/nome do produto"
                 required
                 prepend-inner-icon="mdi-format-title"
+                :rules="defaultRules"
               />
             </v-col>
             <v-col class="column d-flex" cols="12" sm="5" md="5">
@@ -47,6 +48,7 @@
                 hint="Nome empresa responsavel por fabricar o produto (ex: Avon, Natura, etc)"
                 required
                 prepend-inner-icon="mdi-factory"
+                :rules="defaultRules"
               />
               <div class="add-new">
                 <v-icon size="xx-large">mdi-database-plus</v-icon>
@@ -55,11 +57,12 @@
             <v-col class="column d-flex" cols="12" sm="7" md="7">
               <v-autocomplete
                 label="Selecione a categoria"
-                :items="categoriesSelectList"
+                :items="categorySelectList"
                 v-model="categoryQuery"
                 hint="Categoria do produto (ex: Shampoo, Sabonete, Hidratante, etc)"
                 required
                 prepend-inner-icon="mdi-format-list-bulleted-type "
+                :rules="defaultRules"
               />
               <div class="add-new">
                 <v-icon size="xx-large">mdi-database-plus</v-icon>
@@ -72,39 +75,57 @@
                 hint="Marca/linha a qual o produto pertence"
                 required
                 prepend-inner-icon="mdi-format-title"
+                :rules="defaultRules"
               />
             </v-col>
             <v-col class="column" md="5" sm="5">
               <v-text-field
                 label="Preço de compra"
-                @keypress="UtilFunctions.acceptOnlyNumber"
                 v-model="product.purchasePrice"
                 hint="Custo de aquisição para este produto"
                 required
                 prepend-inner-icon="mdi-cash"
+                prefix="R$"
+                @keypress="UtilFunctions.acceptOnlyNumber"
+                :rules="priceRules"
               />
             </v-col>
             <v-col class="column" md="5" sm="5">
               <v-text-field
                 label="Preço de venda"
                 v-model="product.salePrice"
-                hint="Valor padrão de revenda (aplica-se a todas as lojas)"
+                hint="Valor de venda (por padrão, aplica-se a todas as lojas)"
                 required
                 prepend-inner-icon="mdi-cash"
+                prefix="R$"
                 @keypress="UtilFunctions.acceptOnlyNumber"
+                :rules="priceRules"
               />
             </v-col>
             <v-col class="column" md="2" sm="2">
               <v-text-field
                 label="Estoque"
                 v-model="product.quantity"
-                @keypress="UtilFunctions.acceptOnlyIntegerNumber"
                 hint="Unidades desse produto"
                 required
                 prepend-inner-icon="mdi-counter"
+                @keypress="UtilFunctions.acceptOnlyIntegerNumber"
+                :rules="defaultRules"
               />
             </v-col>
-            <ProductStoreNew :product="product" />
+            <v-col class="column" md="4" sm="4">
+              <ProductStoreNew :product="product" />
+            </v-col>
+            <v-col class="column" md="8" sm="8">
+              <v-chip
+                v-for="{ store } of product.productShops"
+                density="compact"
+                class="mr-1"
+                prepend-icon="mdi-store"
+              >
+                {{ store.name }}
+              </v-chip>
+            </v-col>
           </v-row>
         </v-form>
       </v-card-text>
@@ -136,8 +157,9 @@
 
 <script setup lang="ts">
 import { GREY } from "@/colors";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { ProductHttp } from "../../domain/api/ProductsHttp";
+import { RulesFunctions } from "../../domain/functions/rules-functions";
 import { UtilFunctions } from "../../domain/functions/util-functions";
 import { ICategory } from "../../domain/interfaces/ICategory";
 import { eCompany, IProduct } from "../../domain/interfaces/IProduct";
@@ -149,14 +171,27 @@ const valid = true;
 
 const product = ref<IProduct>({ productShops: [] as IProductShop[] } as IProduct);
 
-const categoryQuery = ref<string>("");
-const categories = ref<ICategory[]>([] as ICategory[]);
-const categoriesSelectList = computed(() =>
-  categories.value.map(({ name }) => name.toUpperCase())
-);
-
 const { imageFile, imagePreview, onGetImage, uploadImage } = ImageUploadHooks.use(
   product
+);
+
+const { priceRules, defaultRules, barcodeRules } = RulesFunctions;
+
+const _codebar = ref<string>("");
+const codebar = computed<string>({
+  get: () => _codebar.value,
+  set: (value: string) => {
+    if (value.replaceAll(" ", "").length >= 13) return;
+    if (value.length === 1) _codebar.value = value + " ";
+    else if (value.length === 8) _codebar.value = value + " ";
+    else _codebar.value = value;
+  },
+});
+
+const categoryQuery = ref<string>("");
+const categoryList = ref<ICategory[]>([] as ICategory[]);
+const categorySelectList = computed(() =>
+  categoryList.value.map(({ name }) => name.toUpperCase())
 );
 
 async function save(): Promise<IProduct> {
@@ -166,7 +201,7 @@ async function save(): Promise<IProduct> {
 }
 
 async function handleSave() {
-  console.log({ ...product.value });
+  product.value = await save();
   return;
 }
 
@@ -177,7 +212,7 @@ function clean() {
 }
 
 onMounted(async () => {
-  categories.value = await ProductHttp.fetchAllCategories();
+  categoryList.value = await ProductHttp.fetchAllCategories();
 });
 </script>
 

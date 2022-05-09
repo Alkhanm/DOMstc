@@ -12,38 +12,21 @@
         <v-form ref="form" v-model="valid" :lazy-validation="true">
           <v-row>
             <v-col cols="12" class="column d-flex">
-              <v-select
-                :items="storesSelectList"
-                v-model="storeQuery"
-                label="Definir valores desta loja:"
-                prepend-inner-icon="mdi-shopping"
-                :rules="storeRules"
-              />
+              <v-select :items="storesSelectList" v-model="storeQuery" label="Definir valores desta loja:"
+                prepend-inner-icon="mdi-shopping" :rules="storeRules" />
               <div class="add-new">
                 <v-icon size="xx-large">mdi-database-plus</v-icon>
               </div>
             </v-col>
             <v-col cols="12" sm="6" md="6" class="column">
-              <v-text-field
-                label="Preço de venda"
-                v-model="productShop.price"
-                hint="Valor padrão para a revenda deste produto"
-                @keypress="UtilFunctions.acceptOnlyNumber"
-                required
-                prepend-inner-icon="mdi-cash"
-                :rules="priceRules"
-              />
+              <v-text-field label="Preço de venda" v-model="productShop.price"
+                hint="Valor padrão para a revenda deste produto" @keypress="UtilFunctions.acceptOnlyNumber" required
+                prepend-inner-icon="mdi-cash" :rules="RulesFunctions.priceRules" />
             </v-col>
             <v-col cols="12" sm="5" md="5" class="column">
-              <v-text-field
-                label="Estoque"
-                v-model="productShop.quantity"
-                @keypress="UtilFunctions.acceptOnlyIntegerNumber"
-                hint="Unidades desse produto"
-                required
-                prepend-inner-icon="mdi-counter"
-                :rules="quantityRules"
-              />
+              <v-text-field label="Estoque" v-model="productShop.quantity" hint="Unidades desse produto" required
+                prepend-inner-icon="mdi-counter" @keypress="UtilFunctions.acceptOnlyIntegerNumber"
+                :rules="stockRules" />
             </v-col>
             <v-col cols="12" sm="1" md="1" class="column">
               <v-btn @click="addProductShop" block variant="contained-text" height="56px">
@@ -96,42 +79,42 @@ const isVisible = ref(false);
 const form = ref();
 const valid = ref<boolean>(true);
 
-const { priceRules, quantityRules, storeRules } = RulesFunctions;
+const stockRules= computed(() => {
+  //Não verifique o estoque para o ProductShop atual. Permite que o produto tenha seu valor alterado.
+  const stockList = productShopList.value.filter(
+    (ps) => ps.store.id !== selectedStore.value?.id
+  );
+  return RulesFunctions.getStockRules(product, stockList);
+});
+const storeRules = computed(() => RulesFunctions.getStoreRules(storeList.value));
 
-const storeQuery = ref<string>("NENHUMA");
-const stores = ref<IStore[]>([]);
+const storeQuery = ref<string>("");
+const storeList = ref<IStore[]>([]);
 
 const productShop = ref<IProductShop>({} as IProductShop);
 const productShopList = ref<IProductShop[]>([]);
 
 const storesSelectList = computed<string[]>(() => {
-  const list: string[] = stores.value.map(({ id, name }) => `${id} - ${name}`);
-  list.unshift("NENHUMA");
+  const list: string[] = storeList.value.map(({ id, name }) => `${id} - ${name}`);
   return list;
 });
 
 const selectedStore = computed<IStore | null>(() => {
   if (!storeQuery || storeQuery.value === "TODAS") return null;
   const id = parseInt(storeQuery.value.split("-")[0]);
-  const result = stores.value.find((s) => s.id == id);
+  const result = storeList.value.find((s) => s.id == id);
   return result!;
 });
 
 async function addProductShop() {
-  const validate = await form.value.validate();
-  if (!validate.valid) return;
-  if (!selectedStore.value) return;
-  productShop.value.store = selectedStore.value;
-  const productShopIndex: number = productShopList.value.findIndex(
-    (ps) => ps.store.id === productShop.value.store.id
-  );
-  if (productShopIndex === -1)
-    return productShopList.value.push({ ...productShop.value });
-  const productShopFinded = productShopList.value[productShopIndex];
-  productShopList.value[productShopIndex] = {
-    ...productShop.value,
-    store: productShopFinded.store,
-  };
+  const store: IStore = selectedStore.value!;
+  const list: IProductShop[] = productShopList.value;
+  const { valid } = await form.value.validate();
+  if (!valid) return;
+  const productShopIndex = list.findIndex((ps) => ps.store.id === store?.id);
+  const productShopNew = { ...productShop.value, store };
+  if (productShopIndex === -1) list.unshift(productShopNew);
+  else list[productShopIndex] = productShopNew;
 }
 
 function handlerSelectTable(ps: IProductShop) {
@@ -151,7 +134,7 @@ watch(productShop.value, async () => {
 });
 
 onMounted(async () => {
-  stores.value = await StoreHttp.fetchAll();
+  storeList.value = await StoreHttp.fetchAll();
 });
 </script>
 
