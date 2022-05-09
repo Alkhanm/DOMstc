@@ -16,17 +16,18 @@
         />
       </div>
       <v-card-text>
-        <v-form ref="form" v-model="valid" lazy-validation>
+        <v-form ref="form" v-model="formValid" lazy-validation>
           <v-row>
             <v-col class="column" cols="12" sm="4" md="4">
               <v-text-field
                 label="Código"
-                v-model.trim="codebar"
+                v-model="product.code"
                 hint="Código de barras do produto"
-                maxlength="15"
+                maxlength="13"
+                counter="13"
                 required
                 prepend-inner-icon="mdi-barcode"
-                @keypress="UtilFunctions.acceptOnlyIntegerNumberAndSpace"
+                @keypress="UtilFunctions.acceptOnlyIntegerNumber"
                 :rules="barcodeRules"
               />
             </v-col>
@@ -42,8 +43,8 @@
             </v-col>
             <v-col class="column d-flex" cols="12" sm="5" md="5">
               <v-select
-                :items="Object.values(eCompany)"
                 v-model="product.company"
+                :items="Object.values(eCompany)"
                 label="Fabricante"
                 hint="Nome empresa responsavel por fabricar o produto (ex: Avon, Natura, etc)"
                 required
@@ -57,12 +58,12 @@
             <v-col class="column d-flex" cols="12" sm="7" md="7">
               <v-autocomplete
                 label="Selecione a categoria"
-                :items="categorySelectList"
                 v-model="categoryQuery"
+                :items="categorySelectList"
                 hint="Categoria do produto (ex: Shampoo, Sabonete, Hidratante, etc)"
                 required
                 prepend-inner-icon="mdi-format-list-bulleted-type "
-                :rules="defaultRules"
+                :rules="autocompleteRules"
               />
               <div class="add-new">
                 <v-icon size="xx-large">mdi-database-plus</v-icon>
@@ -78,7 +79,7 @@
                 :rules="defaultRules"
               />
             </v-col>
-            <v-col class="column" md="5" sm="5">
+            <v-col class="column" md="5" sm="4">
               <v-text-field
                 label="Preço de compra"
                 v-model="product.purchasePrice"
@@ -90,7 +91,7 @@
                 :rules="priceRules"
               />
             </v-col>
-            <v-col class="column" md="5" sm="5">
+            <v-col class="column" md="5" sm="4">
               <v-text-field
                 label="Preço de venda"
                 v-model="product.salePrice"
@@ -102,7 +103,7 @@
                 :rules="priceRules"
               />
             </v-col>
-            <v-col class="column" md="2" sm="2">
+            <v-col class="column" md="2" sm="4">
               <v-text-field
                 label="Estoque"
                 v-model="product.quantity"
@@ -113,13 +114,12 @@
                 :rules="defaultRules"
               />
             </v-col>
-            <v-col class="column" md="4" sm="4">
+            <v-col class="column" md="3" sm="5">
               <ProductStoreNew :product="product" />
             </v-col>
-            <v-col class="column" md="8" sm="8">
+            <v-col class="column" md="9" sm="7">
               <v-chip
                 v-for="{ store } of product.productShops"
-                density="compact"
                 class="mr-1"
                 prepend-icon="mdi-store"
               >
@@ -132,7 +132,7 @@
     </v-card-content>
     <FloatingActions>
       <div>
-        <v-btn color="blue darken-1" block @click="handleSave" variant="text">
+        <v-btn @click="handleSave" color="blue darken-1" block variant="text">
           <v-icon class="mr-1">mdi-check-all</v-icon>
           Salvar
         </v-btn>
@@ -157,7 +157,7 @@
 
 <script setup lang="ts">
 import { GREY } from "@/colors";
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { ProductHttp } from "../../domain/api/ProductsHttp";
 import { RulesFunctions } from "../../domain/functions/rules-functions";
 import { UtilFunctions } from "../../domain/functions/util-functions";
@@ -167,7 +167,9 @@ import { IProductShop } from "../../domain/interfaces/IProductShop";
 import { ImageUploadHooks } from "../../hooks/image-upload-hooks";
 import FloatingActions from "./FloatingActions.vue";
 import ProductStoreNew from "./ProductStoreNew.vue";
-const valid = true;
+
+const form = ref();
+const formValid = ref(false);
 
 const product = ref<IProduct>({ productShops: [] as IProductShop[] } as IProduct);
 
@@ -175,24 +177,14 @@ const { imageFile, imagePreview, onGetImage, uploadImage } = ImageUploadHooks.us
   product
 );
 
-const { priceRules, defaultRules, barcodeRules } = RulesFunctions;
-
-const _codebar = ref<string>("");
-const codebar = computed<string>({
-  get: () => _codebar.value,
-  set: (value: string) => {
-    if (value.replaceAll(" ", "").length >= 13) return;
-    if (value.length === 1) _codebar.value = value + " ";
-    else if (value.length === 8) _codebar.value = value + " ";
-    else _codebar.value = value;
-  },
-});
-
 const categoryQuery = ref<string>("");
 const categoryList = ref<ICategory[]>([] as ICategory[]);
 const categorySelectList = computed(() =>
   categoryList.value.map(({ name }) => name.toUpperCase())
 );
+
+const { priceRules, defaultRules, barcodeRules, getAutocompleteRules } = RulesFunctions;
+const autocompleteRules = computed(() => getAutocompleteRules(product.value.category, categoryList.value));
 
 async function save(): Promise<IProduct> {
   product.value.imageUrl = await uploadImage();
@@ -201,12 +193,13 @@ async function save(): Promise<IProduct> {
 }
 
 async function handleSave() {
+  const { valid } = await form.value.validate();
+  if (!valid) return;
   product.value = await save();
-  return;
 }
 
-function clean() {
-  product.value = { productShops: [] as IProductShop[] } as IProduct;
+async function clean() {
+  await form.value.reset();
   imagePreview.value = "";
   imageFile.value = {};
 }
@@ -214,6 +207,7 @@ function clean() {
 onMounted(async () => {
   categoryList.value = await ProductHttp.fetchAllCategories();
 });
+
 </script>
 
 <style scoped>

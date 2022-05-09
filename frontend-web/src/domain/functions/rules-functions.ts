@@ -23,8 +23,19 @@ const defaultRules = [
 
 const barcodeRules = [
     isNotEmpty,
-    (v: string) => (!!Number(v.trim()) && v.trim().length === 12) || "Valor invalido"
+    (v: string) => (v.length === 13) || "Valor invalido"
 ]
+
+const getAutocompleteRules = <T>(element: T, elementList: T[]) => {
+    const msg = "Selecione algum item"
+    console.log(element)
+    const autocompleteExistRule = () => (!!element) || msg + "1";
+    const autocompleExistInListRule = () => (!elementList.some(e => e === element)) || msg;
+    return [
+        autocompleteExistRule,
+        autocompleExistInListRule
+    ]
+}
 
 const getStoreRules = (storeList: IStore[]) => {
     const storeRule = (v: string) => storeList.some(s => v.includes(s.name)) || "Selecione ao menos uma loja"
@@ -58,5 +69,6 @@ export const RulesFunctions = {
     priceRules,
     barcodeRules,
     getStoreRules,
-    getStockRules
+    getStockRules,
+    getAutocompleteRules
 }
