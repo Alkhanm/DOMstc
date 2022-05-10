@@ -42,4 +42,10 @@ function changeDrawer() {
   text-align: center;
   font-size: xx-large;
 }
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+}
 </style>

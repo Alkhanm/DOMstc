@@ -23,11 +23,12 @@ defineProps<Props>();
 <style scoped>
 .info {
     display: flex;
-    justify-content: flex-end;
+    flex-direction: row;
     padding: 10px;
+    justify-content: flex-end;
     position: relative;
-    width: 150px;
-    max-height: 60px;
+    width: 180px;
+    max-height: 90px;
     border-radius: 10px;
 }
 
@@ -48,7 +49,7 @@ defineProps<Props>();
 .info-texts {
     display: flex;
     flex-direction: column;
-    margin-top: 5px;
+    margin-top: 25px;
 }
 
 .info-text {

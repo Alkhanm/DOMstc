@@ -113,6 +113,8 @@ import { SaleHooks } from "../../hooks/sale-hooks";
 import { AlertStore } from "../../store/alert-store";
 import { ProductStore } from "../../store/product-store";
 import { SaleStore } from "../../store/sale-store";
+import FloatingActions from "./FloatingActions.vue";
+import ItemCard from "./ItemCard.vue";
 
 const productQuery = ref<string>();
 const products = computed<IProduct[]>(() => ProductStore.state.list);

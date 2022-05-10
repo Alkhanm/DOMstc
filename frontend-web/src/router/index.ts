@@ -5,6 +5,8 @@ import Home from '../views/Home.vue';
 import Products from "../views/Products.vue";
 import Sale from "../views/Sale.vue";
 import Sales from "../views/Sales.vue";
+import NotFound from "../views/NotFound.vue"
+import { RoutesGuards } from "./route-functions"
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -38,12 +40,20 @@ const routes: Array<RouteRecordRaw> = [
     path: "/sales/new",
     component: SaleNew,
   },
-
+  {
+    name: "Não encontrado",
+    path: "/not-found",
+    component: NotFound
+  }
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
+const { notFoundGuard } = RoutesGuards(router);
+
+router.beforeEach(notFoundGuard)
 
 export default router
