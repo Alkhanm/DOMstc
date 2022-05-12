@@ -132,7 +132,7 @@
     </v-card-content>
     <FloatingActions>
       <div>
-        <v-btn @click="handleSave" color="blue darken-1" block variant="text">
+        <v-btn @click="handlerSave" color="blue darken-1" block variant="text">
           <v-icon class="mr-1">mdi-check-all</v-icon>
           Salvar
         </v-btn>
@@ -194,7 +194,7 @@ async function save(): Promise<IProduct> {
   return productSaved;
 }
 
-async function handleSave() {
+async function handlerSave() {
   const { valid } = await form.value.validate();
   if (!valid) return;
   product.value = await save();
@@ -202,7 +202,6 @@ async function handleSave() {
 
 function clean() {
   product.value = {} as IProduct;
-  console.log({ ...product.value });
   imagePreview.value = "";
   imageFile.value = {};
 }

@@ -1,48 +1,44 @@
 <template>
-    <v-card class="info" variant="contained-text">
-        <div class="info-texts">
-            <p class="info-text">{{ text}}</p>
-            <p class="info-value">{{ value }}</p>
-        </div>
-    </v-card>
+  <div class="info" variant="contained-text" :border="true" right>
+    <p class="info-text">{{ text }}</p>
+    <p class="info-value">{{ value }}</p>
+  </div>
 </template>
 
 <script lang="ts" setup>
 interface Props {
-    text: string;
-    value: any;
+  text: string;
+  value: any;
 }
-defineProps<Props>();
 
+defineProps<Props>();
 </script>
 
 <style scoped>
 .info {
-    display: flex;
-    padding: 10px;
-    width: 170px;
-    height: 70px;
-    border-radius: 10px;
-    justify-content: center;
-}
-
-.info-texts {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #cfc6c6;
+  background-color: #393939;
+  padding: 10px;
+  min-width: 170px;
+  height: 70px;
+  border-radius: 10px;
+  border-left-style: solid;
+  border-left-width: 8px;
+  border-left-color: #616161;
+  margin: 5px;
 }
 
 .info-text {
-    font-size: medium;
-    font-weight: bolder;
-    margin-bottom: 2px;
-    text-align: left;
+  font-size: medium;
+  font-weight: bolder;
+  margin-bottom: 2px;
 }
 
 .info-value {
-    width: 100%;
-    align-self: flex-start;
-    font-size: medium;
-    text-align: right;
+  font-size: medium;
 }
 </style>
