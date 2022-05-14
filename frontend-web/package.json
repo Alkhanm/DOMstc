@@ -15,6 +15,7 @@
     "roboto-fontface": "*",
     "v-autocomplete": "^1.8.2",
     "vue": "^3.2.13",
+    "vue-circle-counter": "^3.0.0",
     "vue-class-component": "^8.0.0-0",
     "vue-router": "^4.0.13",
     "vue3-autocomplete": "^1.0.4",

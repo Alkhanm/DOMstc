@@ -8489,6 +8489,13 @@ vm-browserify@^1.0.1:
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
 
+vue-circle-counter@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/vue-circle-counter/-/vue-circle-counter-3.0.0.tgz#e2b6ab04199f10217cc376b857cffb4dd29a4c3c"
+  integrity sha512-dh7jwkkJYcDZXvmiXHXDuDdUgDQHMxnI9MsEJE2aNxrUEC+gAdsfIbQw9BDjYcShCB6m/rxQZM22gTVKMXWBtw==
+  dependencies:
+    vue "^2.5.21"
+
 vue-class-component@^8.0.0-0:
   version "8.0.0-rc.1"
   resolved "https://registry.yarnpkg.com/vue-class-component/-/vue-class-component-8.0.0-rc.1.tgz#db692cd97656eb9a08206c03d0b7398cdb1d9420"
@@ -8548,6 +8555,11 @@ vue3-autocomplete@^1.0.4:
     sass-loader "^10.0.3"
     typescript "^4.0.3"
     vue "^3.0.0"
+
+vue@^2.5.21:
+  version "2.6.14"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.14.tgz#e51aa5250250d569a3fbad3a8a5a687d6036e235"
+  integrity sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ==
 
 vue@^3.0.0, vue@^3.2.13:
   version "3.2.33"

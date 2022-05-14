@@ -15,15 +15,8 @@
       </v-card-text>
     </v-card-title>
     <v-card-content style="display: flex; justify-content: center; align-items: center">
-      <v-progress-circular
-        size="200"
-        model-value="80"
-        width="15"
-        color="deep-orange lighten-2"
-      >
-        <p>Lucro</p><br>
-        <p>15%</p>
-      </v-progress-circular>
+      <Circle text="Lucros" value="R$ 121230,00" size="250px" :dashSpacing="1/10000" :dashCount="100" :activeCount="30">
+      </Circle>
     </v-card-content>
 
     <v-card-actions> </v-card-actions>
@@ -33,6 +26,7 @@
 <script lang="ts" setup>
 import CardInfoText from "./widgets/CardInfoText.vue";
 import PageCard from "./widgets/PageCard.vue";
+import Circle from "./widgets/Circle.vue";
 </script>
 
 <style scoped>
