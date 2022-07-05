@@ -15,8 +15,10 @@
       </v-card-text>
     </v-card-title>
     <v-card-content style="display: flex; justify-content: center; align-items: center">
-      <Circle text="Lucros" value="R$ 121230,00" size="250px" :dashSpacing="1/10000" :dashCount="100" :activeCount="30">
-      </Circle>
+      <!-- <Circle text="Lucros" value="R$ 121230,00" size="250px" :dashSpacing="1/10000" :dashCount="100" :activeCount="30">
+      </Circle> -->
+      <AlkCircle>
+      </AlkCircle>
     </v-card-content>
 
     <v-card-actions> </v-card-actions>
@@ -24,9 +26,9 @@
 </template>
 
 <script lang="ts" setup>
+import AlkCircle from "./widgets/AlkCircle.vue";
 import CardInfoText from "./widgets/CardInfoText.vue";
 import PageCard from "./widgets/PageCard.vue";
-import Circle from "./widgets/Circle.vue";
 </script>
 
 <style scoped>
